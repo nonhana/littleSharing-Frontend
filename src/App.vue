@@ -20,11 +20,10 @@
 
 <script setup lang="ts">
 import { ref, watch, onMounted } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRoute } from "vue-router";
 import CommonHeader from "@/components/CommonHeader.vue";
 
 const route = useRoute();
-const router = useRouter();
 const curClass = ref<string>("app");
 const logo_opacity = ref<string>("0%");
 
@@ -54,18 +53,6 @@ watch(
   },
   { immediate: true, deep: true }
 );
-
-// 路由前置守卫
-router.beforeEach((to, _, next) => {
-  const userInfo = localStorage.getItem("user_info");
-  if (to.path !== "/login" && !userInfo) {
-    next("/login");
-  } else if (to.path === "/login" && userInfo) {
-    next("/home");
-  } else {
-    next();
-  }
-});
 
 onMounted(() => {
   setTimeout(() => {

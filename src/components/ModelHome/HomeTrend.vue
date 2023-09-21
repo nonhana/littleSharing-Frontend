@@ -141,3 +141,4 @@ onMounted(() => {
   }
 }
 </style>
+@/api/article

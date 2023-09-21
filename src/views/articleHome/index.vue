@@ -116,3 +116,4 @@ onMounted(async () => {
   }
 }
 </style>
+@/api/article

@@ -552,3 +552,4 @@ const search = async (keywords: string) => {
   color: #00ead8 !important;
 }
 </style>
+@/api/article

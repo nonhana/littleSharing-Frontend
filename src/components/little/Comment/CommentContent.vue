@@ -387,3 +387,4 @@ onMounted(async () => {
   }
 }
 </style>
+@/api/comment @/api/article

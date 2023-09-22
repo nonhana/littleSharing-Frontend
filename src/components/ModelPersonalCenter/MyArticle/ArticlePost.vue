@@ -47,9 +47,9 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, nextTick } from "vue";
 import { useRoute } from "vue-router";
-import { getUserArticleList } from "@/api/articles";
+import { getUserArticleList } from "@/api/article";
 import FilterBar from "@/components/FilterBar.vue";
-import ArticlePersonalcenterItem from "@/components/little/article_personalcenter_item.vue";
+import ArticlePersonalcenterItem from "@/components/little/ArticlePersonalCenterItem.vue";
 
 const route = useRoute();
 
@@ -72,7 +72,7 @@ const getArticleListChild = async (val: any) => {
     const res = await getUserArticleList({
       user_id: Number(route.params.id),
     });
-    res.data.result.user_article_list.forEach((item: any) => {
+    res.data.result.forEach((item: any) => {
       article_list_all.value.push(item);
     });
     article_list_all.value.reverse();
@@ -84,10 +84,10 @@ onMounted(async () => {
   const res = await getUserArticleList({
     user_id: Number(route.params.id),
   });
-  res.data.result.user_article_list.forEach((item: any) => {
+  res.data.result.forEach((item: any) => {
     article_list_all.value.push(item);
   });
-  messageList.value = res.data.result.user_article_list.map(
+  messageList.value = res.data.result.map(
     (item: any) =>
       `${item.article_introduce}/${item.article_title}/${item.article_major}/${item.article_labels}/${item.author_name}`
   );

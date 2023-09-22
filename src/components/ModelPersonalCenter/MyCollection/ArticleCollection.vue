@@ -1,7 +1,6 @@
 <template>
   <div class="ArticleCollection-wrap">
     <FilterBar
-      :message-list="messageList"
       :article-list-all="article_list_all"
       @sendArticleList="getArticleList"
     />
@@ -43,13 +42,11 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, nextTick } from "vue";
-import router from "@/router";
-import { getUserCollectList } from "@/api/other";
-import { getArticleMainAPI } from "@/api/articles";
+import { getUserCollectList } from "@/api/user";
+import { getArticleMain } from "@/api/article";
 import FilterBar from "@/components/FilterBar.vue";
-import ArticlePersonalcenterItem from "@/components/little/article_personalcenter_item.vue";
+import ArticlePersonalcenterItem from "@/components/little/ArticlePersonalCenterItem.vue";
 
-let messageList = ref<any[]>([]);
 let article_list = ref<any>([]);
 let article_list_all = ref<any[]>([]);
 let articleListShow = ref<number>(0);
@@ -64,23 +61,17 @@ const getArticleList = async (arr: any[]) => {
 };
 
 onMounted(async () => {
-  const UserCollectListRes = await getUserCollectList({
-    user_id: Number(router.currentRoute.value.params.id),
-  });
-  if (UserCollectListRes.data.collect_list) {
-    UserCollectListRes.data.collect_list.forEach(async (item: any) => {
-      const res = await getArticleMainAPI({
+  const UserCollectListRes = await getUserCollectList();
+  if (UserCollectListRes.data.result_code === 0) {
+    UserCollectListRes.data.result.forEach(async (item: any) => {
+      const res = await getArticleMain({
         article_id: item,
       });
-      if (res.data.result.article_main) {
-        article_list_all.value.push(res.data.result.article_main);
-        messageList.value.push(
-          `${res.data.result.article_main.article_introduce}/${res.data.result.article_main.article_title}/${res.data.result.article_main.article_major}/${res.data.result.article_main.article_labels}/${res.data.result.article_main.author_name}`
-        );
+      if (res.data.result_code === 0) {
+        article_list_all.value.push(res.data.result);
       }
     });
     article_list_all.value.reverse();
-    messageList.value.reverse();
     article_list.value = article_list_all.value;
   }
 });

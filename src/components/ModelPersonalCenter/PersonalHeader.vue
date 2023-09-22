@@ -125,11 +125,11 @@
 import { ref, computed, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import {
-  getUserinfoAPI,
-  getUserLikeNumAPI,
-  getUserCollectionNumAPI,
-  focusUserActionsAPI,
-  getUserFocusListAPI,
+  getUserInfo,
+  getUserLikeNum,
+  getUserCollectionNum,
+  focusUserActions,
+  getUserFocusList,
 } from "@/api/user";
 import { ElMessage } from "element-plus";
 
@@ -222,34 +222,33 @@ watch(
       } else {
         isMyCenter.value = false;
       }
-      const focusListRes = await getUserFocusListAPI({
+      const focusListRes = await getUserFocusList({
         user_id: JSON.parse(localStorage.getItem("user_info") as string).id,
       });
       if (focusListRes.data.result_code === 0) {
-        if (focusListRes.data.result.focus_list.length > 0) {
-          focusListRes.data.result.focus_list.forEach((item: any) => {
+        if (focusListRes.data.result.length > 0) {
+          focusListRes.data.result.forEach((item: any) => {
             if (item === user_id.value) {
               isMyFocus.value = true;
             }
           });
         }
       }
-      const userInfoRes = await getUserinfoAPI({ user_id: user_id.value });
-      user.value.user_name = userInfoRes.data.result.userInfo.name;
-      user.value.sign = userInfoRes.data.result.userInfo.signature;
-      user.value.header_photo = userInfoRes.data.result.userInfo.headphoto;
-      user.value.background_photo =
-        userInfoRes.data.result.userInfo.backgroundphoto;
-      user.value.total_artcile = userInfoRes.data.result.userInfo.article_num;
-      const likeNumRes = await getUserLikeNumAPI({ user_id: user_id.value });
+      const userInfoRes = await getUserInfo({ user_id: user_id.value });
+      user.value.user_name = userInfoRes.data.result.name;
+      user.value.sign = userInfoRes.data.result.signature;
+      user.value.header_photo = userInfoRes.data.result.headphoto;
+      user.value.background_photo = userInfoRes.data.result.backgroundphoto;
+      user.value.total_artcile = userInfoRes.data.result.article_num;
+      const likeNumRes = await getUserLikeNum({ user_id: user_id.value });
       if (likeNumRes.data.result_code === 0) {
-        user.value.total_like = likeNumRes.data.result.like_num;
+        user.value.total_like = likeNumRes.data.result;
       }
-      const collectionNumRes = await getUserCollectionNumAPI({
+      const collectionNumRes = await getUserCollectionNum({
         user_id: user_id.value,
       });
       if (collectionNumRes.data.result_code === 0) {
-        user.value.total_collect = collectionNumRes.data.result.collection_num;
+        user.value.total_collect = collectionNumRes.data.result;
       }
       gettingData.value = false;
     }
@@ -265,7 +264,7 @@ const moveline = (num: number) => {
 };
 const focusAction = async (num: number) => {
   if (num === 0) {
-    const res = await focusUserActionsAPI({
+    const res = await focusUserActions({
       first_user_id: JSON.parse(localStorage.getItem("user_info") as string).id,
       second_user_id: user_id.value,
       action_type: num,
@@ -283,7 +282,7 @@ const focusAction = async (num: number) => {
       });
     }
   } else {
-    const res = await focusUserActionsAPI({
+    const res = await focusUserActions({
       first_user_id: JSON.parse(localStorage.getItem("user_info") as string).id,
       second_user_id: user_id.value,
       action_type: num,

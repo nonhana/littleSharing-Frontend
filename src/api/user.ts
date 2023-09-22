@@ -58,8 +58,24 @@ export const register = (paramsList: RegUserInfo) => {
 export const login = (paramsList: { account: string; password: string }) => {
   return myAxios({
     url: "/user/login",
+    method: "POST",
+    data: paramsList,
+  });
+};
+
+// 获取用户的keywords
+export const getUserKeywords = () => {
+  return myAxios({
+    url: "/user/get-user-keywords",
     method: "GET",
-    params: paramsList,
+  });
+};
+
+// 获取全局文章标签列表
+export const getArticleLabels = () => {
+  return myAxios({
+    url: "/user/get-article-labels",
+    method: "GET",
   });
 };
 

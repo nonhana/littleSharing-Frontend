@@ -50,7 +50,7 @@ import { ref, onMounted, nextTick } from "vue";
 import { ArticleInfo } from "@/types";
 import useShuffle from "@/utils/useShuffle";
 import { useRoute } from "vue-router";
-import { getArticleListAPI } from "@/api/articles";
+import { getArticleList } from "@/api/article";
 import SimilarArticleItem from "@/components/little/SimilarArticleItem.vue";
 
 const ArticleHomeSimilar = ref<HTMLDivElement>();
@@ -83,8 +83,8 @@ const foldList = () => {
 };
 
 onMounted(async () => {
-  let res = await getArticleListAPI();
-  res.data.result.articleList.forEach((item: ArticleInfo) => {
+  let res = await getArticleList();
+  res.data.result.forEach((item: ArticleInfo) => {
     article_list.value.push(item);
     if (item.article_id === Number(route.params.id)) {
       keyword.value = item.article_labels[0];

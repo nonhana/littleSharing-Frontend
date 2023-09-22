@@ -64,7 +64,7 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted, nextTick } from "vue";
 import router from "@/router";
-import { getArticleMainAPI, postArticleTrendAPI } from "@/api/articles";
+import { getArticleMain, postArticleTrend } from "@/api/article";
 import VueMarkdownIt from "vue3-markdown-it";
 import MarkdownItEmoji from "markdown-it-emoji";
 import MarkdownItDeflist from "markdown-it-deflist";
@@ -97,7 +97,7 @@ let plugins = reactive([
 ]);
 
 onMounted(async () => {
-  const res = await getArticleMainAPI({
+  const res = await getArticleMain({
     article_id: Number(router.currentRoute.value.params.id),
   });
   const { article_main } = res.data.result;
@@ -121,7 +121,7 @@ onMounted(async () => {
     label_list: article_labels.value,
   };
 
-  await postArticleTrendAPI(trend_params);
+  await postArticleTrend(trend_params);
 });
 </script>
 

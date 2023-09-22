@@ -104,8 +104,8 @@
 <script setup lang="ts">
 import { ref, computed, watch } from "vue";
 import router from "@/router";
-import { deleteArticleAPI } from "@/api/articles";
-import { collectActionAPI } from "@/api/other";
+import { deleteArticle } from "@/api/article";
+import { addCollection } from "@/api/user";
 import { ElMessageBox, ElNotification } from "element-plus";
 
 const props = defineProps<{
@@ -116,26 +116,26 @@ const emits = defineEmits<{
   (e: "getArticleList", data: boolean): void;
 }>();
 
-let routeStatus = ref<number>(0);
-let id = ref<number>(props.articleList.article_id);
-let article_status = ref<string>(props.articleList.article_status);
-let article_link = ref<string>(props.articleList.article_link);
-let article_title = ref<string>(props.articleList.article_title);
-let article_major = ref<any[]>(props.articleList.article_major);
-let article_labels = ref<any[]>(props.articleList.article_labels);
-let article_introduce = ref<string>(props.articleList.article_introduce);
-let article_uploaddate = ref<string>(props.articleList.article_uploaddate);
-let article_updatedate = ref<string>(props.articleList.article_updatedate);
-let author_id = ref<number>(props.articleList.author_id);
-let author_head = ref<string>(props.articleList.author_headphoto);
-let author_name = ref<string>(props.articleList.author_name);
-let author_signature = ref<string>(props.articleList.author_signature);
-let author_university = ref<string>(props.articleList.author_university);
-let article_num = ref<number>(props.articleList.article_num);
-let like_num = ref<number>(props.articleList.like_num);
-let collection_num = ref<number>(props.articleList.collection_num);
-let share_num = ref<number>(props.articleList.share_num);
-let comment_num = ref<number>(props.articleList.comment_num);
+const routeStatus = ref<number>(0);
+const id = ref<number>(props.articleList.article_id);
+const article_status = ref<string>(props.articleList.article_status);
+const article_link = ref<string>(props.articleList.article_link);
+const article_title = ref<string>(props.articleList.article_title);
+const article_major = ref<any[]>(props.articleList.article_major);
+const article_labels = ref<any[]>(props.articleList.article_labels);
+const article_introduce = ref<string>(props.articleList.article_introduce);
+const article_uploaddate = ref<string>(props.articleList.article_uploaddate);
+const article_updatedate = ref<string>(props.articleList.article_updatedate);
+const author_id = ref<number>(props.articleList.author_id);
+const author_head = ref<string>(props.articleList.author_headphoto);
+const author_name = ref<string>(props.articleList.author_name);
+const author_signature = ref<string>(props.articleList.author_signature);
+const author_university = ref<string>(props.articleList.author_university);
+const article_num = ref<number>(props.articleList.article_num);
+const like_num = ref<number>(props.articleList.like_num);
+const collection_num = ref<number>(props.articleList.collection_num);
+const share_num = ref<number>(props.articleList.share_num);
+const comment_num = ref<number>(props.articleList.comment_num);
 
 const major = computed(() => article_major.value.join("-"));
 
@@ -170,15 +170,15 @@ const articlechoices = (num: string) => {
         confirmButtonText: "确认",
         cancelButtonText: "取消",
       }
-    ).then(() => {
-      deleteArticleAPI({ article_id: id.value }).then((res) => {
-        console.log(res.data);
+    ).then(async () => {
+      const res = await deleteArticle({ article_id: id.value });
+      if (res.data.result_code === 0) {
         ElNotification({
           title: "文章删除成功！",
           type: "success",
         });
         emits("getArticleList", true);
-      });
+      }
     });
   }
   if (num === "3") {
@@ -186,14 +186,14 @@ const articlechoices = (num: string) => {
       distinguishCancelAndClose: true,
       confirmButtonText: "确认",
       cancelButtonText: "取消",
-    }).then(() => {
+    }).then(async () => {
       const paramsList = {
         article_id: id.value,
         action_type: 1,
         user_id: JSON.parse(localStorage.getItem("user_info") as string).id,
       };
-      collectActionAPI(paramsList).then((res) => {
-        console.log(res.data);
+      const res = await addCollection(paramsList);
+      if (res.data.result_code === 0) {
         ElNotification({
           title: "取消收藏成功！",
           message: "2s后刷新页面...",
@@ -202,7 +202,7 @@ const articlechoices = (num: string) => {
         setTimeout(() => {
           window.location.reload();
         }, 2000);
-      });
+      }
     });
   }
 };

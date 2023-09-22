@@ -211,12 +211,12 @@ import { ref, watch, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import useCurrentDate from "@/utils/useCurrentDate";
 import {
-  postArticleAPI,
-  addArticleLabelAPI,
-  getArticleMainAPI,
-  editArticleAPI,
-} from "@/api/articles";
-import { uploadImageAPI } from "@/api/other";
+  postArticle,
+  addArticleLabel,
+  getArticleMain,
+  editArticle,
+  uploadArticleImg,
+} from "@/api/article";
 import { ElMessageBox, ElMessage, ElNotification } from "element-plus";
 
 interface ArticleInfo {
@@ -541,9 +541,11 @@ const change = (_: any, render: string) => {
   html.value = render;
 };
 const imgAdd = async (pos: any, file: File) => {
-  const res = await uploadImageAPI({ image: file });
+  const res = await uploadArticleImg({
+    articleImg: file,
+  });
   if (res.data.result_code === 0) {
-    md.value.$img2Url(pos, res.data.result.imgURL);
+    md.value.$img2Url(pos, res.data.result);
   }
 };
 const submitArticle = async () => {
@@ -608,7 +610,7 @@ const submitArticle = async () => {
       });
       // 将不同词提交给后端数据库
       result.forEach(async (item: any) => {
-        const res = await addArticleLabelAPI({ label_name: item });
+        const res = await addArticleLabel({ label_name: item });
         console.log(res.data);
       });
     } else {
@@ -617,13 +619,13 @@ const submitArticle = async () => {
           label: item,
           value: item,
         });
-        const res = await addArticleLabelAPI({ label_name: item });
+        const res = await addArticleLabel({ label_name: item });
         console.log(res.data);
       });
     }
     localStorage.setItem("article_labels", JSON.stringify(article_labels));
     if (!editStatus.value) {
-      const res = await postArticleAPI(ruleForm.value);
+      const res = await postArticle(ruleForm.value);
       console.log(res.data);
       if (localStorage.getItem("not_saved_article_info")) {
         localStorage.removeItem("not_saved_article_info");
@@ -633,7 +635,7 @@ const submitArticle = async () => {
         article_id: Number(route.query.article_id),
         ...ruleForm.value,
       });
-      const res = await editArticleAPI({
+      const res = await editArticle({
         article_id: Number(route.query.article_id),
         ...ruleForm.value,
       });
@@ -719,11 +721,11 @@ onMounted(async () => {
   }
   if (route.query.article_id) {
     editStatus.value = true;
-    const res = await getArticleMainAPI({
+    const res = await getArticleMain({
       article_id: Number(route.query.article_id),
     });
-    if (res.data.result.article_main) {
-      let {
+    if (res.data.result_code === 0) {
+      const {
         article_id,
         collection_num,
         comment_num,
@@ -731,7 +733,8 @@ onMounted(async () => {
         share_num,
         view_num,
         ...sourceArticle
-      } = res.data.result.article_main;
+      } = res.data.result;
+
       console.log(sourceArticle);
       ruleForm.value.article_details = sourceArticle.article_md;
       ruleForm.value.article_introduce = sourceArticle.article_introduce;

@@ -13,20 +13,19 @@
 
 <script setup lang="ts">
 import { onMounted, ref, watch } from "vue";
-import { getArticleTrendAPI } from "@/api/articles";
+import { getArticleTrend } from "@/api/article";
 import * as echarts from "echarts";
-import { ElNotification } from "element-plus";
 
 interface SeriesInfo {
   name: string;
   type: string;
   stack: string;
-  data: Array<number>;
+  data: number[];
 }
 interface TrendInfo {
   id: number;
   trend_name: string;
-  value_list: Array<number>;
+  value_list: number[];
 }
 
 const chart = ref<HTMLDivElement>();
@@ -36,32 +35,19 @@ let trend_value: number[][] = [];
 let trend_series: SeriesInfo[] = [];
 
 const fetchArticleTrend = async () => {
-  const res = await getArticleTrendAPI();
-  console.log(res.data);
+  const res = await getArticleTrend();
   if (res.data.result_code == 0) {
-    if (res.data.result.topFiveTrends) {
-      trend_name = res.data.result.topFiveTrends.map(
-        (item: TrendInfo) => item.trend_name
-      );
-      trend_value = res.data.result.topFiveTrends.map(
-        (item: TrendInfo) => item.value_list
-      );
-      trend_name.forEach((item, index) => {
-        trend_series.push({
-          name: item,
-          type: "line",
-          stack: "Total",
-          data: trend_value[index],
-        });
+    trend_name = res.data.result.map((item: TrendInfo) => item.trend_name);
+    trend_value = res.data.result.map((item: TrendInfo) => item.value_list);
+    trend_name.forEach((item, index) => {
+      trend_series.push({
+        name: item,
+        type: "line",
+        stack: "Total",
+        data: trend_value[index],
       });
-      getEchartData(); // 在数据加载完成后调用渲染函数
-    }
-  } else {
-    ElNotification({
-      title: "获取文章趋势失败",
-      message: res.data.message,
-      type: "error",
     });
+    getEchartData(); // 在数据加载完成后调用渲染函数
   }
 };
 

@@ -37,11 +37,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import router from "@/router";
-import {
-  addBookMarkAPI,
-  removeBookMarkAPI,
-  getBookMarkAPI,
-} from "@/api/articles";
+import { addBookMark, removeBookMark, getBookMark } from "@/api/article";
 import { ElNotification, ElMessageBox } from "element-plus";
 
 type BookMarkInfo = {
@@ -59,15 +55,15 @@ let presentBookMarkPosition = ref<string>("0px");
 const scroll = () => {
   topHeight.value = window.scrollY.toFixed(2) + "px";
 };
-const addbookmark = () => {
+const addbookmark = async () => {
   if (topHeight.value != "0px") {
     const paramsList = {
       article_id: Number(router.currentRoute.value.params.id),
       topHeight: topHeight.value,
       user_id: JSON.parse(localStorage.getItem("user_info") as string).id,
     };
-    addBookMarkAPI(paramsList).then((res) => {
-      console.log(res.data);
+    const res = await addBookMark(paramsList);
+    if (res.data.result_code === 0) {
       if (bookmark_exist.value == 1) {
         ElNotification({
           title: "更新书签成功！",
@@ -83,7 +79,7 @@ const addbookmark = () => {
       }
       presentBookMarkPosition.value = topHeight.value;
       bookmark_exist.value = 1;
-    });
+    }
   } else {
     ElNotification({
       title: "书签不能加在开头哦，先读一点吧~",
@@ -102,19 +98,19 @@ const bookmarkScroll = () => {
     behavior: "smooth",
   });
 };
-const deletebookmark = () => {
+const deletebookmark = async () => {
   bookmark_exist.value = 0;
   const paramsList = {
     article_id: Number(router.currentRoute.value.params.id),
     user_id: JSON.parse(localStorage.getItem("user_info") as string).id,
   };
-  removeBookMarkAPI(paramsList).then((res) => {
-    console.log(res.data);
+  const res = await removeBookMark(paramsList);
+  if (res.data.result_code === 0) {
     ElNotification({
-      title: "成功移除书签",
+      title: "移除书签成功！",
       type: "success",
     });
-  });
+  }
 };
 
 onMounted(async () => {
@@ -123,10 +119,9 @@ onMounted(async () => {
 
   window.addEventListener("scroll", scroll);
 
-  const bookmarkRes = await getBookMarkAPI({ user_id: userId });
-  console.log(bookmarkRes.data);
-  if (bookmarkRes.data.bookmarks) {
-    bookmarkRes.data.bookmarks.forEach((item: BookMarkInfo) => {
+  const bookmarkRes = await getBookMark();
+  if (bookmarkRes.data.result) {
+    bookmarkRes.data.result.forEach((item: BookMarkInfo) => {
       bookmarks.value.push(item);
 
       if (item.article_id === Number(articleId) && item.user_id === userId) {

@@ -46,8 +46,8 @@
 <script setup lang="ts">
 import { ref, computed, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import FocusItem from "@/components/little/focus-item.vue";
-import { getUserFocusListAPI } from "@/api/user";
+import FocusItem from "@/components/little/FocusItem.vue";
+import { getUserFocusList } from "@/api/user";
 
 const router = useRouter();
 const route = useRoute();
@@ -87,8 +87,8 @@ watch(
     ) {
       isMyCenter.value = true;
     }
-    const res = await getUserFocusListAPI({ user_id: user_id.value });
-    res.data.result.focus_list.forEach((item: any) => {
+    const res = await getUserFocusList({ user_id: user_id.value });
+    res.data.result.forEach((item: any) => {
       user_list.value.push(item);
     });
   },

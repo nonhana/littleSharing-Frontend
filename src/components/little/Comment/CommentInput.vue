@@ -19,9 +19,8 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import useCurrentDate from "@/utils/useCurrentDate";
 import { useRoute } from "vue-router";
-import { CommentActionAPI } from "@/api/other";
+import { commentAction } from "@/api/comment";
 import { ElNotification } from "element-plus";
 
 interface extendObject {
@@ -42,16 +41,10 @@ const props = defineProps<{
 }>();
 
 const emits = defineEmits<{
-  (
-    e: "refreshComment",
-    flag: boolean,
-    comment_list: any,
-    comment_id: number
-  ): void;
+  (e: "refreshComment"): void;
 }>();
 
 const route = useRoute();
-const presentDate = useCurrentDate();
 
 const commentContent = ref<string>("");
 
@@ -69,9 +62,8 @@ const inputComment = async () => {
     let paramsList: extendObject = {
       action_type: 0,
       article_id: Number(route.params.id), //要传值
-      user_id: JSON.parse(localStorage.getItem("user_info") as string).id,
+      user_id: JSON.parse(localStorage.getItem("user_info") as string).user_id,
       comment_content: commentContent.value,
-      create_date: presentDate,
     };
     // 如果是给一级评论评论，给paramslist添加评论id属性
     if (props.commentId) {
@@ -80,19 +72,21 @@ const inputComment = async () => {
     // 如果是给二级评论评论，给paramslist添加评论对象id、评论id属性
     if (props.responseTo) {
       paramsList.response_to_user_id = props.responseTo.respondent.id;
-      paramsList.response_to_comment_id = props.commentId;
+      paramsList.response_to_comemnt_id = props.commentId;
     }
     console.log("评论参数", JSON.stringify(paramsList));
-    const res = await CommentActionAPI(paramsList);
-    console.log("评论成功", res.data);
-    //如果添加成功，通知父组件加入评论
-    emits(
-      "refreshComment",
-      true,
-      res.data.result.comment_list[0],
-      res.data.result.thisID
-    );
-    commentContent.value = "";
+    const res = await commentAction(paramsList);
+
+    if (res.data.result_code === 0) {
+      ElNotification({
+        title: "评论成功",
+        type: "success",
+      });
+
+      //如果添加成功，通知父组件加入评论
+      emits("refreshComment");
+      commentContent.value = "";
+    }
   }
 };
 const handleKeyCode = (event: KeyboardEvent) => {

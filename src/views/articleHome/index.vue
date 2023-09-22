@@ -29,7 +29,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
-import { increaseArticleViewsAPI } from "@/api/articles";
+import { increaseArticleViews } from "@/api/article";
 import ArticleHomeMain from "@/components/ModelArticleHome/ArticleHomeMain.vue";
 import ArticleHomeSimilar from "@/components/ModelArticleHome/ArticleHomeSimilar.vue";
 import ArticleHomeAuthor from "@/components/ModelArticleHome/ArticleHomeAuthor.vue";
@@ -59,7 +59,7 @@ const scroll = () => {
 
 onMounted(async () => {
   const articleId = Number(route.params.id);
-  await increaseArticleViewsAPI({
+  await increaseArticleViews({
     article_id: articleId,
   });
 

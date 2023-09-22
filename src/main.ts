@@ -5,7 +5,7 @@ import { createPinia } from "pinia";
 import mavonEditor from "mavon-editor";
 import "mavon-editor/dist/css/index.css";
 import router from "./router";
-import noList from "@/components/little/NoList.vue";
+import NoList from "@/components/little/GlobalComponents/NoList.vue";
 import "highlight.js/styles/vs2015.css";
 import "animate.css";
 import App from "./App.vue";
@@ -26,5 +26,5 @@ app.use(createPinia());
 app.use(router);
 app.use(mavonEditor);
 
-app.component("noList", noList);
+app.component("NoList", NoList);
 app.mount("#app");

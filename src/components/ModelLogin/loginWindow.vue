@@ -27,7 +27,7 @@
       <div class="register" @click="turnToRegister">
         <span>还未注册？点击此处注册！</span>
       </div>
-      <div class="submit" @click="login()">
+      <div class="submit" @click="useLogin()">
         <div>
           <span>登录</span>
         </div>
@@ -92,7 +92,7 @@
       <div class="register" @click="turnToLogin">
         <span>返回</span>
       </div>
-      <div class="submit" @click="register()">
+      <div class="submit" @click="useRegister()">
         <div>
           <span>注册</span>
         </div>
@@ -104,7 +104,13 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import router from "@/router";
-import { userLoginAPI, userRegisterAPI } from "@/api/user";
+import {
+  login,
+  register,
+  getUserInfo,
+  getUserKeywords,
+  getArticleLabels,
+} from "@/api/user";
 import { ElNotification } from "element-plus";
 
 const loginForm = ref({
@@ -119,7 +125,7 @@ const registerForm = ref({
 const status = ref<boolean>(true);
 const logining = ref<boolean>(false);
 
-const login = async () => {
+const useLogin = async () => {
   logining.value = true;
   if (!loginForm.value.account || !loginForm.value.password) {
     ElNotification({
@@ -127,40 +133,47 @@ const login = async () => {
       type: "error",
     });
   } else {
-    const res = await userLoginAPI({ ...loginForm.value });
+    const res = await login({ ...loginForm.value });
     if (res.data.result_code === 1) {
-      if (res.data.result_length === 0) {
-        ElNotification({
-          title: "登录失败！",
-          message: "该账号还没有注册哦，请先注册！",
-          type: "error",
-        });
-      } else {
-        ElNotification({
-          title: "登录失败！",
-          message: res.data.result_msg,
-          type: "error",
-        });
-      }
+      ElNotification({
+        title: "登录失败！",
+        message: res.data.result_msg || "未知错误",
+        type: "error",
+      });
     } else {
-      localStorage.setItem("token", res.data.result.token);
-      res.data.result.user_info.major =
-        res.data.result.user_info.major.split(",");
-      localStorage.setItem(
-        "user_info",
-        JSON.stringify(res.data.result.user_info)
-      );
-      localStorage.setItem(
-        "keywords_list",
-        JSON.stringify(res.data.result.keywords_list)
-      );
-      localStorage.setItem(
-        "article_labels",
-        JSON.stringify(res.data.result.article_labels)
-      );
+      localStorage.setItem("token", res.data.result);
+
+      // 获取用户信息
+      const userInfoRes = await getUserInfo({});
+      if (userInfoRes.data.result_code === 0) {
+        userInfoRes.data.result.major =
+          userInfoRes.data.result.major.split(",");
+        localStorage.setItem(
+          "user_info",
+          JSON.stringify(userInfoRes.data.result)
+        );
+      }
+
+      // 获取用户关键词
+      const userKeywordsRes = await getUserKeywords();
+      if (userKeywordsRes.data.result_code === 0) {
+        localStorage.setItem(
+          "keywords_list",
+          JSON.stringify(userKeywordsRes.data.result)
+        );
+      }
+
+      // 获取文章标签
+      const articleLabelsRes = await getArticleLabels();
+      if (articleLabelsRes.data.result_code === 0) {
+        localStorage.setItem(
+          "article_labels",
+          JSON.stringify(articleLabelsRes.data.result)
+        );
+      }
       ElNotification({
         title: "登录成功！",
-        message: `${res.data.result.user_info.name}，欢迎回来！`,
+        message: `${userInfoRes.data.result.name}，欢迎回来！`,
         type: "success",
       });
       router.push({ name: "home" });
@@ -178,13 +191,13 @@ const turnToRegister = () => {
   };
 };
 
-const register = async () => {
+const useRegister = async () => {
   if (
     registerForm.value.name &&
     registerForm.value.account &&
     registerForm.value.password
   ) {
-    const res = await userRegisterAPI(registerForm.value);
+    const res = await register(registerForm.value);
     if (res.data.result_code === 1) {
       ElNotification({
         title: "注册失败！",
@@ -195,7 +208,7 @@ const register = async () => {
       status.value = !status.value;
       ElNotification({
         title: "注册成功！",
-        message: "快快去登录吧~",
+        message: "快去登录吧~",
         type: "success",
       });
     }

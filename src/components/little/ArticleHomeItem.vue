@@ -95,7 +95,7 @@
           <el-row type="flex" class="action_list">
             <div>
               <div @click="addlike()">
-                <like :likemark="likemark" />
+                <LikeBtn :likemark="likemark" />
               </div>
               <div style="margin: 3px 0 0 0">
                 <span>{{ like_num }}</span>
@@ -103,7 +103,7 @@
             </div>
             <div>
               <div @click="addcollection()">
-                <collection :collectionmark="collectionmark" />
+                <CollectionBtn :collectionmark="collectionmark" />
               </div>
               <div style="margin: 3px 0 0 0">
                 <span>{{ collection_num }}</span>
@@ -111,7 +111,7 @@
             </div>
             <div>
               <div @click="addshare()">
-                <share />
+                <ShareBtn />
               </div>
               <div style="margin: 3px 0 0 0">
                 <span>{{ share_num }}</span>
@@ -119,7 +119,7 @@
             </div>
             <div>
               <div>
-                <comment />
+                <CommentBtn />
               </div>
               <div style="margin: 3px 0 0 0">
                 <span>{{ comment_num }}</span>
@@ -156,15 +156,15 @@ import { watch, onMounted, computed, ref } from "vue";
 import { ArticleInfo } from "@/types";
 import router from "@/router";
 import {
-  likeActionAPI,
+  addLike,
   getUserLikeList,
-  collectActionAPI,
+  addCollection,
   getUserCollectList,
-} from "@/api/other";
-import like from "./like.vue";
-import collection from "./collection.vue";
-import share from "./share.vue";
-import comment from "./comment.vue";
+} from "@/api/user";
+import LikeBtn from "@/components/little/Button/LikeBtn.vue";
+import CollectionBtn from "@/components/little/Button/CollectionBtn.vue";
+import ShareBtn from "@/components/little/Button/ShareBtn.vue";
+import CommentBtn from "@/components/little/Button/CommentBtn.vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 
 const props = defineProps<{
@@ -172,8 +172,8 @@ const props = defineProps<{
 }>();
 
 let cover_image = props.articleList.cover_image;
-let likemark = ref<number>(0);
-let collectionmark = ref<number>(0);
+const likemark = ref<number>(0);
+const collectionmark = ref<number>(0);
 let id = props.articleList.article_id;
 let article_status = props.articleList.article_status;
 let article_title = props.articleList.article_title;
@@ -187,9 +187,9 @@ let author_name = props.articleList.author_name;
 let author_signature = props.articleList.author_signature;
 let author_university = props.articleList.author_university;
 let article_num = props.articleList.article_num;
-let like_num = ref<number>(props.articleList.like_num);
-let collection_num = ref<number>(props.articleList.collection_num);
-let share_num = ref<number>(props.articleList.share_num);
+const like_num = ref<number>(props.articleList.like_num);
+const collection_num = ref<number>(props.articleList.collection_num);
+const share_num = ref<number>(props.articleList.share_num);
 let comment_num = props.articleList.comment_num;
 
 watch(
@@ -253,7 +253,7 @@ const push = (num: number) => {
     });
   }
 };
-const addlike = () => {
+const addlike = async () => {
   if (likemark.value !== 1) {
     likemark.value = 1;
     like_num.value++;
@@ -263,11 +263,9 @@ const addlike = () => {
       update_date: present_date.value,
       action_type: 0,
     };
-    likeActionAPI(paramsList).then((res) => {
-      console.log(res.data);
-      ElMessage({
-        message: "点赞成功",
-      });
+    await addLike(paramsList);
+    ElMessage({
+      message: "点赞成功",
     });
   } else {
     likemark.value = 0;
@@ -277,15 +275,13 @@ const addlike = () => {
       action_type: 1,
       user_id: JSON.parse(localStorage.getItem("user_info") as string).id,
     };
-    likeActionAPI(paramsList).then((res) => {
-      console.log(res.data);
-      ElMessage({
-        message: "取消点赞",
-      });
+    await addLike(paramsList);
+    ElMessage({
+      message: "取消点赞",
     });
   }
 };
-const addcollection = () => {
+const addcollection = async () => {
   if (collectionmark.value !== 1) {
     collectionmark.value = 1;
     collection_num.value++;
@@ -295,11 +291,9 @@ const addcollection = () => {
       update_date: present_date.value,
       action_type: 0,
     };
-    collectActionAPI(paramsList).then((res) => {
-      console.log(res.data);
-      ElMessage({
-        message: "收藏成功",
-      });
+    await addCollection(paramsList);
+    ElMessage({
+      message: "收藏成功",
     });
   } else {
     collectionmark.value = 0;
@@ -309,11 +303,9 @@ const addcollection = () => {
       action_type: 1,
       user_id: JSON.parse(localStorage.getItem("user_info") as string).id,
     };
-    collectActionAPI(paramsList).then((res) => {
-      console.log(res.data);
-      ElMessage({
-        message: "取消收藏",
-      });
+    await addCollection(paramsList);
+    ElMessage({
+      message: "取消收藏",
     });
   }
 };
@@ -340,18 +332,14 @@ const addshare = () => {
 };
 
 onMounted(async () => {
-  const userId = JSON.parse(localStorage.getItem("user_info") as string).id;
-
-  const likeListRes = await getUserLikeList({ user_id: userId });
-  if (likeListRes.data.like_list) {
-    likemark.value = likeListRes.data.like_list.includes(id) ? 1 : 0;
+  const likeListRes = await getUserLikeList();
+  if (likeListRes.data.result_code === 0) {
+    likemark.value = likeListRes.data.result.includes(id) ? 1 : 0;
   }
 
-  const collectListRes = await getUserCollectList({ user_id: userId });
-  if (collectListRes.data.collect_list) {
-    collectionmark.value = collectListRes.data.collect_list.includes(id)
-      ? 1
-      : 0;
+  const collectListRes = await getUserCollectList();
+  if (collectListRes.data.result_code === 0) {
+    collectionmark.value = collectListRes.data.result.includes(id) ? 1 : 0;
   }
 });
 </script>
@@ -588,4 +576,3 @@ onMounted(async () => {
   box-shadow: 4px 4px 10px 0px rgba(0, 0, 0, 0.3);
 }
 </style>
-@/api/comment

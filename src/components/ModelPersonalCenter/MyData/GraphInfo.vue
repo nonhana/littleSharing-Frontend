@@ -17,11 +17,12 @@
 import { ref, onMounted } from "vue";
 import * as echarts from "echarts";
 import {
-  getUserArticleTagsAPI,
-  getUserAddLike,
-  getUserAddCollection,
+  getUserArticleTags,
+  getLikedArticles,
+  getCollectedArticles,
 } from "@/api/user";
 
+// 获取图表的DOM节点
 const keywordschart = ref<HTMLDivElement>();
 const articletagschart = ref<HTMLDivElement>();
 const likedatachart = ref<HTMLDivElement>();
@@ -109,7 +110,7 @@ const getEchartArticleTags = async () => {
     // 2. 初始化echarts
     const myChart = echarts.init(articletagschart.value as HTMLDivElement);
     // 3. 请求获取用户发布的文章类别数据
-    const res = await getUserArticleTagsAPI({ user_id: user_id.value });
+    const res = await getUserArticleTags({ user_id: user_id.value });
     // 4. 处理数据，将类别名称和数量组成echarts需要的格式
     const data = res.data.article_tags.map((item: any) => {
       return { name: item.tag_name, value: item.count };
@@ -269,8 +270,8 @@ onMounted(async () => {
     date_list.value.push(date);
   }
 
-  const likedRes = await getUserAddLike({ user_id: user_id.value });
-  likedRes.data.result.liked_articles.forEach((item: any) => {
+  const likedRes = await getLikedArticles();
+  likedRes.data.result.forEach((item: any) => {
     liked_articles.value.push(item);
   });
   // 获取最近10天的点赞量数量列表
@@ -284,8 +285,8 @@ onMounted(async () => {
     like_num_list.value.push(total_num);
   });
 
-  const collectedRes = await getUserAddCollection({ user_id: user_id.value });
-  collectedRes.data.result.collected_articles.forEach((item: any) => {
+  const collectedRes = await getCollectedArticles();
+  collectedRes.data.result.forEach((item: any) => {
     collected_articles.value.push(item);
   });
   // 获取最近10天的收藏量数量列表

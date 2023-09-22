@@ -5,21 +5,21 @@
     </el-row>
     <div style="display: flex; margin: 10px 0 0 0; justify-content: center">
       <div @click="addlike()">
-        <like :likemark="likemark" />
+        <like-btn :likemark="likemark" />
       </div>
       <span class="datafont">{{ article_data.like_num }}</span>
       <div @click="addcollection()">
-        <collection :collectionmark="collectionmark" />
+        <collection-btn :collectionmark="collectionmark" />
       </div>
       <span class="datafont">{{ article_data.collection_num }}</span>
 
       <div @click="addshare()">
-        <share />
+        <share-btn />
       </div>
       <span class="datafont">{{ article_data.share_num }}</span>
 
       <div @click="addcomment()">
-        <comment />
+        <comment-btn />
       </div>
       <span class="datafont">{{ article_data.comment_num }}</span>
     </div>
@@ -30,16 +30,16 @@
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import {
-  likeActionAPI,
-  collectActionAPI,
+  addLike,
+  addCollection,
   getUserLikeList,
   getUserCollectList,
-} from "@/api/other";
-import { getArticleMainAPI } from "@/api/articles";
-import like from "@/components/little/like.vue";
-import collection from "@/components/little/collection.vue";
-import share from "@/components/little/share.vue";
-import comment from "@/components/little/comment.vue";
+} from "@/api/user";
+import { getArticleMain } from "@/api/article";
+import LikeBtn from "@/components/little/Button/LikeBtn.vue";
+import CollectionBtn from "@/components/little/Button/CollectionBtn.vue";
+import ShareBtn from "@/components/little/Button/ShareBtn.vue";
+import CommentBtn from "@/components/little/Button/CommentBtn.vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 
 interface articleData {
@@ -70,7 +70,7 @@ const addlike = async () => {
       action_type: 0,
       user_id: JSON.parse(localStorage.getItem("user_info") as string).id,
     };
-    const res = await likeActionAPI(paramsList);
+    const res = await addLike(paramsList);
     if (res.data.result_code === 0) {
       ElMessage({
         message: "点赞成功",
@@ -84,7 +84,7 @@ const addlike = async () => {
       action_type: 1,
       user_id: JSON.parse(localStorage.getItem("user_info") as string).id,
     };
-    const res = await likeActionAPI(paramsList);
+    const res = await addLike(paramsList);
     if (res.data.result_code === 0) {
       ElMessage({
         message: "取消点赞",
@@ -101,7 +101,7 @@ const addcollection = async () => {
       action_type: 0,
       user_id: JSON.parse(localStorage.getItem("user_info") as string).id,
     };
-    const res = await collectActionAPI(paramsList);
+    const res = await addCollection(paramsList);
     if (res.data.result_code === 0) {
       ElMessage({
         message: "收藏成功",
@@ -115,7 +115,7 @@ const addcollection = async () => {
       action_type: 1,
       user_id: JSON.parse(localStorage.getItem("user_info") as string).id,
     };
-    const res = await collectActionAPI(paramsList);
+    const res = await addCollection(paramsList);
     if (res.data.result_code === 0) {
       ElMessage({
         message: "取消收藏",
@@ -141,7 +141,7 @@ const addcomment = () => {
 };
 
 onMounted(async () => {
-  const articleDataRes = await getArticleMainAPI({
+  const articleDataRes = await getArticleMain({
     article_id: Number(route.params.id),
   });
   const { article_main } = articleDataRes.data.result;
@@ -152,20 +152,15 @@ onMounted(async () => {
     comment_num: article_main.comment_num,
   };
 
-  const userId = JSON.parse(localStorage.getItem("user_info") as string).id;
   const articleId = Number(route.params.id);
 
-  const likeListRes = await getUserLikeList({ user_id: userId });
+  const likeListRes = await getUserLikeList();
   // 检查当前文章是否已经被点赞
-  const hasLiked = (<any[]>likeListRes.data.result.like_list).includes(
-    articleId
-  );
+  const hasLiked = likeListRes.data.result.includes(articleId);
   likemark.value = hasLiked ? 1 : 0;
 
-  const collectListRes = await getUserCollectList({ user_id: userId });
-  const hasCollected = (<any[]>(
-    collectListRes.data.result.collect_list
-  )).includes(articleId);
+  const collectListRes = await getUserCollectList();
+  const hasCollected = collectListRes.data.result.includes(articleId);
   collectionmark.value = hasCollected ? 1 : 0;
 });
 </script>

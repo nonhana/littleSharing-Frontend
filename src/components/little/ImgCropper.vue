@@ -31,7 +31,7 @@
 
 <script setup lang="ts">
 import { ref, watch } from "vue";
-import { uploadImageAPI } from "@/api/other";
+import { uploadAvatar, uploadBackground } from "@/api/user";
 import VuePictureCropper, { cropper } from "vue-picture-cropper";
 
 const props = defineProps<{
@@ -64,9 +64,10 @@ const confirmCropper = async () => {
   });
 
   if (croppedFile) {
-    const res = await uploadImageAPI({
-      image: uploadFile,
-    });
+    const res =
+      props.type === 0
+        ? await uploadAvatar({ avatar: uploadFile })
+        : await uploadBackground({ background: uploadFile });
 
     if (res.data.result_code === 0) {
       emits("uploadImage", {

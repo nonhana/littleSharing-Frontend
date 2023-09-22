@@ -40,11 +40,7 @@
 import { ref, watch, onMounted } from "vue";
 import useEnterSpace from "@/utils/useEnterSpace";
 import { useRoute } from "vue-router";
-import {
-  getUserinfoAPI,
-  focusUserActionsAPI,
-  getUserFocusListAPI,
-} from "@/api/user";
+import { getUserInfo, focusUserActions, getUserFocusList } from "@/api/user";
 import { ElMessage } from "element-plus";
 
 const props = defineProps<{
@@ -53,67 +49,54 @@ const props = defineProps<{
 
 const route = useRoute();
 
-let username = ref<string>("用户名称");
-let details = ref<string>("用户签名");
-let headphoto = ref<string>("https://dummyimage.com/400X400");
-let isMyFocus = ref<boolean>(false);
-let isMyCenter = ref<boolean>(false);
+const username = ref<string>("用户名称");
+const details = ref<string>("用户签名");
+const headphoto = ref<string>("https://dummyimage.com/400X400");
+const isMyFocus = ref<boolean>(false);
+const isMyCenter = ref<boolean>(false);
 
-const follow = (num: number) => {
+const follow = async (num: number) => {
   switch (num) {
     case 0: {
-      focusUserActionsAPI({
+      const res = await focusUserActions({
         first_user_id: JSON.parse(localStorage.getItem("user_info") as string)
           .id,
         second_user_id: props.user_id,
         action_type: num,
-      }).then((res) => {
-        if (res.data.result_code == 0) {
-          isMyFocus.value = !isMyFocus.value;
-          ElMessage({
-            type: "success",
-            message: "关注成功",
-          });
-        } else {
-          ElMessage({
-            type: "error",
-            message: res.data.result_msg,
-          });
-        }
       });
+      if (res.data.result_code == 0) {
+        isMyFocus.value = !isMyFocus.value;
+        ElMessage({
+          type: "success",
+          message: "关注成功",
+        });
+      }
       break;
     }
     case 1: {
-      focusUserActionsAPI({
+      const res = await focusUserActions({
         first_user_id: JSON.parse(localStorage.getItem("user_info") as string)
           .id,
         second_user_id: props.user_id,
         action_type: num,
-      }).then((res) => {
-        if (res.data.result_code == 0) {
-          isMyFocus.value = !isMyFocus.value;
-          ElMessage({
-            type: "success",
-            message: "取消关注成功",
-          });
-        } else {
-          ElMessage({
-            type: "error",
-            message: res.data.result_msg,
-          });
-        }
       });
+      if (res.data.result_code == 0) {
+        isMyFocus.value = !isMyFocus.value;
+        ElMessage({
+          type: "success",
+          message: "取消关注成功",
+        });
+      }
       break;
     }
   }
 };
 
 watch(
-  route,
+  () => route.params,
   (newV, _) => {
     if (
-      newV.params.id ==
-      JSON.parse(localStorage.getItem("user_info") as string).id
+      newV.id == JSON.parse(localStorage.getItem("user_info") as string).user_id
     ) {
       isMyCenter.value = true;
     }
@@ -122,17 +105,17 @@ watch(
 );
 
 onMounted(async () => {
-  const res = await getUserinfoAPI({ user_id: props.user_id });
+  const res = await getUserInfo({ user_id: props.user_id });
   if (res.data.result_code == 0) {
-    username.value = res.data.user_info.name;
-    details.value = res.data.user_info.signature;
-    headphoto.value = res.data.user_info.headphoto;
-    const userFocusListRes = await getUserFocusListAPI({
+    username.value = res.data.result.name;
+    details.value = res.data.result.signature;
+    headphoto.value = res.data.result.headphoto;
+    const userFocusListRes = await getUserFocusList({
       user_id: JSON.parse(localStorage.getItem("user_info") as string).id,
     });
-    if (userFocusListRes.data.user_focus_list) {
-      userFocusListRes.data.user_focus_list.forEach((item: any) => {
-        if (item == props.user_id) {
+    if (userFocusListRes.data.result_code === 0) {
+      userFocusListRes.data.result.forEach((item: any) => {
+        if (item === props.user_id) {
           isMyFocus.value = true;
         }
       });

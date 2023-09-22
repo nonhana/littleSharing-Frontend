@@ -84,8 +84,8 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
-import { getCommentListAPI } from "@/api/other";
-import { getArticleMainAPI } from "@/api/articles";
+import { getCommentList } from "@/api/comment";
+import { getArticleMain } from "@/api/article";
 import CommentContent from "./CommentContent.vue";
 import CommentInput from "./CommentInput.vue";
 
@@ -108,25 +108,25 @@ const object_name = ref<string>("");
 const poster_id = ref<string>("");
 const now_object_id = ref<string>("");
 
-//包装获取评论接口
-const getCommentList = async () => {
+// 获取评论列表
+const commentListGetter = async () => {
   //清除原有内容
   isShow.value = [];
   comment_list.value = [];
   response_list.value = [];
   total.value = [];
 
-  const res = await getCommentListAPI({
+  const res = await getCommentList({
     article_id: Number(route.params.id),
   });
-  console.log("getCommentListAPI", res.data.result.comment_list);
+  console.log("getCommentList", res.data.result);
   //清空input相关的数组
   showInput.value = [];
   showInputNext.value = [];
   initShowInput.value = [];
   initShowInputNext.value = [];
-  if (res.data.result.comment_list) {
-    res.data.result.comment_list.forEach((item: any) => {
+  if (res.data.result_code === 0) {
+    res.data.result.forEach((item: any) => {
       //遍历存入数据
       comment_list.value.push(item);
       response_list.value.push(item.response); //浅拷贝！
@@ -167,69 +167,6 @@ const showmore = (num: number) => {
     limitli.value -= comment_list.value[num].response.length;
   }
 };
-//子传父——重新拉取评论
-const refreshComment = (
-  flag: boolean,
-  comment_list: any,
-  comment_id: number
-) => {
-  console.log("refreshed", comment_list, comment_id);
-  // true 添加 ; false 删除
-  if (flag) {
-    if (comment_list.response.length == 0) {
-      comment_list.value.unshift(comment_list);
-      response_list.value.unshift(comment_list.response); // comment_list.response 即为 []
-      isShow.value.unshift(true);
-      total.value.unshift(0);
-      showInputNext.value.unshift([]);
-      showInput.value.unshift(false);
-    }
-    if (comment_list.response.length !== 0) {
-      comment_list.value.forEach((item: any, index: number) => {
-        if (item.comment_id == comment_list.comment_id) {
-          item.response.push(
-            comment_list.response[comment_list.response.length - 1]
-          );
-          isShow.value[index] = false;
-          total.value[index] = item.response.length;
-          showInputNext.value[index].push(false);
-        }
-      });
-    }
-  } else {
-    if (comment_list.response.length == 0) {
-      //找到删除的评论位置
-      let indexOne = comment_list.findIndex(
-        (item: any) => item.comment_id == comment_id
-      );
-
-      comment_list.value.splice(indexOne, 1);
-      response_list.value.splice(indexOne, 1);
-      isShow.value.splice(indexOne, 1);
-      total.value.splice(indexOne, 1);
-      showInputNext.value.splice(indexOne, 1);
-      showInput.value.splice(indexOne, 1);
-    }
-    if (comment_list.response.length !== 0) {
-      response_list.value.forEach((response, index) => {
-        let indexTwo = response.findIndex(
-          (item: any) => item.comment_id == comment_id
-        );
-        if (indexTwo != -1) {
-          response.splice(indexTwo, 1);
-          //保证删掉评论时，若还存在二级评论，不会收起
-          response.length
-            ? (isShow.value[index] = false)
-            : (isShow.value[index] = true);
-          total.value[index] = response.length;
-          showInputNext.value[index].splice(indexTwo, 1);
-        }
-      });
-    }
-  }
-  //不传值————关闭评论框
-  openComment();
-};
 //子传父——打开评论
 const openComment = (index?: any, indexNext?: any) => {
   //初始化评论展示参数
@@ -246,6 +183,11 @@ const openComment = (index?: any, indexNext?: any) => {
     showInputNext.value[index][indexNext] = true;
   }
 };
+//子传父——重新拉取评论
+const refreshComment = async () => {
+  await commentListGetter();
+  openComment();
+};
 
 onMounted(async () => {
   // 获取目前用户的头像
@@ -258,13 +200,13 @@ onMounted(async () => {
     ).headphoto;
   }
   // 调用获取评论方法
-  await getCommentList();
+  await commentListGetter();
   // 获取当前评论的对象信息
-  const res = await getArticleMainAPI({
+  const res = await getArticleMain({
     article_id: Number(route.params.id),
   });
-  object_name.value = res.data.result.article_main.article_title;
-  poster_id.value = res.data.result.article_main.author_id;
+  object_name.value = res.data.result.article_title;
+  poster_id.value = res.data.result.author_id;
   now_object_id.value = route.params.id as string;
 
   // 调用ResizeObserver监听评论高度

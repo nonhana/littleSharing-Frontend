@@ -1,9 +1,12 @@
 <template>
   <div class="index">
     <el-row type="flex" justify="center">
-      <div class="window" :style="{
-        opacity: window_opacity,
-      }">
+      <div
+        class="window"
+        :style="{
+          opacity: window_opacity,
+        }"
+      >
         <loginWindow />
       </div>
     </el-row>
@@ -11,8 +14,8 @@
 </template>
 
 <script setup lang="ts">
-import loginWindow from "@/components/ModelLogin/loginWindow.vue";
 import { ref, onMounted } from "vue";
+import loginWindow from "@/components/ModelLogin/loginWindow.vue";
 
 const window_opacity = ref("0%");
 
@@ -23,7 +26,6 @@ onMounted(() => {
 });
 </script>
 
-
 <style scoped lang="less">
 .index {
   width: 100%;
@@ -31,7 +33,7 @@ onMounted(() => {
   .window {
     position: absolute;
     right: 175px;
-    transition: all 0.5s
+    transition: all 0.5s;
   }
 }
 </style>

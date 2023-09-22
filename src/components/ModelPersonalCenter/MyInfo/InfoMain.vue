@@ -162,7 +162,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { onBeforeRouteLeave } from "vue-router";
-import { editUserInfoAPI } from "@/api/user";
+import { editUserInfo } from "@/api/user";
 import { ElNotification, ElMessageBox } from "element-plus";
 import { Plus } from "@element-plus/icons-vue";
 import ImgCropper from "@/components/little/ImgCropper.vue";
@@ -437,7 +437,7 @@ const closeDialog = (type: number) => {
 const submit = async () => {
   console.log(ruleForm.value);
   localStorage.setItem("user_info", JSON.stringify(ruleForm.value));
-  const res = await editUserInfoAPI(ruleForm.value);
+  const res = await editUserInfo(ruleForm.value);
   if (res.data.result_code === 0) {
     ElNotification({
       title: "更新个人资料成功！",

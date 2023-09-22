@@ -60,7 +60,10 @@
 
             <el-col :span="0.5">
               <div class="likes" @click="addlike(comment_id)">
-                <like style="transform: scale(0.9, 0.9)" :likemark="likemark" />
+                <LikeBtn
+                  style="transform: scale(0.9, 0.9)"
+                  :likemark="likemark"
+                />
                 <span>{{ likenum }}</span>
               </div>
             </el-col>
@@ -77,16 +80,16 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from "vue";
 import {
-  CommentActionAPI,
-  CommentLikeActionAPI,
-  getCommentLikeListAPI,
-} from "@/api/other";
-import { getArticleMainAPI } from "@/api/articles";
+  commentAction,
+  commentLikeAction,
+  getCommentLikeList,
+} from "@/api/comment";
+import { getArticleMain } from "@/api/article";
 import useEnterSpace from "@/utils/useEnterSpace";
 // import router from "@/router";
 import { useRoute } from "vue-router";
 import { ElNotification, ElMessage } from "element-plus";
-import like from "@/components/little/like.vue";
+import LikeBtn from "@/components/little/Button/LikeBtn.vue";
 
 const props = defineProps<{
   commentList?: any;
@@ -103,7 +106,7 @@ const emits = defineEmits<{
     index: number | undefined,
     indexNext: number | undefined
   ): void;
-  (e: "refreshComment", flag: boolean, status: any, comment_id: number): void;
+  (e: "refreshComment"): void;
 }>();
 
 const route = useRoute();
@@ -200,7 +203,7 @@ const addlike = async (id: number) => {
       user_id: JSON.parse(localStorage.getItem("user_info") as string).id,
       action_type: 0,
     };
-    await CommentLikeActionAPI(paramsList);
+    await commentLikeAction(paramsList);
     ElMessage({
       message: "点赞成功",
     });
@@ -212,7 +215,7 @@ const addlike = async (id: number) => {
       action_type: 1,
       user_id: JSON.parse(localStorage.getItem("user_info") as string).id,
     };
-    await CommentLikeActionAPI(paramsList);
+    await commentLikeAction(paramsList);
     ElMessage({
       message: "取消点赞",
     });
@@ -223,9 +226,9 @@ const deleteComment = async () => {
     action_type: 1,
     delete_comment_id: comment_id.value,
   };
-  await CommentActionAPI(paramsList);
+  await commentAction(paramsList);
   //如果删除成功，通知父组件重新拉取数据
-  emits("refreshComment", false, null, comment_id.value);
+  emits("refreshComment");
 };
 
 watch(
@@ -242,19 +245,19 @@ watch(
 watch(
   route.params,
   async (newV, _) => {
-    const res = await getArticleMainAPI({ article_id: Number(newV.id) });
-    authorId.value = res.data.result.article_main.author_id;
+    const res = await getArticleMain({ article_id: Number(newV.id) });
+    authorId.value = res.data.result.author_id;
   },
   { immediate: true, deep: true }
 );
 
 onMounted(async () => {
   // 获取一级评论的点赞列表
-  const res = await getCommentLikeListAPI({
+  const res = await getCommentLikeList({
     user_id: JSON.parse(localStorage.getItem("user_info") as string).id,
   });
-  if (res.data.result.like_comments_list.length > 0) {
-    res.data.result.like_comments_list.forEach((item: any) => {
+  if (res.data.result.length > 0) {
+    res.data.result.forEach((item: any) => {
       if (item == comment_id.value) {
         likemark.value = 1;
       }

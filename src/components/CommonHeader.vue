@@ -9,21 +9,36 @@
 
     <div class="search_box">
       <img src="@/statics/svg/Search.svg" />
-      <el-input v-model="keyvalue" placeholder="输入关键字进行检索~" style="width: 250px; margin-left: 10px"></el-input>
+      <el-input
+        v-model="keyvalue"
+        placeholder="输入关键字进行检索~"
+        style="width: 250px; margin-left: 10px"
+      ></el-input>
     </div>
 
-    <div class="button" style="margin-left: 180px" @click="push(4)" @mouseenter="moveMessageSvg(1)"
-      @mouseleave="moveMessageSvg(2)">
+    <div
+      class="button"
+      style="margin-left: 180px"
+      @click="push(4)"
+      @mouseenter="moveMessageSvg(1)"
+      @mouseleave="moveMessageSvg(2)"
+    >
       <div>
-        <div style="position: relative; transition: all 0.3s" :style="{
-          top: `${MessageSvgTop1}px`,
-        }">
+        <div
+          style="position: relative; transition: all 0.3s"
+          :style="{
+            top: `${MessageSvgTop1}px`,
+          }"
+        >
           <img src="@/statics/svg/Message_1.svg" />
         </div>
-        <div style="position: relative; transition: all 0.3s" :style="{
-          top: `${MessageSvgTop2}px`,
-          transform: svgChange,
-        }">
+        <div
+          style="position: relative; transition: all 0.3s"
+          :style="{
+            top: `${MessageSvgTop2}px`,
+            transform: svgChange,
+          }"
+        >
           <img src="@/statics/svg/Message_2.svg" />
         </div>
       </div>
@@ -31,18 +46,29 @@
       <span>消息中心</span>
     </div>
 
-    <div class="button" style="margin-left: 50px" @click="push(1)" @mouseenter="movePostSvg(1)"
-      @mouseleave="movePostSvg(2)">
+    <div
+      class="button"
+      style="margin-left: 50px"
+      @click="push(1)"
+      @mouseenter="movePostSvg(1)"
+      @mouseleave="movePostSvg(2)"
+    >
       <div>
-        <div style="position: relative; transition: all 0.3s" :style="{
-          top: `${PostSvgTop1}px`,
-        }">
+        <div
+          style="position: relative; transition: all 0.3s"
+          :style="{
+            top: `${PostSvgTop1}px`,
+          }"
+        >
           <img src="@/statics/svg/PostArticle_1.svg" />
         </div>
-        <div style="position: relative; transition: all 0.3s" :style="{
-          top: `${PostSvgTop2}px`,
-          transform: svgChange,
-        }">
+        <div
+          style="position: relative; transition: all 0.3s"
+          :style="{
+            top: `${PostSvgTop2}px`,
+            transform: svgChange,
+          }"
+        >
           <img src="@/statics/svg/PostArticle_2.svg" />
         </div>
       </div>
@@ -105,10 +131,10 @@ const push = (num: number) => {
       route_path = "/login";
       break;
     case 4:
-      route_path = `/message/${user_id.value}`
-      break
+      route_path = `/message/${user_id.value}`;
+      break;
   }
-  console.log(route_path)
+  console.log(route_path);
   router.push({
     path: route_path,
   });

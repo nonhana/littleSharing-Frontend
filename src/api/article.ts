@@ -163,3 +163,12 @@ export const getArticleTrend = () => {
     method: "GET",
   });
 };
+
+// 查询文章
+export const searchArticle = (paramsList: { keyword: string }) => {
+  return myAxios({
+    url: "./article/search-article",
+    method: "GET",
+    params: paramsList,
+  });
+};

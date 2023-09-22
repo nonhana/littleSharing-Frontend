@@ -1,4 +1,4 @@
-import { ref, Ref } from 'vue';
+import { ref, Ref } from "vue";
 
 const useShuffle = <T>(arr: T[]): Array<any> => {
   const shuffledArray: Ref<T[]> = ref([]);

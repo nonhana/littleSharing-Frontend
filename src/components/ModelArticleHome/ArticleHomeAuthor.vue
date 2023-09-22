@@ -61,8 +61,8 @@ import { ArticleInfo } from "@/types";
 import useEnterSpace from "@/utils/useEnterSpace";
 import useShuffle from "@/utils/useShuffle";
 import { useRoute } from "vue-router";
-import { getArticleMainAPI, getArticleListAPI } from "@/api/articles";
-import { getUserinfoAPI } from "@/api/user";
+import { getArticleMain, getArticleList } from "@/api/article";
+import { getUserInfo } from "@/api/user";
 import SimilarArticleItem from "../little/SimilarArticleItem.vue";
 
 const route = useRoute();
@@ -77,15 +77,15 @@ const author_signature = ref<string>("");
 const author_article_list = ref<ArticleInfo[]>([]);
 
 onMounted(async () => {
-  const res = await getArticleMainAPI({
+  const res = await getArticleMain({
     article_id: Number(route.params.id),
   });
 
   if (res.data.result_code === 0) {
-    const { author_id: articleAuthorId } = res.data.result.article_main;
+    const { author_id: articleAuthorId } = res.data.result;
 
     const authorInfoData = (
-      await getUserinfoAPI({
+      await getUserInfo({
         user_id: articleAuthorId,
       })
     ).data.result;
@@ -99,7 +99,7 @@ onMounted(async () => {
       author_university.value = university;
       author_signature.value = signature;
 
-      const articleListData = (await getArticleListAPI()).data.result;
+      const articleListData = (await getArticleList()).data.result;
       if (articleListData.article_list) {
         author_article_list.value = articleListData.article_list
           .filter(

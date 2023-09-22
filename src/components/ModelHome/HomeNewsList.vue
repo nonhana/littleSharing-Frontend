@@ -16,20 +16,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, nextTick } from "vue";
+import { ref, onMounted } from "vue";
 import { ArticleInfo } from "@/types";
-import { getArticleListAPI } from "@/api/articles";
-import NewHomeItem from "@/components/little/new_home_item.vue";
+import { getArticleList } from "@/api/article";
+import NewHomeItem from "@/components/little/NewHomeItem.vue";
 
-let loadingStatus = ref<boolean>(false);
-let news_all_list = ref<ArticleInfo[]>([]);
-let news_list = ref<ArticleInfo[]>([]);
+const loadingStatus = ref<boolean>(false);
+const news_all_list = ref<ArticleInfo[]>([]);
+const news_list = ref<ArticleInfo[]>([]);
 
 onMounted(async () => {
   loadingStatus.value = true;
-  const res = await getArticleListAPI();
-  if (res.data.result.articleList) {
-    res.data.result.articleList.forEach((item: ArticleInfo) => {
+  const res = await getArticleList();
+  if (res.data.result_code === 0) {
+    res.data.result.forEach((item: ArticleInfo) => {
       news_all_list.value.push(item);
     });
     //确保返回的文章按发布先后顺序进行排序
@@ -38,7 +38,6 @@ onMounted(async () => {
     });
     news_list.value = news_all_list.value.reverse().slice(0, 5);
   }
-  await nextTick();
   loadingStatus.value = false;
 });
 </script>

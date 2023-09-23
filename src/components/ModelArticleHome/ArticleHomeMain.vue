@@ -100,7 +100,7 @@ onMounted(async () => {
   const res = await getArticleMain({
     article_id: Number(router.currentRoute.value.params.id),
   });
-  const { article_main } = res.data.result;
+  const article_main = res.data.result;
   article_status.value = article_main.article_status;
   article_link.value = article_main.article_link || "";
   article_labels.value.push(...article_main.article_labels);

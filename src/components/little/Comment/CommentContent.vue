@@ -2,7 +2,12 @@
   <div class="CommentContent-wrap">
     <el-row>
       <el-col :span="0.5">
-        <img @click="useEnterSpace(userid)" :src="pictureurl" alt="" />
+        <img
+          class="headphoto"
+          @click="useEnterSpace(userId)"
+          :src="pictureurl"
+          alt=""
+        />
       </el-col>
 
       <el-col :span="0.5" style="margin-left: 15px">
@@ -10,21 +15,23 @@
           <div class="username">
             <span
               >{{ username }}
-              <span v-if="userid == authorId">（作者）</span>
+              <span v-if="userId == authorId">（作者）</span>
             </span>
             <span
               v-if="
-                responseList && responseList.response_to.id != commentatorId
+                responseList &&
+                responseList.response_to.user_id != commentatorId
               "
             >
-              <img src="@/statics/svg/CommentSvg.svg" />
+              =>
             </span>
             <span
               v-if="
-                responseList && responseList.response_to.id != commentatorId
+                responseList &&
+                responseList.response_to.user_id != commentatorId
               "
               >{{ response_to }}
-              <span v-if="responseList.response_to.id === authorId"
+              <span v-if="responseList.response_to.user_id === authorId"
                 >（作者）</span
               >
             </span>
@@ -43,14 +50,16 @@
             <el-col :span="0.5">
               <div class="response">
                 <label>
-                  <!-- disabled阻止input响应，纯靠isShow控制状态 -->
                   <input
                     class="responseInput"
                     type="checkbox"
                     :checked="isShow"
                     disabled
                   />
-                  <div @click="openComment" style="cursor: pointer">
+                  <div
+                    @click="openComment"
+                    style="cursor: pointer; display: flex; align-items: center"
+                  >
                     <img src="@/statics/svg/CommentContentSvg.svg" />
                     <span>{{ responsenum }}</span>
                   </div>
@@ -86,7 +95,7 @@ import {
 } from "@/api/comment";
 import { getArticleMain } from "@/api/article";
 import useEnterSpace from "@/utils/useEnterSpace";
-// import router from "@/router";
+import { formatDate } from "@/utils/index";
 import { useRoute } from "vue-router";
 import { ElNotification, ElMessage } from "element-plus";
 import LikeBtn from "@/components/little/Button/LikeBtn.vue";
@@ -119,11 +128,11 @@ const likenum = ref<number>(
 );
 const authorId = ref<number | null>(null);
 
-const userid = computed(() => {
+const userId = computed(() => {
   if (props.commentList) {
-    return props.commentList.commentator.id;
+    return props.commentList.commentator.user_id;
   } else {
-    return props.responseList.respondent.id;
+    return props.responseList.respondent.user_id;
   }
 });
 const username = computed(() => {
@@ -135,16 +144,17 @@ const username = computed(() => {
 });
 const date = computed(() => {
   if (props.commentList) {
-    return props.commentList.create_date;
+    // 将Date类型转换为字符串
+    return formatDate(props.commentList.create_date);
   } else {
-    return props.responseList.response_date;
+    return formatDate(props.responseList.response_date);
   }
 });
 const details = computed(() => {
   if (props.commentList) {
-    return props.commentList.content;
+    return props.commentList.comment_content;
   } else {
-    return props.responseList.content;
+    return props.responseList.comment_content;
   }
 });
 const responsenum = computed(() => {
@@ -162,6 +172,7 @@ const pictureurl = computed(() => {
   }
 });
 const response_to = computed(() => {
+  console.log(props.responseList);
   if (props.responseList) {
     return props.responseList.response_to.name;
   } else {
@@ -200,7 +211,6 @@ const addlike = async (id: number) => {
     likenum.value++;
     const paramsList = {
       comment_id: id,
-      user_id: JSON.parse(localStorage.getItem("user_info") as string).id,
       action_type: 0,
     };
     await commentLikeAction(paramsList);
@@ -213,7 +223,6 @@ const addlike = async (id: number) => {
     const paramsList = {
       comment_id: id,
       action_type: 1,
-      user_id: JSON.parse(localStorage.getItem("user_info") as string).id,
     };
     await commentLikeAction(paramsList);
     ElMessage({
@@ -235,7 +244,8 @@ watch(
   () => props.commentList,
   () => {
     //判断是否有删除权限
-    userid.value == JSON.parse(localStorage.getItem("user_info") as string).id
+    userId.value ==
+    JSON.parse(localStorage.getItem("user_info") as string).user_id
       ? ((deleteshow.value = true), (message_send.value = false))
       : ((deleteshow.value = false), (message_send.value = true));
   },
@@ -243,7 +253,7 @@ watch(
 );
 
 watch(
-  route.params,
+  () => route.params,
   async (newV, _) => {
     const res = await getArticleMain({ article_id: Number(newV.id) });
     authorId.value = res.data.result.author_id;
@@ -253,9 +263,7 @@ watch(
 
 onMounted(async () => {
   // 获取一级评论的点赞列表
-  const res = await getCommentLikeList({
-    user_id: JSON.parse(localStorage.getItem("user_info") as string).id,
-  });
+  const res = await getCommentLikeList();
   if (res.data.result.length > 0) {
     res.data.result.forEach((item: any) => {
       if (item == comment_id.value) {
@@ -295,7 +303,7 @@ onMounted(async () => {
   .username :nth-child(2) {
     color: #808080;
   }
-  img {
+  .headphoto {
     width: 48px;
     height: 48px;
     cursor: pointer;

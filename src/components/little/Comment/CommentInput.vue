@@ -35,8 +35,8 @@ const props = defineProps<{
   objectName?: string;
   origincontent?: string;
   responsecontent?: string;
-  posterId?: string;
-  objectId?: string;
+  posterId?: number;
+  objectId?: number;
   action_type?: number;
 }>();
 
@@ -62,17 +62,19 @@ const inputComment = async () => {
     let paramsList: extendObject = {
       action_type: 0,
       article_id: Number(route.params.id), //要传值
-      user_id: JSON.parse(localStorage.getItem("user_info") as string).user_id,
       comment_content: commentContent.value,
+      comment_level: 0,
     };
     // 如果是给一级评论评论，给paramslist添加评论id属性
     if (props.commentId) {
       paramsList.response_to_comment_id = props.commentId;
+      paramsList.comment_level = 1;
     }
     // 如果是给二级评论评论，给paramslist添加评论对象id、评论id属性
     if (props.responseTo) {
-      paramsList.response_to_user_id = props.responseTo.respondent.id;
-      paramsList.response_to_comemnt_id = props.commentId;
+      paramsList.response_to_user_id = props.responseTo.respondent.user_id;
+      paramsList.response_to_comment_id = props.commentId;
+      paramsList.comment_level = 1;
     }
     console.log("评论参数", JSON.stringify(paramsList));
     const res = await commentAction(paramsList);

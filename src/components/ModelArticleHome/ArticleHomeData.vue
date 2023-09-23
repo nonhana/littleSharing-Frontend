@@ -144,7 +144,7 @@ onMounted(async () => {
   const articleDataRes = await getArticleMain({
     article_id: Number(route.params.id),
   });
-  const { article_main } = articleDataRes.data.result;
+  const article_main = articleDataRes.data.result;
   article_data.value = {
     like_num: article_main.like_num,
     collection_num: article_main.collection_num,

@@ -545,6 +545,7 @@ const imgAdd = async (pos: any, file: File) => {
     articleImg: file,
   });
   if (res.data.result_code === 0) {
+    console.log(res.data.result);
     md.value.$img2Url(pos, res.data.result);
   }
 };

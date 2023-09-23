@@ -23,7 +23,7 @@
       />
     </el-row>
 
-    <ul class="comments" ref="comments">
+    <ul v-loading="gettingComments" class="comments" ref="comments">
       <li v-for="(_, index) in comment_list" :key="index" style="width: 100%">
         <CommentContent
           @refreshComment="refreshComment"
@@ -37,7 +37,7 @@
             @refreshComment="refreshComment"
             v-if="showInput[index]"
             :commentId="comment_list[index].comment_id"
-            :commentatorId="comment_list[index].commentator.id"
+            :commentatorId="comment_list[index].commentator.user_id"
             :origincontent="comment_list[index].content"
           />
         </el-row>
@@ -52,7 +52,7 @@
                 @refreshComment="refreshComment"
                 @openComment="openComment"
                 :responseList="response_list[index][indexNext]"
-                :commentatorId="comment_list[index].commentator.id"
+                :commentatorId="comment_list[index].commentator.user_id"
                 :index="index"
                 :indexNext="indexNext"
                 :isShow="showInputNext[index][indexNext]"
@@ -62,10 +62,12 @@
                   @refreshComment="refreshComment"
                   v-if="showInputNext[index][indexNext]"
                   :responseTo="response_list[index][indexNext]"
-                  :responserId="response_list[index][indexNext].respondent.id"
+                  :responserId="
+                    response_list[index][indexNext].respondent.user_id
+                  "
                   :responsecontent="response_list[index][indexNext].content"
                   :commentId="comment_list[index].comment_id"
-                  :commentatorId="comment_list[index].commentator.id"
+                  :commentatorId="comment_list[index].commentator.user_id"
                   :origincontent="comment_list[index].content"
                 />
               </el-row>
@@ -93,6 +95,7 @@ const comments = ref<HTMLUListElement>();
 
 const route = useRoute();
 
+const gettingComments = ref<boolean>(false);
 const user_head_photo = ref<string>("");
 const isShow = ref<any[]>([]);
 const showInput = ref<any[]>([]);
@@ -105,8 +108,8 @@ const response_list = ref<any[]>([]);
 const total = ref<any[]>([]);
 const initheight = ref<number>(0);
 const object_name = ref<string>("");
-const poster_id = ref<string>("");
-const now_object_id = ref<string>("");
+const poster_id = ref<number>(0);
+const now_object_id = ref<number>(0);
 
 // 获取评论列表
 const commentListGetter = async () => {
@@ -129,7 +132,7 @@ const commentListGetter = async () => {
     res.data.result.forEach((item: any) => {
       //遍历存入数据
       comment_list.value.push(item);
-      response_list.value.push(item.response); //浅拷贝！
+      response_list.value.push(item.response);
       //初始化评论展示参数（一级评论和二级评论分开存储）
       if (item.response) {
         //存在二级评论，使用二维数组（false代表“评论”不打开）
@@ -149,6 +152,7 @@ const commentListGetter = async () => {
         total.value.push(0);
       }
     });
+    console.log("response_list", response_list.value);
   }
   //创建用于初始化“评论”不打开状态的数组
   initShowInput.value = showInput.value.slice(0);
@@ -190,6 +194,7 @@ const refreshComment = async () => {
 };
 
 onMounted(async () => {
+  gettingComments.value = true;
   // 获取目前用户的头像
   if (!localStorage.getItem("user_info")) {
     user_head_photo.value =
@@ -201,13 +206,13 @@ onMounted(async () => {
   }
   // 调用获取评论方法
   await commentListGetter();
-  // 获取当前评论的对象信息
+  // 获取当前评论的文章信息
   const res = await getArticleMain({
     article_id: Number(route.params.id),
   });
   object_name.value = res.data.result.article_title;
   poster_id.value = res.data.result.author_id;
-  now_object_id.value = route.params.id as string;
+  now_object_id.value = Number(route.params.id);
 
   // 调用ResizeObserver监听评论高度
   const myObserver1 = new ResizeObserver((entries) => {
@@ -219,6 +224,7 @@ onMounted(async () => {
   setTimeout(() => {
     myObserver1.unobserve(comments.value as Element);
   });
+  gettingComments.value = false;
 });
 </script>
 

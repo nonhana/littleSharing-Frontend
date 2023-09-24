@@ -200,7 +200,13 @@ watch(
   () => route.name,
   async (newV, _) => {
     className.value = initClassName.value.slice(0);
-    const cnt = routeMenu.value.indexOf(String(newV));
+    // 当name=MyFocusList或name=MyFansList时，cnt=3
+    let cnt: number;
+    if (newV === "MyFocusList" || newV === "MyFansList") {
+      cnt = 3;
+    } else {
+      cnt = routeMenu.value.indexOf(String(newV));
+    }
     className.value[cnt] = "behovered beclicked";
     linePosition.value = positionArray.value[cnt];
     lineCnt.value = cnt + 1;
@@ -222,11 +228,15 @@ watch(
       } else {
         isMyCenter.value = false;
       }
-      const focusListRes = await getUserFocusList({ user_id: user_id.value });
+      const focusListRes = await getUserFocusList({
+        user_id: JSON.parse(localStorage.getItem("user_info") as string)
+          .user_id,
+      });
       if (focusListRes.data.result_code === 0) {
+        console.log(focusListRes.data.result);
         if (focusListRes.data.result.length > 0) {
           focusListRes.data.result.forEach((item: any) => {
-            if (item === user_id.value) {
+            if (item.second_user_id === user_id.value) {
               isMyFocus.value = true;
             }
           });
@@ -263,7 +273,8 @@ const moveline = (num: number) => {
 const focusAction = async (num: number) => {
   if (num === 0) {
     const res = await focusUserActions({
-      first_user_id: JSON.parse(localStorage.getItem("user_info") as string).id,
+      first_user_id: JSON.parse(localStorage.getItem("user_info") as string)
+        .user_id,
       second_user_id: user_id.value,
       action_type: num,
     });
@@ -281,7 +292,8 @@ const focusAction = async (num: number) => {
     }
   } else {
     const res = await focusUserActions({
-      first_user_id: JSON.parse(localStorage.getItem("user_info") as string).id,
+      first_user_id: JSON.parse(localStorage.getItem("user_info") as string)
+        .user_id,
       second_user_id: user_id.value,
       action_type: num,
     });

@@ -103,7 +103,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import router from "@/router";
+import { useRouter } from "vue-router";
 import {
   login,
   register,
@@ -112,6 +112,8 @@ import {
   getArticleLabels,
 } from "@/api/user";
 import { ElNotification } from "element-plus";
+
+const router = useRouter();
 
 const loginForm = ref({
   account: "",

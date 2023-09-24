@@ -52,9 +52,9 @@ import FocusItem from "@/components/little/FocusItem.vue";
 const router = useRouter();
 const route = useRoute();
 
-let isMyCenter = ref<boolean>(false);
-let user_id = ref<number>(0);
-let user_list = ref<any[]>([]);
+const isMyCenter = ref<boolean>(false);
+const user_id = ref<number>(0);
+const user_list = ref<any[]>([]);
 
 const emptyList = computed(() => {
   if (user_list.value.length == 0) {
@@ -78,12 +78,12 @@ const push = (num: number) => {
 };
 
 watch(
-  route,
+  () => route.params.id,
   async (newV, _) => {
-    user_id.value = Number(newV.params.id);
+    user_id.value = Number(newV);
     if (
       user_id.value ==
-      JSON.parse(localStorage.getItem("user_info") as string).id
+      JSON.parse(localStorage.getItem("user_info") as string).user_id
     ) {
       isMyCenter.value = true;
     }

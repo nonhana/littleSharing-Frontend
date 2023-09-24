@@ -1,20 +1,29 @@
 <template>
   <div name="GraphInfo" class="GraphInfo-wrap">
     <div class="userinfo-charts">
-      <div ref="keywordschart" class="chart" style="width: 540px"></div>
-      <div ref="articletagschart" class="chart" style="width: 540px"></div>
+      <div ref="keywordschart" class="chart" style="width: 540px" />
+      <div
+        v-if="!noArticle"
+        ref="articletagschart"
+        class="chart"
+        style="width: 540px"
+      />
+      <div v-else class="chart" style="width: 540px">
+        <el-empty description="暂无数据"></el-empty>
+      </div>
     </div>
     <br />
     <br />
-    <div ref="likedatachart" class="chart"></div>
+    <div ref="likedatachart" class="chart" />
     <br />
     <br />
-    <div ref="collectdatachart" class="chart"></div>
+    <div ref="collectdatachart" class="chart" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, watch, onMounted } from "vue";
+import { useRoute } from "vue-router";
 import * as echarts from "echarts";
 import {
   getUserArticleTags,
@@ -28,12 +37,15 @@ const articletagschart = ref<HTMLDivElement>();
 const likedatachart = ref<HTMLDivElement>();
 const collectdatachart = ref<HTMLDivElement>();
 
-let user_id = ref(JSON.parse(localStorage.getItem("user_info") as string).id);
-let liked_articles = ref<any[]>([]);
-let collected_articles = ref<any[]>([]);
-let date_list = ref<any[]>([]);
-let like_num_list = ref<any[]>([]);
-let collect_num_list = ref<any[]>([]);
+const route = useRoute();
+
+const user_id = ref<number>(0);
+const liked_articles = ref<any[]>([]);
+const collected_articles = ref<any[]>([]);
+const date_list = ref<any[]>([]);
+const like_num_list = ref<any[]>([]);
+const collect_num_list = ref<any[]>([]);
+const noArticle = ref<boolean>(false);
 
 const CompareDate = (d1: string, d2: string) => {
   return new Date(d1.replace(/-/g, "\/")) > new Date(d2.replace(/-/g, "\/"));
@@ -112,9 +124,17 @@ const getEchartArticleTags = async () => {
     // 3. 请求获取用户发布的文章类别数据
     const res = await getUserArticleTags({ user_id: user_id.value });
     // 4. 处理数据，将类别名称和数量组成echarts需要的格式
-    const data = res.data.article_tags.map((item: any) => {
-      return { name: item.tag_name, value: item.count };
-    });
+    let data: any[] = [];
+    if (res.data.result_code === 0) {
+      if (res.data.result.length > 0) {
+        data = res.data.result.map((item: any) => {
+          return { name: item.tag_name, value: item.count };
+        });
+      } else {
+        noArticle.value = true;
+      }
+    }
+
     // 5. 书写配置项
     const option = {
       title: {
@@ -131,7 +151,7 @@ const getEchartArticleTags = async () => {
           type: "pie",
           radius: "55%",
           center: ["50%", "60%"],
-          data: data,
+          data,
           emphasis: {
             itemStyle: {
               shadowBlur: 10,
@@ -262,6 +282,14 @@ const getEchartCollectData = () => {
     myChart.setOption(option);
   }
 };
+
+watch(
+  () => route.params.id,
+  (newV, _) => {
+    user_id.value = Number(newV);
+  },
+  { immediate: true, deep: true }
+);
 
 onMounted(async () => {
   // 获取最近10天的日期列表

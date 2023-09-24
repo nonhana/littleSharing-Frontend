@@ -472,7 +472,7 @@ const ruleForm = ref<ArticleInfo>({
   article_updatedate: "",
   // 作者id
   author_id: localStorage.getItem("user_info")
-    ? JSON.parse(localStorage.getItem("user_info") as string).id
+    ? JSON.parse(localStorage.getItem("user_info") as string).user_id
     : null,
 });
 const html = ref<string>(""); // 通过markdown及时转的html
@@ -545,7 +545,6 @@ const imgAdd = async (pos: any, file: File) => {
     articleImg: file,
   });
   if (res.data.result_code === 0) {
-    console.log(res.data.result);
     md.value.$img2Url(pos, res.data.result);
   }
 };
@@ -566,6 +565,7 @@ const submitArticle = async () => {
     // 统一处理ruleForm
     ruleForm.value.article_md = ruleForm.value.article_details;
     ruleForm.value.article_details = html.value;
+
     if (!editStatus.value) {
       ruleForm.value.article_uploaddate = useCurrentDate();
       ruleForm.value.article_updatedate = useCurrentDate();
@@ -573,74 +573,20 @@ const submitArticle = async () => {
       ruleForm.value.article_updatedate = useCurrentDate();
     }
 
-    // 若检测到用户输入的标签还未存储，则将新标签加入本地
-    let article_labels = [];
-    if (localStorage.getItem("article_labels")) {
-      for (
-        var i = 0;
-        i < JSON.parse(localStorage.getItem("article_labels") as string).length;
-        i++
-      ) {
-        article_labels.push(
-          JSON.parse(localStorage.getItem("article_labels") as string)[i]
-        );
-      }
-    }
-    let same: any[] = [];
-    article_labels.forEach((item1) => {
-      ruleForm.value.article_labels.forEach((item2: any) => {
-        if (item1.value == item2) {
-          console.log(item2);
-          same.push(item2);
-        }
-      });
-    });
-    if (same.length != 0) {
-      // 筛选不同词
-      let result = ruleForm.value.article_labels.filter((item1: any) => {
-        return same.every((item2) => {
-          return item1 != item2;
-        });
-      });
-      // result就是筛选好的不同词
-      result.forEach((item: any) => {
-        article_labels.push({
-          label: item,
-          value: item,
-        });
-      });
-      // 将不同词提交给后端数据库
-      result.forEach(async (item: any) => {
-        const res = await addArticleLabel({ label_name: item });
-        console.log(res.data);
-      });
-    } else {
-      ruleForm.value.article_labels.forEach(async (item: any) => {
-        article_labels.push({
-          label: item,
-          value: item,
-        });
-        const res = await addArticleLabel({ label_name: item });
-        console.log(res.data);
-      });
-    }
-    localStorage.setItem("article_labels", JSON.stringify(article_labels));
+    // 将所有的标签一并提交给后端数据库
+    await addArticleLabel({ label_list: ruleForm.value.article_labels });
+
+    // 发布文章
     if (!editStatus.value) {
-      const res = await postArticle(ruleForm.value);
-      console.log(res.data);
+      await postArticle(ruleForm.value);
       if (localStorage.getItem("not_saved_article_info")) {
         localStorage.removeItem("not_saved_article_info");
       }
     } else {
-      console.log({
+      await editArticle({
         article_id: Number(route.query.article_id),
         ...ruleForm.value,
       });
-      const res = await editArticle({
-        article_id: Number(route.query.article_id),
-        ...ruleForm.value,
-      });
-      console.log(res.data);
     }
 
     // 将表单初始化
@@ -656,7 +602,7 @@ const submitArticle = async () => {
       article_uploaddate: "",
       article_updatedate: "",
       author_id: localStorage.getItem("user_info")
-        ? JSON.parse(localStorage.getItem("user_info") as string).id
+        ? JSON.parse(localStorage.getItem("user_info") as string).user_id
         : null,
     };
     ElNotification({
@@ -736,7 +682,6 @@ onMounted(async () => {
         ...sourceArticle
       } = res.data.result;
 
-      console.log(sourceArticle);
       ruleForm.value.article_details = sourceArticle.article_md;
       ruleForm.value.article_introduce = sourceArticle.article_introduce;
       ruleForm.value.article_labels = sourceArticle.article_labels;
@@ -747,7 +692,6 @@ onMounted(async () => {
       ruleForm.value.article_updatedate = sourceArticle.article_updatedate;
       ruleForm.value.article_uploaddate = sourceArticle.article_uploaddate;
       ruleForm.value.author_id = sourceArticle.author_id;
-      console.log(ruleForm.value);
     }
   }
 });

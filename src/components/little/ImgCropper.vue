@@ -72,7 +72,7 @@ const confirmCropper = async () => {
     if (res.data.result_code === 0) {
       emits("uploadImage", {
         type: props.type,
-        imgURL: res.data.result.imgURL,
+        imgURL: res.data.result,
       });
       visible.value = false;
     }
@@ -109,4 +109,3 @@ watch(visible, (newV, _) => {
   width: 900px;
 }
 </style>
-@/api/comment

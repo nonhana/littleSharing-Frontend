@@ -83,13 +83,13 @@ watch(
     user_id.value = Number(newV.params.id);
     if (
       user_id.value ==
-      JSON.parse(localStorage.getItem("user_info") as string).id
+      JSON.parse(localStorage.getItem("user_info") as string).user_id
     ) {
       isMyCenter.value = true;
     }
     const res = await getUserFocusList({ user_id: user_id.value });
     res.data.result.forEach((item: any) => {
-      user_list.value.push(item);
+      user_list.value.push(item.second_user_id);
     });
   },
   { immediate: true, deep: true }

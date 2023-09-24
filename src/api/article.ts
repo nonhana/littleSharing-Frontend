@@ -53,7 +53,7 @@ export const postArticle = (paramsList: ArticleInfo) => {
 };
 
 // 新增文章标签
-export const addArticleLabel = (paramsList: { label_name: string }) => {
+export const addArticleLabel = (paramsList: { label_list: string[] }) => {
   return myAxios({
     url: "/article/add-labels",
     method: "POST",

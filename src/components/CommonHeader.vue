@@ -106,14 +106,14 @@ import { useRouter } from "vue-router";
 
 const router = useRouter();
 
-let PostSvgTop1 = ref(15);
-let PostSvgTop2 = ref(65);
-let MessageSvgTop1 = ref(13);
-let MessageSvgTop2 = ref(70);
-let svgChange = ref("scale(1,1)");
-let keyvalue = ref("");
-let user_head = ref("");
-let user_id = ref("");
+const PostSvgTop1 = ref(15);
+const PostSvgTop2 = ref(65);
+const MessageSvgTop1 = ref(13);
+const MessageSvgTop2 = ref(70);
+const svgChange = ref("scale(1,1)");
+const keyvalue = ref("");
+const user_head = ref("");
+const user_id = ref<number>(0);
 
 const push = (num: number) => {
   let route_path = "";
@@ -188,7 +188,9 @@ onMounted(() => {
     user_head.value = JSON.parse(
       localStorage.getItem("user_info") as string
     ).headphoto;
-    user_id.value = JSON.parse(localStorage.getItem("user_info") as string).id;
+    user_id.value = JSON.parse(
+      localStorage.getItem("user_info") as string
+    ).user_id;
   }
 });
 </script>

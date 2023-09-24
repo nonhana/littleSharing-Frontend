@@ -1,36 +1,24 @@
 <template>
   <div class="CommentContent-wrap">
     <el-row>
-      <el-col :span="0.5">
+      <div>
         <img
           class="headphoto"
           @click="useEnterSpace(userId)"
           :src="pictureurl"
           alt=""
         />
-      </el-col>
+      </div>
 
-      <el-col :span="0.5" style="margin-left: 15px">
+      <div style="margin-left: 15px">
         <el-row>
           <div class="username">
             <span
               >{{ username }}
               <span v-if="userId == authorId">（作者）</span>
             </span>
-            <span
-              v-if="
-                responseList &&
-                responseList.response_to.user_id != commentatorId
-              "
-            >
-              =>
-            </span>
-            <span
-              v-if="
-                responseList &&
-                responseList.response_to.user_id != commentatorId
-              "
-              >{{ response_to }}
+            <span v-if="responseList">
+              => {{ response_to }}
               <span v-if="responseList.response_to.user_id === authorId"
                 >（作者）</span
               >
@@ -44,10 +32,10 @@
 
         <el-row type="flex">
           <div class="dataAbout">
-            <el-col :span="0.5">
+            <div>
               <span class="date">{{ date }}</span>
-            </el-col>
-            <el-col :span="0.5">
+            </div>
+            <div>
               <div class="response">
                 <label>
                   <input
@@ -65,9 +53,9 @@
                   </div>
                 </label>
               </div>
-            </el-col>
+            </div>
 
-            <el-col :span="0.5">
+            <div>
               <div class="likes" @click="addlike(comment_id)">
                 <LikeBtn
                   style="transform: scale(0.9, 0.9)"
@@ -75,13 +63,13 @@
                 />
                 <span>{{ likenum }}</span>
               </div>
-            </el-col>
+            </div>
           </div>
           <div v-if="deleteshow" style="margin-left: 30px">
             <span class="delete" @click="deleteComment">删除</span>
           </div>
         </el-row>
-      </el-col>
+      </div>
     </el-row>
   </div>
 </template>
@@ -144,7 +132,6 @@ const username = computed(() => {
 });
 const date = computed(() => {
   if (props.commentList) {
-    // 将Date类型转换为字符串
     return formatDate(props.commentList.create_date);
   } else {
     return formatDate(props.responseList.response_date);
@@ -172,11 +159,12 @@ const pictureurl = computed(() => {
   }
 });
 const response_to = computed(() => {
-  console.log(props.responseList);
   if (props.responseList) {
-    return props.responseList.response_to.name;
-  } else {
-    return "";
+    if (props.responseList.response_to.name) {
+      return props.responseList.response_to.name;
+    } else {
+      return "";
+    }
   }
 });
 const comment_id = computed(() => {
@@ -282,8 +270,6 @@ onMounted(async () => {
   margin-top: 10px;
   margin-bottom: 10px;
   .username {
-    display: flex;
-    width: 100%;
     height: 20px;
     span {
       font-family: SourceHanSansCN-Medium;

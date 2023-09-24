@@ -134,13 +134,7 @@ const useLogin = async () => {
     });
   } else {
     const res = await login({ ...loginForm.value });
-    if (res.data.result_code === 1) {
-      ElNotification({
-        title: "登录失败！",
-        message: res.data.result_msg || "未知错误",
-        type: "error",
-      });
-    } else {
+    if (res.data.result_code === 0) {
       localStorage.setItem("token", res.data.result);
 
       // 获取用户信息
@@ -198,13 +192,7 @@ const useRegister = async () => {
     registerForm.value.password
   ) {
     const res = await register(registerForm.value);
-    if (res.data.result_code === 1) {
-      ElNotification({
-        title: "注册失败！",
-        message: res.data.result_msg,
-        type: "error",
-      });
-    } else {
+    if (res.data.result_code === 0) {
       status.value = !status.value;
       ElNotification({
         title: "注册成功！",

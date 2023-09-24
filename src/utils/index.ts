@@ -1,3 +1,7 @@
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
 type DateFormatOptions = {
   year?: string;
   month?: string;
@@ -7,6 +11,7 @@ type DateFormatOptions = {
   second?: string;
 };
 
+// 将 Date 对象格式化为指定格式的字符串
 export function formatDate(
   dateInput: Date | string | number,
   format: string = "YYYY-MM-DD HH:mm:ss"
@@ -32,3 +37,10 @@ export function formatDate(
 
   return formattedDate;
 }
+
+// 点击进入他人的主页
+export const enterSpace = (id: number): void => {
+  router.push({
+    path: "/MyArticles/" + id,
+  });
+};

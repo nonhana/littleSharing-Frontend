@@ -46,8 +46,8 @@
 <script setup lang="ts">
 import { ref, computed, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import FocusItem from "@/components/little/FocusItem.vue";
 import { getUserFansList } from "@/api/user";
+import FocusItem from "@/components/little/FocusItem.vue";
 
 const router = useRouter();
 const route = useRoute();
@@ -89,7 +89,7 @@ watch(
     }
     const res = await getUserFansList({ user_id: user_id.value });
     res.data.result.forEach((item: any) => {
-      user_list.value.push(item);
+      user_list.value.push(item.first_user_id);
     });
   },
   { immediate: true, deep: true }

@@ -3,7 +3,7 @@
     <el-row type="flex" justify="space-between" style="align-items: center">
       <div style="display: flex; align-items: center">
         <div>
-          <div @click="useEnterSpace(user_id)">
+          <div @click="enterSpace(user_id)">
             <img :src="headphoto" />
           </div>
         </div>
@@ -38,8 +38,7 @@
 
 <script setup lang="ts">
 import { ref, watch, onMounted } from "vue";
-import useEnterSpace from "@/utils/useEnterSpace";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { getUserInfo, focusUserActions, getUserFocusList } from "@/api/user";
 import { ElMessage } from "element-plus";
 
@@ -48,6 +47,7 @@ const props = defineProps<{
 }>();
 
 const route = useRoute();
+const router = useRouter();
 
 const username = ref<string>("用户名称");
 const details = ref<string>("用户签名");
@@ -91,6 +91,12 @@ const follow = async (num: number) => {
     }
   }
 };
+// 点击进入他人主页
+const enterSpace = (id: number): void => {
+  router.push({
+    path: "/MyArticles/" + id,
+  });
+};
 
 watch(
   () => route.params,
@@ -111,7 +117,7 @@ onMounted(async () => {
     details.value = res.data.result.signature;
     headphoto.value = res.data.result.headphoto;
     const userFocusListRes = await getUserFocusList({
-      user_id: JSON.parse(localStorage.getItem("user_info") as string).id,
+      user_id: JSON.parse(localStorage.getItem("user_info") as string).user_id,
     });
     if (userFocusListRes.data.result_code === 0) {
       userFocusListRes.data.result.forEach((item: any) => {

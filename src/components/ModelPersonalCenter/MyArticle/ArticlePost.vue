@@ -1,7 +1,6 @@
 <template>
   <div class="ArticlePost-wrap">
     <FilterBar
-      :message-list="messageList"
       :article-list-all="article_list_all"
       @sendArticleList="getArticleList"
     />
@@ -53,7 +52,6 @@ import ArticlePersonalcenterItem from "@/components/little/ArticlePersonalCenter
 
 const route = useRoute();
 
-const messageList = ref<any[]>([]);
 const article_list = ref<any[]>([]);
 const article_list_all = ref<any[]>([]);
 const articleListShow = ref<number>(0);
@@ -84,15 +82,8 @@ onMounted(async () => {
   const res = await getUserArticleList({
     user_id: Number(route.params.id),
   });
-  res.data.result.forEach((item: any) => {
-    article_list_all.value.push(item);
-  });
-  messageList.value = res.data.result.map(
-    (item: any) =>
-      `${item.article_introduce}/${item.article_title}/${item.article_major}/${item.article_labels}/${item.author_name}`
-  );
+  article_list_all.value = res.data.result;
   article_list_all.value.reverse();
-  messageList.value.reverse();
   article_list.value = article_list_all.value;
 });
 </script>

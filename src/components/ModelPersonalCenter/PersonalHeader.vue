@@ -216,15 +216,13 @@ watch(
       user_id.value = Number(newV);
       if (
         user_id.value ===
-        JSON.parse(localStorage.getItem("user_info") as string).id
+        JSON.parse(localStorage.getItem("user_info") as string).user_id
       ) {
         isMyCenter.value = true;
       } else {
         isMyCenter.value = false;
       }
-      const focusListRes = await getUserFocusList({
-        user_id: JSON.parse(localStorage.getItem("user_info") as string).id,
-      });
+      const focusListRes = await getUserFocusList({ user_id: user_id.value });
       if (focusListRes.data.result_code === 0) {
         if (focusListRes.data.result.length > 0) {
           focusListRes.data.result.forEach((item: any) => {

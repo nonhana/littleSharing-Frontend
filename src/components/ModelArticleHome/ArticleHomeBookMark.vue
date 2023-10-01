@@ -114,12 +114,15 @@ const deletebookmark = async () => {
 };
 
 onMounted(async () => {
-  const userId = JSON.parse(localStorage.getItem("user_info") as string).id;
+  const userId = JSON.parse(
+    localStorage.getItem("user_info") as string
+  ).user_id;
   const articleId = Number(router.currentRoute.value.params.id);
 
   window.addEventListener("scroll", scroll);
 
   const bookmarkRes = await getBookMark();
+  console.log(bookmarkRes.data);
   if (bookmarkRes.data.result) {
     bookmarkRes.data.result.forEach((item: BookMarkInfo) => {
       bookmarks.value.push(item);

@@ -9,6 +9,7 @@
           <div>
             <span>账号</span>
             <input
+              @keydown="keyEvent($event)"
               type="text"
               placeholder="请输入您的账号"
               v-model="loginForm.account"
@@ -17,6 +18,7 @@
           <div style="margin: 20px 0 0 0">
             <span>密码</span>
             <input
+              @keydown="keyEvent($event)"
               type="password"
               placeholder="请输入您的密码"
               v-model="loginForm.password"
@@ -127,6 +129,13 @@ const registerForm = ref({
 const status = ref<boolean>(true);
 const logining = ref<boolean>(false);
 
+// 键盘事件
+const keyEvent = (e: KeyboardEvent) => {
+  if (e.key === "Enter") {
+    useLogin();
+  }
+};
+// 登录
 const useLogin = async () => {
   logining.value = true;
   if (!loginForm.value.account || !loginForm.value.password) {

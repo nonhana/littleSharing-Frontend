@@ -3,10 +3,11 @@ import { ElNotification } from "element-plus";
 
 const myAxios = (axiosConfig: AxiosRequestConfig): Promise<AxiosResponse> => {
   const service = axios.create({
-    // baseURL: "http://127.0.0.1:4000", // 本地服务器环境(api-server)
-    baseURL: "https://www.nonhana.site:4000", // AWS服务端环境
+    baseURL: "http://127.0.0.1:4000", // 本地服务器环境(api-server)
+    // baseURL: "https://www.nonhana.site:4000", // AWS服务端环境
     timeout: 10000, // 10秒内无响应则报错
   });
+
   // 请求拦截器
   service.interceptors.request.use(
     (config) => {
@@ -18,6 +19,7 @@ const myAxios = (axiosConfig: AxiosRequestConfig): Promise<AxiosResponse> => {
       return Promise.reject(error);
     }
   );
+
   // 响应拦截器
   service.interceptors.response.use(
     (response) => {
@@ -72,6 +74,7 @@ const myAxios = (axiosConfig: AxiosRequestConfig): Promise<AxiosResponse> => {
       }
     }
   );
+
   return service(axiosConfig);
 };
 

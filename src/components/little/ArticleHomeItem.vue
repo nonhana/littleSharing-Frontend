@@ -135,7 +135,7 @@
       </el-row>
     </div>
 
-    <div v-if="cover_image">
+    <div style="margin-left: 20px" v-if="cover_image">
       <el-popover placement="left" :width="400" trigger="hover">
         <template #reference>
           <el-image
@@ -161,6 +161,7 @@ import {
   addCollection,
   getUserCollectList,
 } from "@/api/user";
+import { formatDate } from "@/utils";
 import LikeBtn from "@/components/little/Button/LikeBtn.vue";
 import CollectionBtn from "@/components/little/Button/CollectionBtn.vue";
 import ShareBtn from "@/components/little/Button/ShareBtn.vue";
@@ -180,7 +181,7 @@ let article_title = props.articleList.article_title;
 let article_major = props.articleList.article_major;
 let article_labels = props.articleList.article_labels;
 let article_introduce = props.articleList.article_introduce;
-let article_updatedate = props.articleList.article_updatedate;
+let article_updatedate = formatDate(props.articleList.article_updatedate);
 let author_id = props.articleList.author_id;
 let author_head = props.articleList.author_headphoto;
 let author_name = props.articleList.author_name;
@@ -201,7 +202,7 @@ watch(
     article_major = newV.article_major;
     article_labels = newV.article_labels;
     article_introduce = newV.article_introduce;
-    article_updatedate = newV.article_updatedate;
+    article_updatedate = formatDate(newV.article_updatedate);
     author_head = newV.author_headphoto;
     author_name = newV.author_name;
     author_signature = newV.author_signature;

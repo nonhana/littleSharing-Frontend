@@ -10,7 +10,9 @@
         opacity: logo_opacity,
       }"
     >
-      <img src="@/statics/img/logo.png" />
+      <img
+        src="https://raw.githubusercontent.com/nonhana/Typora-Pictures-Store/master/images/littleSharingLogo.png"
+      />
     </div>
     <el-row style="margin: 25px 0 0 0">
       <router-view />
@@ -83,21 +85,21 @@ onMounted(() => {
 }
 
 .home {
-  background-image: url(statics/img/homeBack.png);
+  background-image: url(https://raw.githubusercontent.com/nonhana/Typora-Pictures-Store/master/images/homeBack.png);
 }
 .article-home {
-  background-image: url(statics/img/articleHomeBack.png);
+  background-image: url(https://raw.githubusercontent.com/nonhana/Typora-Pictures-Store/master/images/articleBack.png);
 }
 .login {
-  background-image: url(statics/img/8.jpg);
+  background-image: url(https://raw.githubusercontent.com/nonhana/Typora-Pictures-Store/master/images/loginBack.jpg);
 }
 .messages {
-  background-image: url(statics/img/MessageBackImg2.png);
+  background-image: url(https://raw.githubusercontent.com/nonhana/Typora-Pictures-Store/master/images/messageBack.png);
 }
 .logo {
   position: absolute;
   top: 50px;
-  right: 105px;
+  left: 105px;
   transition: all 1s;
 }
 .logo img {

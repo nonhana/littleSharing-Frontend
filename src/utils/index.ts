@@ -2,14 +2,14 @@ import { useRouter } from "vue-router";
 
 const router = useRouter();
 
-type DateFormatOptions = {
+interface DateFormatOptions {
   year?: string;
   month?: string;
   day?: string;
   hour?: string;
   minute?: string;
   second?: string;
-};
+}
 
 // 将 Date 对象格式化为指定格式的字符串
 export function formatDate(

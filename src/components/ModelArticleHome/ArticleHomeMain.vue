@@ -63,42 +63,45 @@
 
 <script setup lang="ts">
 import { ref, reactive, onMounted, nextTick } from "vue";
-import router from "@/router";
+import { useRoute } from "vue-router";
 import { getArticleMain, postArticleTrend } from "@/api/article";
+import { formatDate } from "@/utils";
 import VueMarkdownIt from "vue3-markdown-it";
-import MarkdownItEmoji from "markdown-it-emoji";
-import MarkdownItDeflist from "markdown-it-deflist";
-import MarkdownItSub from "markdown-it-sub";
-import MarkdownItSup from "markdown-it-sup";
-import MarkdownItAbbr from "markdown-it-abbr";
+import Emoji from "markdown-it-emoji";
+import Deflist from "markdown-it-deflist";
+import Sub from "markdown-it-sub";
+import Sup from "markdown-it-sup";
+import Abbr from "markdown-it-abbr";
 
-let article_status = ref<string>("1"); // 默认为转载文章
-let article_link = ref<string>("");
-let article_labels = ref<string[]>([]);
-let article_title = ref<string>("");
-let article_md = ref<string>("");
-let activeImg = ref<string>("");
-let plugins = reactive([
+const route = useRoute();
+
+const article_status = ref<string>("1"); // 默认为转载文章
+const article_link = ref<string>("");
+const article_labels = ref<string[]>([]);
+const article_title = ref<string>("");
+const article_md = ref<string>("");
+const activeImg = ref<string>("");
+const plugins = reactive([
   {
-    plugin: MarkdownItAbbr,
+    plugin: Abbr,
   },
   {
-    plugin: MarkdownItSub,
+    plugin: Sub,
   },
   {
-    plugin: MarkdownItSup,
+    plugin: Sup,
   },
   {
-    plugin: MarkdownItDeflist,
+    plugin: Deflist,
   },
   {
-    plugin: MarkdownItEmoji,
+    plugin: Emoji,
   },
 ]);
 
 onMounted(async () => {
   const res = await getArticleMain({
-    article_id: Number(router.currentRoute.value.params.id),
+    article_id: Number(route.params.id),
   });
   const article_main = res.data.result;
   article_status.value = article_main.article_status;
@@ -108,16 +111,9 @@ onMounted(async () => {
   article_md.value = article_main.article_md;
 
   await nextTick();
-  const date = new Date();
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-  const monthStr = month > 9 ? month : "0" + month;
-  const dayStr = day < 10 ? "0" + day : day;
-  const today = year + "-" + monthStr + "-" + dayStr;
 
   const trend_params = {
-    present_date: today,
+    present_date: formatDate(new Date(), "yyyy-MM-dd"),
     label_list: article_labels.value,
   };
 

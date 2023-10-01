@@ -2,7 +2,7 @@
   <div class="ArticleHomeAuthor-wrap">
     <el-row>
       <div style="width: 100%; display: flex; justify-content: center">
-        <div class="author_head" @click="useEnterSpace(author_id)">
+        <div class="author_head" @click="enterSpace(author_id)">
           <img :src="author_head" alt="" />
         </div>
       </div>
@@ -58,14 +58,14 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { ArticleInfo } from "@/types";
-import useEnterSpace from "@/utils/useEnterSpace";
 import useShuffle from "@/utils/useShuffle";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { getArticleMain, getArticleList } from "@/api/article";
 import { getUserInfo } from "@/api/user";
 import SimilarArticleItem from "../little/SimilarArticleItem.vue";
 
 const route = useRoute();
+const router = useRouter();
 
 const loadingStatus = ref<boolean>(true);
 const author_id = ref<number>(0);
@@ -76,6 +76,12 @@ const author_university = ref<string>("");
 const author_signature = ref<string>("");
 const author_article_list = ref<ArticleInfo[]>([]);
 
+const enterSpace = (user_id: number) => {
+  router.push({
+    path: "/personalCenter/" + user_id,
+  });
+};
+
 onMounted(async () => {
   const res = await getArticleMain({
     article_id: Number(route.params.id),
@@ -83,15 +89,15 @@ onMounted(async () => {
 
   if (res.data.result_code === 0) {
     const { author_id: articleAuthorId } = res.data.result;
+    author_id.value = articleAuthorId;
 
     const authorInfoData = (
       await getUserInfo({
         user_id: articleAuthorId,
       })
     ).data.result;
-    if (authorInfoData.user_info) {
-      const { name, headphoto, major, university, signature } =
-        authorInfoData.user_info;
+    if (authorInfoData) {
+      const { name, headphoto, major, university, signature } = authorInfoData;
 
       author_name.value = name;
       author_head.value = headphoto;

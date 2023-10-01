@@ -1,10 +1,7 @@
 <template>
   <div class="index">
     <el-row type="flex" justify="center">
-      <div
-        style="position: relative; margin-right: 25px"
-        :style="{ top: topHeight }"
-      >
+      <div class="sideBar" style="left: 175px">
         <el-row>
           <ArticleHomeSimilar />
         </el-row>
@@ -15,11 +12,11 @@
           <ArticleHomeData :article-data="article_data" />
         </el-row>
       </div>
-      <div style="margin-right: 25px">
+      <div>
         <ArticleHomeMain />
         <Comment />
       </div>
-      <div style="position: relative" :style="{ top: topHeight }">
+      <div class="sideBar" style="right: 175px">
         <ArticleHomeAuthor />
       </div>
     </el-row>
@@ -44,32 +41,29 @@ interface articleData {
   comment_num: number;
 }
 
-let topHeight = ref<string>("0px");
-let article_data = ref<articleData>({
+const route = useRoute();
+
+const article_data = ref<articleData>({
   like_num: 0,
   collection_num: 0,
   share_num: 0,
   comment_num: 0,
 });
 
-const route = useRoute();
-const scroll = () => {
-  topHeight.value = window.scrollY.toFixed(2) + "px";
-};
-
 onMounted(async () => {
   const articleId = Number(route.params.id);
   await increaseArticleViews({
     article_id: articleId,
   });
-
-  window.addEventListener("scroll", scroll);
 });
 </script>
 
 <style scoped lang="less">
 .index {
   width: 100%;
+  .sideBar {
+    position: fixed;
+  }
   .actionbox {
     padding: 10px;
     width: 270px;
@@ -116,4 +110,3 @@ onMounted(async () => {
   }
 }
 </style>
-@/api/article

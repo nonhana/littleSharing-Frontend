@@ -32,11 +32,11 @@
       ></el-divider
     >
 
-    <el-row v-if="author_article_list.length != 0">
-      <SimilarArticleItem
-        v-for="(_, index) in author_article_list"
+    <el-row v-if="author_article_list.length !== 0">
+      <LittleArticleItem
+        v-for="(item, index) in author_article_list"
         :similar-item="author_article_list[index]"
-        :key="index"
+        :key="item.article_id"
       />
     </el-row>
 
@@ -57,12 +57,10 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import { ArticleInfo } from "@/types";
-import useShuffle from "@/utils/useShuffle";
 import { useRoute, useRouter } from "vue-router";
-import { getArticleMain, getArticleList } from "@/api/article";
-import { getUserInfo } from "@/api/user";
-import SimilarArticleItem from "../little/SimilarArticleItem.vue";
+import { getArticleMain } from "@/api/article";
+import { getUserInfo, getUserArticles } from "@/api/user";
+import LittleArticleItem from "../little/LittleArticleItem.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -74,7 +72,7 @@ const author_name = ref<string>("");
 const author_major = ref<string>("");
 const author_university = ref<string>("");
 const author_signature = ref<string>("");
-const author_article_list = ref<ArticleInfo[]>([]);
+const author_article_list = ref<any[]>([]);
 
 const enterSpace = (user_id: number) => {
   router.push({
@@ -105,17 +103,12 @@ onMounted(async () => {
       author_university.value = university;
       author_signature.value = signature;
 
-      const articleListData = (await getArticleList()).data.result;
-      if (articleListData.article_list) {
-        author_article_list.value = articleListData.article_list
-          .filter(
-            (item: ArticleInfo) =>
-              item.author_id === articleAuthorId &&
-              item.article_id !== Number(route.params.id)
-          )
-          .slice(0, 3);
-        author_article_list.value = useShuffle(author_article_list.value);
-      }
+      const articleListData = (
+        await getUserArticles({ user_id: articleAuthorId })
+      ).data.result;
+      author_article_list.value = articleListData
+        .filter((item: any) => item.article_id !== Number(route.params.id))
+        .slice(0, 3);
     }
   }
   loadingStatus.value = false;

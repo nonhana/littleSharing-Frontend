@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@kangc/v-md-editor": "^2.3.17",
     "@mojs/core": "^1.5.1",
     "animate.css": "^4.1.1",
     "axios": "^1.4.0",
@@ -21,10 +22,13 @@
     "markdown-it-emoji": "^2.0.0",
     "markdown-it-sub": "^1.0.0",
     "markdown-it-sup": "^1.0.0",
+    "marked": "^9.1.0",
     "mavon-editor": "^3.0.0-beta",
     "path": "^0.12.7",
     "pinia": "^2.1.4",
+    "prismjs": "^1.29.0",
     "sass": "^1.63.6",
+    "vite-plugin-prismjs": "^0.0.8",
     "vue": "^3.2.47",
     "vue-picture-cropper": "^0.6.2",
     "vue-router": "^4.0.13",
@@ -32,6 +36,7 @@
   },
   "devDependencies": {
     "@types/node": "^20.3.3",
+    "@types/prismjs": "^1.26.1",
     "@types/vue-markdown": "^2.2.1",
     "@vitejs/plugin-vue": "^4.1.0",
     "babel-runtime": "^6.26.0",

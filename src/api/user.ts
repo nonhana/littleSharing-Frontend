@@ -206,3 +206,12 @@ export const getUserCollectList = () => {
     method: "GET",
   });
 };
+
+// 获取某用户发布的文章列表
+export const getUserArticles = (paramsList: { user_id: number }) => {
+  return myAxios({
+    url: "/user/get-user-articles",
+    method: "GET",
+    params: paramsList,
+  });
+};

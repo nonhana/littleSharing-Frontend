@@ -12,10 +12,10 @@ interface DateFormatOptions {
 }
 
 // 将 Date 对象格式化为指定格式的字符串
-export function formatDate(
+export const formatDate = (
   dateInput: Date | string | number,
   format: string = "YYYY-MM-DD HH:mm:ss"
-): string {
+): string => {
   const date = new Date(dateInput);
   const formatOptions: DateFormatOptions = {
     year: date.getFullYear().toString(),
@@ -36,7 +36,7 @@ export function formatDate(
   formattedDate = formattedDate.replace(/ss/g, formatOptions.second ?? "");
 
   return formattedDate;
-}
+};
 
 // 点击进入他人的主页
 export const enterSpace = (id: number): void => {

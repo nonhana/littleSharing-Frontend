@@ -209,7 +209,6 @@
 <script setup lang="ts">
 import { ref, watch, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import useCurrentDate from "@/utils/useCurrentDate";
 import {
   postArticle,
   addArticleLabel,
@@ -228,8 +227,6 @@ interface ArticleInfo {
   article_introduce: string;
   article_details: string;
   article_md: string;
-  article_uploaddate?: string;
-  article_updatedate?: string;
   author_id: number;
 }
 
@@ -468,8 +465,6 @@ const ruleForm = ref<ArticleInfo>({
   article_introduce: "",
   article_details: "",
   article_md: "",
-  article_uploaddate: "",
-  article_updatedate: "",
   // 作者id
   author_id: localStorage.getItem("user_info")
     ? JSON.parse(localStorage.getItem("user_info") as string).user_id
@@ -566,22 +561,13 @@ const submitArticle = async () => {
     ruleForm.value.article_md = ruleForm.value.article_details;
     ruleForm.value.article_details = html.value;
 
-    if (!editStatus.value) {
-      ruleForm.value.article_uploaddate = useCurrentDate();
-      ruleForm.value.article_updatedate = useCurrentDate();
-    } else {
-      ruleForm.value.article_updatedate = useCurrentDate();
-    }
-
     // 将所有的标签一并提交给后端数据库
     await addArticleLabel({ label_list: ruleForm.value.article_labels });
 
     // 发布文章
     if (!editStatus.value) {
       await postArticle(ruleForm.value);
-      if (localStorage.getItem("not_saved_article_info")) {
-        localStorage.removeItem("not_saved_article_info");
-      }
+      localStorage.removeItem("not_saved_article_info");
     } else {
       await editArticle({
         article_id: Number(route.query.article_id),
@@ -599,8 +585,6 @@ const submitArticle = async () => {
       article_introduce: "",
       article_details: "",
       article_md: "",
-      article_uploaddate: "",
-      article_updatedate: "",
       author_id: localStorage.getItem("user_info")
         ? JSON.parse(localStorage.getItem("user_info") as string).user_id
         : null,
@@ -647,8 +631,6 @@ onMounted(async () => {
         ruleForm.value.article_major = localData.article_major;
         ruleForm.value.article_status = localData.article_status;
         ruleForm.value.article_title = localData.article_title;
-        ruleForm.value.article_updatedate = localData.article_updatedate;
-        ruleForm.value.article_uploaddate = localData.article_uploaddate;
         ruleForm.value.author_id = localData.author_id;
       })
       .catch(() => {
@@ -689,8 +671,6 @@ onMounted(async () => {
       ruleForm.value.article_major = sourceArticle.article_major;
       ruleForm.value.article_status = sourceArticle.article_status;
       ruleForm.value.article_title = sourceArticle.article_title;
-      ruleForm.value.article_updatedate = sourceArticle.article_updatedate;
-      ruleForm.value.article_uploaddate = sourceArticle.article_uploaddate;
       ruleForm.value.author_id = sourceArticle.author_id;
     }
   }

@@ -4,7 +4,7 @@
       <div>
         <img
           class="headphoto"
-          @click="useEnterSpace(userId)"
+          @click="enterSpace(userId)"
           :src="pictureurl"
           alt=""
         />
@@ -82,9 +82,8 @@ import {
   getCommentLikeList,
 } from "@/api/comment";
 import { getArticleMain } from "@/api/article";
-import useEnterSpace from "@/utils/useEnterSpace";
 import { formatDate } from "@/utils/index";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { ElNotification, ElMessage } from "element-plus";
 import LikeBtn from "@/components/little/Button/LikeBtn.vue";
 
@@ -107,6 +106,7 @@ const emits = defineEmits<{
 }>();
 
 const route = useRoute();
+const router = useRouter();
 
 const message_send = ref<boolean>(true);
 const deleteshow = ref<boolean>(false);
@@ -175,6 +175,11 @@ const comment_id = computed(() => {
   }
 });
 
+const enterSpace = (user_id: number) => {
+  router.push({
+    path: "/personalCenter/" + user_id,
+  });
+};
 const openComment = () => {
   if (!props.isShow) {
     emits("openComment", props.index, props.indexNext);

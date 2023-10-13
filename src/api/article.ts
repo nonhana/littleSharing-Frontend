@@ -172,3 +172,15 @@ export const searchArticle = (paramsList: { keyword: string }) => {
     params: paramsList,
   });
 };
+
+// 根据文章的label获取相似文章
+export const getSimilarArticles = (paramsList: {
+  labels: string;
+  article_id: number;
+}) => {
+  return myAxios({
+    url: "./article/get-similar-articles",
+    method: "GET",
+    params: paramsList,
+  });
+};

@@ -17,7 +17,7 @@
         <div class="note">
           <span>再次点击可以展开哦！</span>
         </div>
-        <SimilarArticleItem
+        <LittleArticleItem
           v-for="(_, index) in similar_article_list"
           :similar-item="similar_article_list[index]"
           :key="index"
@@ -48,20 +48,17 @@
 <script setup lang="ts">
 import { ref, onMounted, nextTick } from "vue";
 import { ArticleInfo } from "@/types";
-import useShuffle from "@/utils/useShuffle";
 import { useRoute } from "vue-router";
-import { getArticleList } from "@/api/article";
-import SimilarArticleItem from "@/components/little/SimilarArticleItem.vue";
+import { getSimilarArticles, getArticleMain } from "@/api/article";
+import LittleArticleItem from "@/components/little/LittleArticleItem.vue";
 
 const ArticleHomeSimilar = ref<HTMLDivElement>();
 
 const route = useRoute();
 
 const totalHeight = ref<number>(0);
-const loadingStatus = ref<boolean>(true);
-const article_list = ref<ArticleInfo[]>([]);
+const loadingStatus = ref<boolean>(false);
 const similar_article_list = ref<ArticleInfo[]>([]);
-const keyword = ref<string>("");
 const presentHeight = ref<string>("520px");
 const rorate = ref<string>("rotate(180deg)");
 const topHeight = ref<string>("0px");
@@ -83,30 +80,24 @@ const foldList = () => {
 };
 
 onMounted(async () => {
-  let res = await getArticleList();
-  res.data.result.forEach((item: ArticleInfo) => {
-    article_list.value.push(item);
-    if (item.article_id === Number(route.params.id)) {
-      keyword.value = item.article_labels[0];
-    }
-  });
-  // 筛选类似文章：
-  article_list.value.forEach((item: ArticleInfo, index: number) => {
-    if (item.article_labels) {
-      if (item.article_id !== Number(route.params.id)) {
-        if (item.article_labels.indexOf(keyword.value) != -1) {
-          similar_article_list.value.push();
-          article_list.value.splice(index, 1);
-        }
-      }
-    }
-  });
-  if (similar_article_list.value.length > 0) {
-    similar_article_list.value = similar_article_list.value.slice(0, 3);
-    while (similar_article_list.value.length < 3) {
-      similar_article_list.value.push(useShuffle(article_list.value).shift());
-    }
-  }
+  loadingStatus.value = true;
+  // 获取到当前文章的标签列表，并处理成以逗号分隔的字符串
+  const { article_labels } = (
+    await getArticleMain({
+      article_id: Number(route.params.id),
+    })
+  ).data.result;
+  const articleLabels = article_labels.join(",");
+
+  // 获取到相似文章列表
+  const similarArticleList = (
+    await getSimilarArticles({
+      labels: articleLabels,
+      article_id: Number(route.params.id),
+    })
+  ).data.result;
+  similar_article_list.value = similarArticleList;
+
   loadingStatus.value = false;
   await nextTick();
   totalHeight.value = ArticleHomeSimilar.value?.offsetHeight as number;
@@ -142,4 +133,3 @@ onMounted(async () => {
   }
 }
 </style>
-@/api/article

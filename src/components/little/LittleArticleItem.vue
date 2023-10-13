@@ -21,7 +21,7 @@
         <p class="article_introduce">{{ article_introduce }}</p>
       </div>
     </el-row>
-    <el-row type 0="flex" justify="space-between">
+    <el-row type="flex" justify="space-between">
       <el-tooltip
         class="item"
         effect="light"
@@ -40,8 +40,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
+import { formatDate } from "@/utils";
 
 const props = defineProps<{
   similarItem: any;
@@ -53,9 +54,12 @@ const id = ref<number>(props.similarItem.article_id);
 const article_title = ref<string>(props.similarItem.article_title);
 const article_labels = ref<string[]>(props.similarItem.article_labels);
 const article_introduce = ref<string>(props.similarItem.article_introduce);
-const article_uploaddate = ref<string>(props.similarItem.article_uploaddate);
 const author_id = ref<number>(props.similarItem.author_id);
 const author_name = ref<string>(props.similarItem.author_name);
+
+const article_uploaddate = computed(() => {
+  return formatDate(props.similarItem.article_uploaddate);
+});
 
 const push = (num: number) => {
   if (num == 1) {

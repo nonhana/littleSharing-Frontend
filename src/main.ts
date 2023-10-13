@@ -1,17 +1,17 @@
-// 插件
+import App from "./App.vue";
 import { createApp } from "vue";
+// 插件
+import "./styles/index.scss"; // Element Plus自定义主题
 import ElementPlus from "element-plus";
 import "element-plus/dist/index.css";
 import { createPinia } from "pinia";
 import mavonEditor from "mavon-editor";
 import "mavon-editor/dist/css/index.css";
-import "highlight.js/styles/vs2015.css";
+import "highlight.js/styles/docco.css";
 import "animate.css";
 import router from "./router";
 // 全局组件
-import NoList from "@/components/little/GlobalComponents/NoList.vue";
-// app
-import App from "./App.vue";
+import NoList from "@/components/GlobalComponents/NoList.vue";
 
 const app = createApp(App);
 

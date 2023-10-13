@@ -85,7 +85,7 @@ onMounted(() => {
 }
 
 .home {
-  background-image: url(https://raw.githubusercontent.com/nonhana/Typora-Pictures-Store/master/images/homeBack.png);
+  background: linear-gradient(#a6ffa6, #76fff5);
 }
 .article-home {
   background-image: url(https://raw.githubusercontent.com/nonhana/Typora-Pictures-Store/master/images/articleBack.png);

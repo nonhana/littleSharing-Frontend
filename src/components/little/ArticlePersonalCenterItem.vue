@@ -88,7 +88,7 @@
             <span>{{ comment_num }}</span>
           </div>
         </el-row>
-        <el-row style="margin: 10px 0 0 0">
+        <el-row type="flex" style="margin-top: 10px">
           <span class="article_date"
             >文章发表时间：{{ article_uploaddate }}</span
           >
@@ -107,6 +107,7 @@ import router from "@/router";
 import { deleteArticle } from "@/api/article";
 import { addCollection } from "@/api/user";
 import { ElMessageBox, ElNotification } from "element-plus";
+import { formatDate } from "@/utils";
 
 const props = defineProps<{
   articleList: any;
@@ -124,8 +125,12 @@ const article_title = ref<string>(props.articleList.article_title);
 const article_major = ref<any[]>(props.articleList.article_major);
 const article_labels = ref<any[]>(props.articleList.article_labels);
 const article_introduce = ref<string>(props.articleList.article_introduce);
-const article_uploaddate = ref<string>(props.articleList.article_uploaddate);
-const article_updatedate = ref<string>(props.articleList.article_updatedate);
+const article_uploaddate = ref<string>(
+  formatDate(props.articleList.article_uploaddate)
+);
+const article_updatedate = ref<string>(
+  formatDate(props.articleList.article_updatedate)
+);
 const author_id = ref<number>(props.articleList.author_id);
 const author_head = ref<string>(props.articleList.author_headphoto);
 const author_name = ref<string>(props.articleList.author_name);
@@ -229,8 +234,8 @@ watch(
     article_major.value = newV.article_major;
     article_labels.value = newV.article_labels;
     article_introduce.value = newV.article_introduce;
-    article_uploaddate.value = newV.article_uploaddate;
-    article_updatedate.value = newV.article_updatedate;
+    article_uploaddate.value = formatDate(newV.article_uploaddate);
+    article_updatedate.value = formatDate(newV.article_updatedate);
     author_head.value = newV.author_headphoto;
     author_name.value = newV.author_name;
     author_signature.value = newV.author_signature;

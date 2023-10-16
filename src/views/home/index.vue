@@ -13,30 +13,31 @@
           <HomeNewsList />
         </el-row>
       </div>
-      <div v-if="article_list.length !== 0">
-        <ul
-          v-loading="articleListLoading"
-          v-infinite-scroll="load"
-          v-if="articleListShow"
-          class="HomeArticleList-warp"
-        >
-          <li
-            v-for="index in articleNum > article_list.length
-              ? article_list.length
-              : articleNum"
+      <div v-loading="articleListLoading">
+        <div v-if="article_list.length !== 0">
+          <ul
+            v-infinite-scroll="load"
+            v-if="articleListShow"
+            class="HomeArticleList-warp"
           >
-            <ArticleHomeItem
-              style="margin-top: 20px"
-              :article-list="article_list[index - 1]"
-            />
-          </li>
-        </ul>
-      </div>
-      <div v-if="article_list.length === 0">
-        <el-empty
-          style="width: 1003px"
-          description="暂未搜索到该分类的文章哦......"
-        ></el-empty>
+            <li
+              v-for="index in articleNum > article_list.length
+                ? article_list.length
+                : articleNum"
+            >
+              <ArticleHomeItem
+                style="margin-top: 20px"
+                :article-list="article_list[index - 1]"
+              />
+            </li>
+          </ul>
+        </div>
+        <div v-if="article_list.length === 0">
+          <el-empty
+            style="width: 1003px"
+            description="暂未搜索到该分类的文章哦......"
+          ></el-empty>
+        </div>
       </div>
     </el-row>
   </div>

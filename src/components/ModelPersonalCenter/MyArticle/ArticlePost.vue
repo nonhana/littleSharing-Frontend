@@ -14,7 +14,7 @@
         v-if="articleListShow === 0"
         type="flex"
         justify="center"
-        style="flex-wrap: wrap"
+        style="width: 100%; flex-wrap: wrap"
       >
         <ArticlePersonalcenterItem
           v-for="(item, index) in article_list"

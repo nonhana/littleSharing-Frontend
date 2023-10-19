@@ -13,7 +13,7 @@
           <HomeNewsList />
         </el-row>
       </div>
-      <div v-loading="articleListLoading">
+      <div class="loading-mask" v-loading="articleListLoading">
         <div v-if="article_list.length !== 0">
           <ul
             v-infinite-scroll="load"
@@ -25,10 +25,7 @@
                 ? article_list.length
                 : articleNum"
             >
-              <ArticleHomeItem
-                style="margin-top: 20px"
-                :article-list="article_list[index - 1]"
-              />
+              <ArticleHomeItem :article-list="article_list[index - 1]" />
             </li>
           </ul>
         </div>
@@ -47,10 +44,10 @@
 import { onMounted, ref, nextTick } from "vue";
 import { ArticleInfo } from "@/types";
 import { getArticleList } from "@/api/article";
-import FilterBar from "@/components/FilterBar.vue";
+import FilterBar from "@/components/Little/Tool/FilterBar.vue";
 import HomeNewsList from "@/components/ModelHome/HomeNewsList.vue";
 import HomeTrend from "@/components/ModelHome/HomeTrend.vue";
-import ArticleHomeItem from "@/components/little/ArticleHomeItem.vue";
+import ArticleHomeItem from "@/components/Little/Item/ArticleHomeItem.vue";
 
 const article_list = ref<ArticleInfo[]>([]);
 const article_list_all = ref<ArticleInfo[]>([]);
@@ -92,6 +89,12 @@ onMounted(async () => {
     margin: 0;
     padding: 0;
     list-style: none;
+  }
+  .loading-mask {
+    position: relative;
+    margin-top: 20px;
+    border-radius: 20px;
+    overflow: hidden;
   }
 }
 </style>

@@ -1,26 +1,5 @@
 import myAxios from "./axios";
 
-export interface RegUserInfo {
-  account: string;
-  name: string;
-  password: string;
-}
-export interface UserInfo {
-  backgroundphoto: string;
-  headphoto: string;
-  id: number;
-  introduce: string;
-  major: string[];
-  name: string;
-  signature: string;
-  university: string;
-}
-export interface FocusInfo {
-  action_type: number;
-  first_user_id: number;
-  second_user_id: number;
-}
-
 // 上传头像
 export const uploadAvatar = (paramsList: { avatar: File }) => {
   return myAxios({
@@ -46,7 +25,11 @@ export const uploadBackground = (paramsList: { background: File }) => {
 };
 
 // 用户注册
-export const register = (paramsList: RegUserInfo) => {
+export const register = (paramsList: {
+  account: string;
+  name: string;
+  password: string;
+}) => {
   return myAxios({
     url: "/user/register",
     method: "POST",
@@ -89,7 +72,16 @@ export const getUserInfo = (paramsList: { user_id?: number }) => {
 };
 
 // 更新用户个人资料
-export const editUserInfo = (paramsList: UserInfo) => {
+export const editUserInfo = (paramsList: {
+  backgroundphoto: string;
+  headphoto: string;
+  id: number;
+  introduce: string;
+  major: string[];
+  name: string;
+  signature: string;
+  university: string;
+}) => {
   return myAxios({
     url: "/user/edit-user-info",
     method: "POST",
@@ -132,7 +124,11 @@ export const getCollectedArticles = () => {
 };
 
 // 用户关注操作
-export const focusUserActions = (paramsList: FocusInfo) => {
+export const focusUserActions = (paramsList: {
+  action_type: number;
+  first_user_id: number;
+  second_user_id: number;
+}) => {
   return myAxios({
     url: "/user/focus-user-actions",
     method: "POST",
@@ -207,10 +203,19 @@ export const getUserCollectList = () => {
   });
 };
 
-// 获取某用户发布的文章列表
-export const getUserArticles = (paramsList: { user_id: number }) => {
+// 获取某用户发布的文章列表（简要信息）
+export const getUserArticlesBasic = (paramsList: { user_id: number }) => {
   return myAxios({
-    url: "/user/get-user-articles",
+    url: "/user/get-user-articles-basic",
+    method: "GET",
+    params: paramsList,
+  });
+};
+
+// 获取某用户发布的文章列表（详细信息）
+export const getUserArticlesDetails = (paramsList: { user_id: number }) => {
+  return myAxios({
+    url: "/user/get-user-articles-details",
     method: "GET",
     params: paramsList,
   });

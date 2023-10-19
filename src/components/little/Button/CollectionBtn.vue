@@ -52,7 +52,7 @@ watch(
   () => props.collectionmark,
   (newV, _) => {
     if (newV === 1) {
-      fillcolor = "#ff8200";
+      fillcolor = "#00d5cc";
     } else {
       fillcolor = "#3d3d3d";
     }
@@ -113,7 +113,7 @@ onMounted(() => {
   }
 
   svg:hover path {
-    fill: #ff8200;
+    fill: #00d5cc;
   }
 }
 </style>

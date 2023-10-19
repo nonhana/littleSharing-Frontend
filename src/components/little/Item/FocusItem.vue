@@ -1,5 +1,5 @@
 <template>
-  <div name="FocusItem" class="FocusItem-wrap">
+  <div name="FocusItem" class="FocusItem-wrap" v-loading="gettingInfo">
     <el-row type="flex" justify="space-between" style="align-items: center">
       <div style="display: flex; align-items: center">
         <div>
@@ -16,7 +16,7 @@
           </el-row>
         </div>
       </div>
-      <div>
+      <div v-loading="execFollow">
         <div
           v-if="isMyFocus && isMyCenter"
           class="isMyFocus"
@@ -49,6 +49,8 @@ const props = defineProps<{
 const route = useRoute();
 const router = useRouter();
 
+const gettingInfo = ref<boolean>(false);
+const execFollow = ref<boolean>(false);
 const username = ref<string>("用户名称");
 const details = ref<string>("用户签名");
 const headphoto = ref<string>("https://dummyimage.com/400X400");
@@ -58,12 +60,14 @@ const isMyCenter = ref<boolean>(false);
 const follow = async (num: number) => {
   switch (num) {
     case 0: {
+      execFollow.value = true;
       const res = await focusUserActions({
         first_user_id: JSON.parse(localStorage.getItem("user_info") as string)
           .id,
         second_user_id: props.user_id,
         action_type: num,
       });
+      execFollow.value = false;
       if (res.data.result_code == 0) {
         isMyFocus.value = !isMyFocus.value;
         ElMessage({
@@ -74,12 +78,14 @@ const follow = async (num: number) => {
       break;
     }
     case 1: {
+      execFollow.value = true;
       const res = await focusUserActions({
         first_user_id: JSON.parse(localStorage.getItem("user_info") as string)
           .id,
         second_user_id: props.user_id,
         action_type: num,
       });
+      execFollow.value = false;
       if (res.data.result_code == 0) {
         isMyFocus.value = !isMyFocus.value;
         ElMessage({
@@ -111,6 +117,7 @@ watch(
 );
 
 onMounted(async () => {
+  gettingInfo.value = true;
   const res = await getUserInfo({ user_id: props.user_id });
   if (res.data.result_code == 0) {
     username.value = res.data.result.name;
@@ -127,6 +134,7 @@ onMounted(async () => {
       });
     }
   }
+  gettingInfo.value = false;
 });
 </script>
 

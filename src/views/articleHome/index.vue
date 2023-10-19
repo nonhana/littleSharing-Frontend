@@ -32,7 +32,7 @@ import ArticleHomeSimilar from "@/components/ModelArticleHome/ArticleHomeSimilar
 import ArticleHomeAuthor from "@/components/ModelArticleHome/ArticleHomeAuthor.vue";
 import ArticleHomeBookMark from "@/components/ModelArticleHome/ArticleHomeBookMark.vue";
 import ArticleHomeData from "@/components/ModelArticleHome/ArticleHomeData.vue";
-import Comment from "@/components/little/Comment/Comment.vue";
+import Comment from "@/components/Little/Comment/Comment.vue";
 
 interface articleData {
   like_num: number;

@@ -32,7 +32,7 @@
 <script setup lang="ts">
 import { ref, onMounted, nextTick } from "vue";
 import { useRouter } from "vue-router";
-import MessageRepliesItem from "@/components/little/MessageRepliesItem.vue";
+import MessageRepliesItem from "@/components/Little/Item/MessageRepliesItem.vue";
 
 interface CommentMessageInfo {
   user_id: number;

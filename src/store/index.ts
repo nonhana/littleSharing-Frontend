@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { Names } from "./store-name";
 
-export const useTestStore = defineStore(Names.User, {
+export const useStore = defineStore(Names.User, {
   state: () => {
     return {
       username: "non_hana",

@@ -1,4 +1,5 @@
-// 常用常量定义
+/* src/utils/constants.ts */
+// 常用常量
 import { CascaderOption } from "element-plus";
 
 export const options1: CascaderOption[] = [

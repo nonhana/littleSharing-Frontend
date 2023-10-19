@@ -32,7 +32,7 @@
 <script setup lang="ts">
 import { ref, onMounted, nextTick } from "vue";
 import { useRouter } from "vue-router";
-import MessageLikesItem from "../little/MessageLikesItem.vue";
+import MessageLikesItem from "@/components/Little/Item/MessageLikesItem.vue";
 
 interface ArticleInfo {
   article_id: number;

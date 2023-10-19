@@ -37,30 +37,22 @@
             </div>
             <div>
               <div class="response">
-                <label>
-                  <input
-                    class="responseInput"
-                    type="checkbox"
-                    :checked="isShow"
-                    disabled
-                  />
-                  <div
-                    @click="openComment"
-                    style="cursor: pointer; display: flex; align-items: center"
-                  >
-                    <img src="@/statics/svg/CommentContentSvg.svg" />
-                    <span>{{ responsenum }}</span>
-                  </div>
-                </label>
+                <input
+                  class="responseInput"
+                  type="checkbox"
+                  :checked="isShow"
+                  disabled
+                />
+                <div class="info" @click="openComment">
+                  <CommentBtn />
+                  <span>{{ responsenum }}</span>
+                </div>
               </div>
             </div>
 
             <div>
-              <div class="likes" @click="addlike(comment_id)">
-                <LikeBtn
-                  style="transform: scale(0.9, 0.9)"
-                  :likemark="likemark"
-                />
+              <div class="info" @click="addlike(comment_id)">
+                <LikeBtn :likemark="likemark" />
                 <span>{{ likenum }}</span>
               </div>
             </div>
@@ -86,6 +78,7 @@ import { formatDate } from "@/utils/index";
 import { useRoute, useRouter } from "vue-router";
 import { ElNotification, ElMessage } from "element-plus";
 import LikeBtn from "@/components/little/Button/LikeBtn.vue";
+import CommentBtn from "@/components/little/Button/CommentBtn.vue";
 
 const props = defineProps<{
   commentList?: any;
@@ -280,14 +273,14 @@ onMounted(async () => {
       font-family: SourceHanSansCN-Medium;
       font-size: 14px;
       font-weight: 500;
-      color: #f8885a;
+      color: #00d5cc;
       margin-right: 10px;
     }
     font span {
       font-family: SourceHanSansCN-Medium;
       font-size: 12px;
       font-weight: bold;
-      color: #fe541bd0;
+      color: #00d5cc;
       margin-right: 10px;
     }
   }
@@ -324,47 +317,41 @@ onMounted(async () => {
       color: #808080;
       cursor: pointer;
     }
-    label {
-      display: block;
-    }
   }
   .response:hover svg {
-    stroke: #f8885a;
+    stroke: #00d5cc;
   }
   .responseInput {
     display: none;
   }
   .responseInput:checked ~ div svg {
-    stroke: #f8885a;
+    stroke: #00d5cc;
   }
   .responseInput:checked ~ div span {
-    color: #f8885a;
+    color: #00d5cc;
   }
-  .likes {
+  .info {
     display: flex;
     justify-content: center;
+    align-items: center;
     cursor: pointer;
-    margin-top: -3px;
     span {
-      margin: 5.5px 0 0 8px;
+      margin: 0 0 0 5px;
       font-family: SourceHanSansCN-Regular;
       font-size: 14px;
       font-weight: normal;
       color: #808080;
       cursor: pointer;
     }
-    label {
-      display: block;
-    }
   }
   .likesInput {
     display: none;
   }
   .likesInput:checked ~ div svg {
-    stroke: #f8885a;
+    stroke: #00d5cc;
   }
   .likesInput:checked ~ div span {
-    color: #f8885a;
+    color: #00d5cc;
   }
   .delete {
     font-family: SourceHanSansCN-Regular;
@@ -374,11 +361,12 @@ onMounted(async () => {
     cursor: pointer;
   }
   .delete:hover {
-    color: #f8885a;
+    color: #00d5cc;
   }
   .dataAbout {
     display: flex;
     justify-content: space-around;
+    align-items: center;
     width: 317px;
   }
   .date {
@@ -389,4 +377,3 @@ onMounted(async () => {
   }
 }
 </style>
-@/api/comment @/api/article

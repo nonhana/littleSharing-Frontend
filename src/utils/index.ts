@@ -1,3 +1,5 @@
+/* src/utils/index.ts */
+// 通用工具函数
 import { useRouter } from "vue-router";
 
 const router = useRouter();
@@ -44,3 +46,19 @@ export const enterSpace = (id: number): void => {
     path: "/MyArticles/" + id,
   });
 };
+
+// 防抖函数
+export function debounce<T>(
+  this: T,
+  func: (this: T, ...args: any[]) => void,
+  delay: number
+) {
+  let timer: number | undefined;
+  return function (this: T, ...args: any[]) {
+    const context = this;
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      func.apply(context, args);
+    }, delay);
+  };
+}

@@ -19,8 +19,8 @@
       </div>
     </el-row>
     <el-divider />
-    <el-row type="flex" justify="center">
-      <div>
+    <div v-loading="loading">
+      <el-row type="flex" justify="center">
         <div
           v-for="(item, index) in user_list"
           :key="index"
@@ -29,17 +29,17 @@
           <FocusItem :user_id="item" />
           <el-divider />
         </div>
-      </div>
-    </el-row>
-    <el-row type="flex" justify="center" style="width: 100%">
-      <div v-if="emptyList">
-        <el-empty
-          v-if="isMyCenter"
-          description="您还没有粉丝哦......"
-        ></el-empty>
-        <el-empty v-else description="ta还没有粉丝哦......"></el-empty>
-      </div>
-    </el-row>
+      </el-row>
+      <el-row type="flex" justify="center" style="width: 100%">
+        <div v-if="emptyList">
+          <el-empty
+            v-if="isMyCenter"
+            description="您还没有粉丝哦......"
+          ></el-empty>
+          <el-empty v-else description="ta还没有粉丝哦......"></el-empty>
+        </div>
+      </el-row>
+    </div>
   </div>
 </template>
 
@@ -47,11 +47,12 @@
 import { ref, computed, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { getUserFansList } from "@/api/user";
-import FocusItem from "@/components/little/FocusItem.vue";
+import FocusItem from "@/components/Little/Item/FocusItem.vue";
 
 const router = useRouter();
 const route = useRoute();
 
+const loading = ref<boolean>(false);
 const isMyCenter = ref<boolean>(false);
 const user_id = ref<number>(0);
 const user_list = ref<any[]>([]);
@@ -80,6 +81,7 @@ const push = (num: number) => {
 watch(
   () => route.params.id,
   async (newV, _) => {
+    loading.value = true;
     user_id.value = Number(newV);
     if (
       user_id.value ==
@@ -91,6 +93,7 @@ watch(
     res.data.result.forEach((item: any) => {
       user_list.value.push(item.first_user_id);
     });
+    loading.value = false;
   },
   { immediate: true, deep: true }
 );

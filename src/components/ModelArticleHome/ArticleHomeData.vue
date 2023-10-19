@@ -36,10 +36,10 @@ import {
   getUserCollectList,
 } from "@/api/user";
 import { getArticleMain } from "@/api/article";
-import LikeBtn from "@/components/little/Button/LikeBtn.vue";
-import CollectionBtn from "@/components/little/Button/CollectionBtn.vue";
-import ShareBtn from "@/components/little/Button/ShareBtn.vue";
-import CommentBtn from "@/components/little/Button/CommentBtn.vue";
+import LikeBtn from "@/components/Little/Button/LikeBtn.vue";
+import CollectionBtn from "@/components/Little/Button/CollectionBtn.vue";
+import ShareBtn from "@/components/Little/Button/ShareBtn.vue";
+import CommentBtn from "@/components/Little/Button/CommentBtn.vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 
 interface articleData {

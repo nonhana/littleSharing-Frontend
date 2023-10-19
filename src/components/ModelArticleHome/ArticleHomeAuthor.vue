@@ -42,8 +42,7 @@
 
     <el-row
       v-if="author_article_list.length == 0"
-      v-loading="loadingStatus"
-      element-loading-background="rgba(0, 0, 0, 0.4)"
+      v-loading="loading"
       element-loading-text="少女祈祷中..."
     >
       <no-list
@@ -59,13 +58,13 @@
 import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { getArticleMain } from "@/api/article";
-import { getUserInfo, getUserArticles } from "@/api/user";
-import LittleArticleItem from "../little/LittleArticleItem.vue";
+import { getUserInfo, getUserArticlesBasic } from "@/api/user";
+import LittleArticleItem from "@/components/Little/Item/LittleArticleItem.vue";
 
 const route = useRoute();
 const router = useRouter();
 
-const loadingStatus = ref<boolean>(true);
+const loading = ref<boolean>(true);
 const author_id = ref<number>(0);
 const author_head = ref<string>("");
 const author_name = ref<string>("");
@@ -104,14 +103,14 @@ onMounted(async () => {
       author_signature.value = signature;
 
       const articleListData = (
-        await getUserArticles({ user_id: articleAuthorId })
+        await getUserArticlesBasic({ user_id: articleAuthorId })
       ).data.result;
       author_article_list.value = articleListData
         .filter((item: any) => item.article_id !== Number(route.params.id))
         .slice(0, 3);
     }
   }
-  loadingStatus.value = false;
+  loading.value = false;
 });
 </script>
 

@@ -94,7 +94,7 @@ onMounted(() => {
     transition: all 0.2s;
   }
   svg:hover path {
-    fill: #ff8200;
+    fill: #00d5cc;
   }
 }
 </style>

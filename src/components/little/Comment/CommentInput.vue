@@ -115,7 +115,7 @@ const handleKeyCode = (event: KeyboardEvent) => {
     border-radius: 10px;
     background: #ffffff;
     box-sizing: border-box;
-    border: 1.5px solid #ffc180;
+    border: 1.5px solid #76fff5;
     font-family: SourceHanSansCN-Medium;
     font-size: 16px;
     font-weight: 500;
@@ -130,13 +130,13 @@ const handleKeyCode = (event: KeyboardEvent) => {
     width: 75px;
     height: 34px;
     border-radius: 17px;
-    background: #ffc180;
+    background: #76fff5;
     cursor: pointer;
     margin: 15px 0 0 0;
     transition: all 0.3s;
   }
   .submit:hover {
-    background: #ff8200;
+    background: #00d5cc;
   }
   .submit font {
     font-family: SourceHanSansCN-Bold;

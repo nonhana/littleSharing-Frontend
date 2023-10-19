@@ -12,6 +12,7 @@ import "animate.css";
 import router from "./router";
 // 全局组件
 import NoList from "@/components/GlobalComponents/NoList.vue";
+import CommonHeader from "@/components/GlobalComponents/CommonHeader.vue";
 
 const app = createApp(App);
 
@@ -30,6 +31,9 @@ app.use(createPinia());
 app.use(router);
 app.use(mavonEditor);
 
+// 注册全局组件
 app.component("NoList", NoList);
+app.component("CommonHeader", CommonHeader);
 
+// 挂载app
 app.mount("#app");

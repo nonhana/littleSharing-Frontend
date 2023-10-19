@@ -50,7 +50,7 @@ import { ref, onMounted, nextTick } from "vue";
 import { ArticleInfo } from "@/types";
 import { useRoute } from "vue-router";
 import { getSimilarArticles, getArticleMain } from "@/api/article";
-import LittleArticleItem from "@/components/little/LittleArticleItem.vue";
+import LittleArticleItem from "@/components/Little/Item/LittleArticleItem.vue";
 
 const ArticleHomeSimilar = ref<HTMLDivElement>();
 

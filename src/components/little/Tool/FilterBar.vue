@@ -112,35 +112,9 @@ import {
   options4,
   options5,
 } from "@/utils/constants";
-import { submitSearchKeyword, searchArticle } from "@/api/article";
+import { searchArticle } from "@/api/article";
+import { ArticleInfo } from "@/utils/types";
 import { ElNotification } from "element-plus";
-
-interface ArticleInfo {
-  article_id: number;
-  article_details: string;
-  article_introduce: string;
-  article_labels: Array<string>;
-  article_link?: string;
-  article_major: Array<string>;
-  article_md: string;
-  article_num: number;
-  article_status: "1" | "2";
-  article_title: string;
-  article_updatedate: string;
-  article_uploaddate: string;
-  author_headphoto: string;
-  author_id: number;
-  author_major: string;
-  author_name: string;
-  author_signature: string;
-  author_university: string;
-  collection_num: number;
-  comment_num: number;
-  cover_image: string;
-  like_num: number;
-  share_num: number;
-  view_num: number;
-}
 
 const props = defineProps<{
   articleListAll: ArticleInfo[];
@@ -185,7 +159,6 @@ const handleSelect = (key: string) => {
       item.article_major.includes(keyword)
     );
   };
-
   // 1.全部 2.文学 3.理学 4.工学 5.艺术学 6.农学 7.其他学科
   if (key === "1") {
     activeIndex.value = "1";
@@ -224,9 +197,6 @@ const search = async (keywords: string) => {
   } else {
     searchStatus.value = true;
     searching.value = true;
-    await submitSearchKeyword({
-      keyword: keywords,
-    });
     article_list.splice(0);
     const searchRes = await searchArticle({ keyword: keywords });
     if (searchRes.data.result_code === 0) {

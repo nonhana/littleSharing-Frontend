@@ -1,28 +1,5 @@
 import myAxios from "./axios";
 
-export interface ArticleInfo {
-  article_details: string;
-  article_introduce: string;
-  article_labels: string[];
-  article_link?: string;
-  article_major: string[];
-  article_status: "1" | "2";
-  article_title: string;
-  author_id: number;
-}
-export interface EditArticleInfo {
-  article_id: number;
-  article_details: string;
-  article_introduce: string;
-  article_labels: string[];
-  article_link?: string;
-  article_major: string[];
-  article_status: "1" | "2";
-  article_title: string;
-  author_id: number;
-  article_updatedate?: string;
-}
-
 // 上传文章图片
 export const uploadArticleImg = (paramsList: { articleImg: File }) => {
   return myAxios({
@@ -44,7 +21,16 @@ export const getArticleList = () => {
 };
 
 // 上传文章
-export const postArticle = (paramsList: ArticleInfo) => {
+export const postArticle = (paramsList: {
+  article_details: string;
+  article_introduce: string;
+  article_labels: string[];
+  article_link?: string;
+  article_major: string[];
+  article_status: "1" | "2";
+  article_title: string;
+  author_id: number;
+}) => {
   return myAxios({
     url: "/article/post-article",
     method: "POST",
@@ -67,15 +53,6 @@ export const getArticleMain = (paramsList: { article_id: number }) => {
     url: "/article/article-main",
     method: "GET",
     params: paramsList,
-  });
-};
-
-// 提交搜索关键词
-export const submitSearchKeyword = (paramsList: { keyword: string }) => {
-  return myAxios({
-    url: "/article/submit-keyword",
-    method: "POST",
-    data: paramsList,
   });
 };
 
@@ -118,20 +95,22 @@ export const deleteArticle = (paramsList: { article_id: number }) => {
 };
 
 // 编辑文章
-export const editArticle = (paramsList: EditArticleInfo) => {
+export const editArticle = (paramsList: {
+  article_id: number;
+  article_details: string;
+  article_introduce: string;
+  article_labels: string[];
+  article_link?: string;
+  article_major: string[];
+  article_status: "1" | "2";
+  article_title: string;
+  author_id: number;
+  article_updatedate?: string;
+}) => {
   return myAxios({
     url: "/article/edit-article",
     method: "POST",
     data: paramsList,
-  });
-};
-
-// 获取某用户的发布文章列表
-export const getUserArticleList = (paramsList: { user_id: number }) => {
-  return myAxios({
-    url: "/article/user-article-list",
-    method: "GET",
-    params: paramsList,
   });
 };
 

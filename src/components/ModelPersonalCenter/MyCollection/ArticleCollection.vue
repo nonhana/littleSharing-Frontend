@@ -4,7 +4,7 @@
       :article-list-all="article_list_all"
       @sendArticleList="getArticleList"
     />
-    <el-row style="margin-top: 30px">
+    <el-row v-loading="loading" style="margin-top: 30px">
       <el-row>
         <div style="margin: 0 0 0 20px">
           <span class="title">我收藏的文章({{ collect_article_num }})</span>
@@ -27,7 +27,6 @@
           ></div>
         </div>
       </el-row>
-
       <el-row
         v-if="article_list.length === 0"
         type="flex"
@@ -44,12 +43,13 @@
 import { ref, computed, onMounted, nextTick } from "vue";
 import { getUserCollectList } from "@/api/user";
 import { getArticleMain } from "@/api/article";
-import FilterBar from "@/components/FilterBar.vue";
-import ArticlePersonalcenterItem from "@/components/little/ArticlePersonalCenterItem.vue";
+import FilterBar from "@/components/Little/Tool/FilterBar.vue";
+import ArticlePersonalcenterItem from "@/components/Little/Item/ArticlePersonalCenterItem.vue";
 
-let article_list = ref<any>([]);
-let article_list_all = ref<any[]>([]);
-let articleListShow = ref<number>(0);
+const loading = ref<boolean>(false);
+const article_list = ref<any>([]);
+const article_list_all = ref<any[]>([]);
+const articleListShow = ref<number>(0);
 
 const collect_article_num = computed(() => article_list_all.value.length);
 
@@ -61,19 +61,23 @@ const getArticleList = async (arr: any[]) => {
 };
 
 onMounted(async () => {
+  loading.value = true;
   const UserCollectListRes = await getUserCollectList();
-  if (UserCollectListRes.data.result_code === 0) {
-    UserCollectListRes.data.result.forEach(async (item: any) => {
-      const res = await getArticleMain({
-        article_id: item,
-      });
+  const articlePromises = UserCollectListRes.data.result.map(
+    async (item: any) => {
+      const res = await getArticleMain({ article_id: item });
       if (res.data.result_code === 0) {
-        article_list_all.value.push(res.data.result);
+        return res.data.result;
       }
-    });
-    article_list_all.value.reverse();
-    article_list.value = article_list_all.value;
-  }
+      return null;
+    }
+  );
+  const articles = await Promise.all(articlePromises);
+  article_list_all.value = articles
+    .filter((article) => article !== null)
+    .reverse();
+  article_list.value = article_list_all.value;
+  loading.value = false;
 });
 </script>
 

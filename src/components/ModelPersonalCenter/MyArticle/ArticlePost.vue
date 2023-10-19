@@ -4,7 +4,7 @@
       :article-list-all="article_list_all"
       @sendArticleList="getArticleList"
     />
-    <el-row style="margin-top: 30px">
+    <el-row v-loading="loading" style="margin-top: 30px">
       <el-row>
         <div style="margin-left: 20px">
           <span class="title">我发布的文章({{ post_article_num }})</span>
@@ -28,7 +28,6 @@
           :key="item"
         ></div>
       </el-row>
-
       <el-row
         v-if="article_list.length === 0"
         type="flex"
@@ -46,12 +45,13 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, nextTick } from "vue";
 import { useRoute } from "vue-router";
-import { getUserArticleList } from "@/api/article";
-import FilterBar from "@/components/FilterBar.vue";
-import ArticlePersonalcenterItem from "@/components/little/ArticlePersonalCenterItem.vue";
+import { getUserArticlesDetails } from "@/api/user";
+import FilterBar from "@/components/Little/Tool/FilterBar.vue";
+import ArticlePersonalcenterItem from "@/components/Little/Item/ArticlePersonalCenterItem.vue";
 
 const route = useRoute();
 
+const loading = ref<boolean>(false);
 const article_list = ref<any[]>([]);
 const article_list_all = ref<any[]>([]);
 const articleListShow = ref<number>(0);
@@ -66,8 +66,9 @@ const getArticleList = async (arr: any[]) => {
 };
 const getArticleListChild = async (val: any) => {
   if (val) {
+    loading.value = true;
     article_list_all.value.splice(0);
-    const res = await getUserArticleList({
+    const res = await getUserArticlesDetails({
       user_id: Number(route.params.id),
     });
     res.data.result.forEach((item: any) => {
@@ -75,16 +76,19 @@ const getArticleListChild = async (val: any) => {
     });
     article_list_all.value.reverse();
     article_list.value = article_list_all.value;
+    loading.value = false;
   }
 };
 
 onMounted(async () => {
-  const res = await getUserArticleList({
+  loading.value = true;
+  const res = await getUserArticlesDetails({
     user_id: Number(route.params.id),
   });
   article_list_all.value = res.data.result;
   article_list_all.value.reverse();
   article_list.value = article_list_all.value;
+  loading.value = false;
 });
 </script>
 

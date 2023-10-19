@@ -172,9 +172,12 @@ const props = defineProps<{
   articleList: ArticleInfo;
 }>();
 
-let cover_image = props.articleList.cover_image;
 const likemark = ref<number>(0);
 const collectionmark = ref<number>(0);
+const like_num = ref<number>(props.articleList.like_num);
+const collection_num = ref<number>(props.articleList.collection_num);
+const share_num = ref<number>(props.articleList.share_num);
+let cover_image = props.articleList.cover_image;
 let id = props.articleList.article_id;
 let article_status = props.articleList.article_status;
 let article_title = props.articleList.article_title;
@@ -188,9 +191,6 @@ let author_name = props.articleList.author_name;
 let author_signature = props.articleList.author_signature;
 let author_university = props.articleList.author_university;
 let article_num = props.articleList.article_num;
-const like_num = ref<number>(props.articleList.like_num);
-const collection_num = ref<number>(props.articleList.collection_num);
-const share_num = ref<number>(props.articleList.share_num);
 let comment_num = props.articleList.comment_num;
 
 watch(

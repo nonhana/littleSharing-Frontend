@@ -32,7 +32,7 @@
 <script setup lang="ts">
 import { ref, onMounted, nextTick } from "vue";
 import { useRouter } from "vue-router";
-import MessageCollectionsItem from "../little/MessageCollectionsItem.vue";
+import MessageCollectionsItem from "../Little/Item/MessageCollectionsItem.vue";
 
 interface CollectMessageInfo {
   user_id: number;

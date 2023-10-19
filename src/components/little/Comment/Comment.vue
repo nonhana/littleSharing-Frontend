@@ -245,7 +245,7 @@ onMounted(async () => {
     .line {
       width: 8px;
       height: 30px;
-      background-color: #ff8200;
+      background-color: #76fff5;
       margin-right: 12px;
     }
     span {
@@ -289,7 +289,7 @@ onMounted(async () => {
     cursor: pointer;
   }
   .more-click:hover {
-    color: #ffc180;
+    color: #76fff5;
   }
   .limit {
     position: relative;
@@ -302,7 +302,7 @@ onMounted(async () => {
     cursor: pointer;
   }
   .limit:hover {
-    color: #ffc180;
+    color: #76fff5;
   }
   .baseLine {
     width: 100%;

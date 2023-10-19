@@ -19,7 +19,7 @@
 import { ref, onMounted } from "vue";
 import { ArticleInfo } from "@/types";
 import { getArticleList } from "@/api/article";
-import NewHomeItem from "@/components/little/NewHomeItem.vue";
+import NewHomeItem from "@/components/Little/Item/NewHomeItem.vue";
 
 const loadingStatus = ref<boolean>(false);
 const news_all_list = ref<ArticleInfo[]>([]);

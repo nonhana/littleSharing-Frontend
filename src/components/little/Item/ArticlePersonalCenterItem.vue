@@ -71,19 +71,19 @@
     <el-row type="flex" justify="start">
       <el-col :span="0.5">
         <el-row type="flex" class="action_list">
-          <div class="like">
+          <div>
             <img src="@/statics/svg/LittleLike.svg" />
             <span>{{ like_num }}</span>
           </div>
-          <div class="collection">
+          <div>
             <img src="@/statics/svg/LittleCollection.svg" />
             <span>{{ collection_num }}</span>
           </div>
-          <div class="share">
+          <div>
             <img src="@/statics/svg/LittleShare.svg" />
             <span>{{ share_num }}</span>
           </div>
-          <div class="comment">
+          <div>
             <img src="@/statics/svg/LittleComment.svg" />
             <span>{{ comment_num }}</span>
           </div>
@@ -379,6 +379,10 @@ watch(
     height: 16px;
     display: flex;
     justify-content: space-between;
+    div {
+      display: flex;
+      align-items: center;
+    }
     > * span {
       height: 14px;
       font-family: SourceHanSansCN-Regular;

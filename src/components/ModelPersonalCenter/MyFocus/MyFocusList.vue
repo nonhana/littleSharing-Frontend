@@ -19,8 +19,8 @@
       </div>
     </el-row>
     <el-divider />
-    <el-row type="flex" justify="center">
-      <div :span="0.5">
+    <div v-loading="loading">
+      <el-row type="flex" justify="center">
         <div
           v-for="(item, index) in user_list"
           :key="index"
@@ -29,32 +29,33 @@
           <FocusItem :user_id="item" />
           <el-divider />
         </div>
-      </div>
-    </el-row>
-    <el-row type="flex" justify="center">
-      <div v-if="emptyList">
-        <el-empty
-          v-if="isMyCenter"
-          description="您还没有关注任何人哦......"
-        ></el-empty>
-        <el-empty v-else description="ta还没有关注任何人哦......"></el-empty>
-      </div>
-    </el-row>
+      </el-row>
+      <el-row type="flex" justify="center">
+        <div v-if="emptyList">
+          <el-empty
+            v-if="isMyCenter"
+            description="您还没有关注任何人哦......"
+          ></el-empty>
+          <el-empty v-else description="ta还没有关注任何人哦......"></el-empty>
+        </div>
+      </el-row>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import FocusItem from "@/components/little/FocusItem.vue";
+import FocusItem from "@/components/Little/Item/FocusItem.vue";
 import { getUserFocusList } from "@/api/user";
 
 const router = useRouter();
 const route = useRoute();
 
-let isMyCenter = ref<boolean>(false);
-let user_id = ref<number>(0);
-let user_list = ref<any[]>([]);
+const loading = ref<boolean>(false);
+const isMyCenter = ref<boolean>(false);
+const user_id = ref<number>(0);
+const user_list = ref<any[]>([]);
 
 const emptyList = computed(() => {
   if (user_list.value.length == 0) {
@@ -80,6 +81,7 @@ const push = (num: number) => {
 watch(
   route,
   async (newV, _) => {
+    loading.value = true;
     user_id.value = Number(newV.params.id);
     if (
       user_id.value ==
@@ -91,6 +93,7 @@ watch(
     res.data.result.forEach((item: any) => {
       user_list.value.push(item.second_user_id);
     });
+    loading.value = false;
   },
   { immediate: true, deep: true }
 );

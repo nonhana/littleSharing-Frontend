@@ -165,7 +165,7 @@ import { onBeforeRouteLeave } from "vue-router";
 import { editUserInfo } from "@/api/user";
 import { ElNotification, ElMessageBox } from "element-plus";
 import { Plus } from "@element-plus/icons-vue";
-import ImgCropper from "@/components/little/ImgCropper.vue";
+import ImgCropper from "@/components/Little/Tool/ImgCropper.vue";
 
 const originUserInfo = ref<any>({
   ...JSON.parse(localStorage.getItem("user_info") as string),

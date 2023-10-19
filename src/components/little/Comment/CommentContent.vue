@@ -77,8 +77,8 @@ import { getArticleMain } from "@/api/article";
 import { formatDate } from "@/utils/index";
 import { useRoute, useRouter } from "vue-router";
 import { ElNotification, ElMessage } from "element-plus";
-import LikeBtn from "@/components/little/Button/LikeBtn.vue";
-import CommentBtn from "@/components/little/Button/CommentBtn.vue";
+import LikeBtn from "@/components/Little/Button/LikeBtn.vue";
+import CommentBtn from "@/components/Little/Button/CommentBtn.vue";
 
 const props = defineProps<{
   commentList?: any;

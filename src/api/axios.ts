@@ -1,5 +1,4 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-import { debounce } from "@/utils/index";
 import { ElNotification } from "element-plus";
 
 const myAxios = (axiosConfig: AxiosRequestConfig): Promise<AxiosResponse> => {

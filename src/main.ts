@@ -1,13 +1,10 @@
 import App from "./App.vue";
 import { createApp } from "vue";
 // 插件
-import "./styles/index.scss"; // Element Plus自定义主题
 import ElementPlus from "element-plus";
+import "./styles/index.scss"; // Element Plus自定义主题
 import "element-plus/dist/index.css";
 import { createPinia } from "pinia";
-import mavonEditor from "mavon-editor";
-import "mavon-editor/dist/css/index.css";
-import "highlight.js/styles/docco.css";
 import "animate.css";
 import router from "./router";
 // 全局组件
@@ -29,7 +26,6 @@ router.beforeEach((to, _, next) => {
 app.use(ElementPlus);
 app.use(createPinia());
 app.use(router);
-app.use(mavonEditor);
 
 // 注册全局组件
 app.component("NoList", NoList);

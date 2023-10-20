@@ -45,7 +45,7 @@
         class="button"
         v-if="editStatus"
         @click="exitEdit()"
-        style="margin: 0"
+        style="position: absolute; right: 440px"
       >
         <span>退出编辑</span>
       </div>
@@ -128,7 +128,7 @@
               style="width: 400px; height: 50px"
               v-model="ruleForm.article_major"
               placeholder="请选择文章所属的专业类别"
-              :options="options"
+              :options="optionChoices"
               :props="{ expandTrigger: 'hover' }"
               :value="value"
             ></el-cascader>
@@ -191,11 +191,9 @@
         >
           <el-row type="flex" justify="space-between">
             <el-form-item prop="article_details">
-              <mavon-editor
+              <MdEditor
                 style="height: 630px; width: 1340px"
-                ref="md"
-                @change="change"
-                @imgAdd="imgAdd"
+                @on-upload-img="onUploadImg"
                 v-model="ruleForm.article_details"
               />
             </el-form-item>
@@ -216,22 +214,13 @@ import {
   editArticle,
   uploadArticleImg,
 } from "@/api/article";
+import { optionChoices } from "@/utils/constants";
+import { EditArticleInfo } from "@/utils/types";
 import { ElMessageBox, ElMessage, ElNotification } from "element-plus";
-
-interface ArticleInfo {
-  article_status: "1" | "2"; // 默认为转载，1-转载，2-原创
-  article_link?: string;
-  article_title: string;
-  article_major: string[];
-  article_labels: string[];
-  article_introduce: string;
-  article_details: string;
-  article_md: string;
-  author_id: number;
-}
+import { MdEditor } from "md-editor-v3"; // 引入md编辑器
+import "md-editor-v3/lib/style.css"; // 编辑器的样式
 
 // 通过ref拿到dom
-const md = ref<any>();
 const labelSelect = ref<any>();
 
 const route = useRoute();
@@ -243,219 +232,7 @@ const part2_top = ref<string>("-1000px");
 const editStatus = ref<boolean>(false);
 const optionsSubject = ref<any[]>([]);
 const value = ref<any[]>([]);
-const options = ref<any[]>([
-  {
-    value: "文学",
-    label: "文学",
-    children: [
-      {
-        value: "中国语言文学类",
-        label: "中国语言文学类",
-      },
-      {
-        value: "新闻传播学类",
-        label: "新闻传播学类",
-      },
-      {
-        value: "外国语言文学类",
-        label: "外国语言文学类",
-      },
-      {
-        value: "其他类别",
-        label: "其他类别",
-      },
-    ],
-  },
-  {
-    value: "艺术学",
-    label: "艺术学",
-    children: [
-      {
-        value: "音乐",
-        label: "音乐",
-      },
-      {
-        value: "舞蹈",
-        label: "舞蹈",
-      },
-      {
-        value: "影视学类",
-        label: "影视学类",
-      },
-      {
-        value: "戏剧学类",
-        label: "戏剧学类",
-      },
-      {
-        value: "美术学类",
-        label: "美术学类",
-      },
-      {
-        value: "设计学类",
-        label: "设计学类",
-      },
-      {
-        value: "其他类别",
-        label: "其他类别",
-      },
-    ],
-  },
-  {
-    value: "理学",
-    label: "理学",
-    children: [
-      {
-        value: "信息与计算科学",
-        label: "信息与计算科学",
-      },
-      {
-        value: "数学与应用数学",
-        label: "数学与应用数学",
-      },
-      {
-        value: "应用化学",
-        label: "应用化学",
-      },
-      {
-        value: "生物技术",
-        label: "生物技术",
-      },
-      {
-        value: "生物科学",
-        label: "生物科学",
-      },
-      {
-        value: "应用物理学",
-        label: "应用物理学",
-      },
-      {
-        value: "应用心理学",
-        label: "应用心理学",
-      },
-      {
-        value: "统计学",
-        label: "统计学",
-      },
-      {
-        value: "化学",
-        label: "化学",
-      },
-      {
-        value: "物理学",
-        label: "物理学",
-      },
-      {
-        value: "其他类别",
-        label: "其他类别",
-      },
-    ],
-  },
-  {
-    value: "工学",
-    label: "工学",
-    children: [
-      {
-        value: "土木工程",
-        label: "土木工程",
-      },
-      {
-        value: "机械类专业",
-        label: "机械类专业",
-      },
-      {
-        value: "电气工程及其智能化",
-        label: "电气工程及其智能化",
-      },
-      {
-        value: "计算机科学与技术",
-        label: "计算机科学与技术",
-      },
-      {
-        value: "车辆工程",
-        label: "车辆工程",
-      },
-      {
-        value: "软件工程",
-        label: "软件工程",
-      },
-      {
-        value: "交通运输工程",
-        label: "交通运输工程",
-      },
-      {
-        value: "自动化",
-        label: "自动化",
-      },
-      {
-        value: "其他类别",
-        label: "其他类别",
-      },
-    ],
-  },
-  {
-    value: "农学",
-    label: "农学",
-    children: [
-      {
-        value: "园艺",
-        label: "园艺",
-      },
-      {
-        value: "种子科学与工程",
-        label: "种子科学与工程",
-      },
-      {
-        value: "设施农业科学与工程",
-        label: "设施农业科学与工程",
-      },
-      {
-        value: "农业资源与环境",
-        label: "农业资源与环境",
-      },
-      {
-        value: "动物科学",
-        label: "动物科学",
-      },
-      {
-        value: "林学",
-        label: "林学",
-      },
-      {
-        value: "水产养殖学",
-        label: "水产养殖学",
-      },
-      {
-        value: "草业学科",
-        label: "草业学科",
-      },
-      {
-        value: "茶学",
-        label: "茶学",
-      },
-      {
-        value: "烟草",
-        label: "烟草",
-      },
-      {
-        value: "农艺教育",
-        label: "农艺教育",
-      },
-      {
-        value: "园艺教育",
-        label: "园艺教育",
-      },
-      {
-        value: "其他类别",
-        label: "其他类别",
-      },
-    ],
-  },
-  {
-    value: "其他学科",
-    label: "其他学科",
-  },
-]);
-const ruleForm = ref<ArticleInfo>({
+const ruleForm = ref<EditArticleInfo>({
   // 文章信息
   article_status: "1", //默认为转载，1-转载，2-原创
   article_link: "",
@@ -530,18 +307,16 @@ const filterData = () => {
     labelSelect.value.$data.selectedLabel = str.substr(0, 21);
   }
 };
-// 所有操作都会被解析重新渲染
-const change = (_: any, render: string) => {
-  // render 为 markdown 解析后的结果[html]
-  html.value = render;
-};
-const imgAdd = async (pos: any, file: File) => {
-  const res = await uploadArticleImg({
-    articleImg: file,
-  });
-  if (res.data.result_code === 0) {
-    md.value.$img2Url(pos, res.data.result);
-  }
+// 在编辑器里面上传图片时，会自动传给后端进行保存，然后返回url地址。
+const onUploadImg = async (files: Array<File>, callback: Function) => {
+  const res = await Promise.all(
+    files.map((file) => {
+      return uploadArticleImg({
+        articleImg: file,
+      });
+    })
+  );
+  callback(res.map((item) => item.data.result));
 };
 const submitArticle = async () => {
   if (

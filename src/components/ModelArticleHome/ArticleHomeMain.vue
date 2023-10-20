@@ -51,27 +51,24 @@
         :preview-src-list="[activeImg]"
       ></el-image>
       <div class="markdown-body">
-        <VueMarkdownIt
+        <MdPreview
           style="width: 710px"
-          :source="article_md"
-          :plugins="plugins"
-        ></VueMarkdownIt>
+          editorId="md-preview"
+          :modelValue="article_md"
+          show-code-row-number
+        />
       </div>
     </el-row>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, nextTick } from "vue";
+import { ref, onMounted, nextTick } from "vue";
 import { useRoute } from "vue-router";
 import { getArticleMain, postArticleTrend } from "@/api/article";
 import { formatDate } from "@/utils";
-import VueMarkdownIt from "vue3-markdown-it";
-import Emoji from "markdown-it-emoji";
-import Deflist from "markdown-it-deflist";
-import Sub from "markdown-it-sub";
-import Sup from "markdown-it-sup";
-import Abbr from "markdown-it-abbr";
+import { MdPreview } from "md-editor-v3";
+import "md-editor-v3/lib/preview.css";
 
 const route = useRoute();
 
@@ -81,23 +78,6 @@ const article_labels = ref<string[]>([]);
 const article_title = ref<string>("");
 const article_md = ref<string>("");
 const activeImg = ref<string>("");
-const plugins = reactive([
-  {
-    plugin: Abbr,
-  },
-  {
-    plugin: Sub,
-  },
-  {
-    plugin: Sup,
-  },
-  {
-    plugin: Deflist,
-  },
-  {
-    plugin: Emoji,
-  },
-]);
 
 onMounted(async () => {
   const res = await getArticleMain({
@@ -185,8 +165,8 @@ onMounted(async () => {
     }
   }
   .markdown-body :deep(img) {
-    width: 100%;
-    cursor: pointer;
+    position: relative;
+    margin: 0 auto;
   }
   .link {
     width: 680px;

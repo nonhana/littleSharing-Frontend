@@ -28,3 +28,16 @@ export interface ArticleInfo {
   share_num: number;
   view_num: number;
 }
+
+// 编辑时的文章信息
+export interface EditArticleInfo {
+  article_status: "1" | "2"; // 默认为转载，1-转载，2-原创
+  article_link?: string;
+  article_title: string;
+  article_major: string[];
+  article_labels: string[];
+  article_introduce: string;
+  article_details: string;
+  article_md: string;
+  author_id: number;
+}

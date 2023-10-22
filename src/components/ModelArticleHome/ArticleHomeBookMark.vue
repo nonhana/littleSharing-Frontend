@@ -122,7 +122,6 @@ onMounted(async () => {
   window.addEventListener("scroll", scroll);
 
   const bookmarkRes = await getBookMark();
-  console.log(bookmarkRes.data);
   if (bookmarkRes.data.result) {
     bookmarkRes.data.result.forEach((item: BookMarkInfo) => {
       bookmarks.value.push(item);

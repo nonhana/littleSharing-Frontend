@@ -435,7 +435,6 @@ const closeDialog = (type: number) => {
 
 // 提交修改个人信息
 const submit = async () => {
-  console.log(ruleForm.value);
   localStorage.setItem("user_info", JSON.stringify(ruleForm.value));
   const res = await editUserInfo(ruleForm.value);
   if (res.data.result_code === 0) {

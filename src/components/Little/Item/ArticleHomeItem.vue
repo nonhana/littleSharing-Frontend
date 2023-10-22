@@ -238,7 +238,6 @@ const major = computed(() => {
 
 const articlechoices = (num: number) => {
   if (num === 1) {
-    console.log("123");
   }
 };
 const push = (num: number) => {

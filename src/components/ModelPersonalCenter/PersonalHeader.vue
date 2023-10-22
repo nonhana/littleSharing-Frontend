@@ -233,7 +233,6 @@ watch(
           .user_id,
       });
       if (focusListRes.data.result_code === 0) {
-        console.log(focusListRes.data.result);
         if (focusListRes.data.result.length > 0) {
           focusListRes.data.result.forEach((item: any) => {
             if (item.second_user_id === user_id.value) {

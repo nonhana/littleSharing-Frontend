@@ -2,7 +2,7 @@
   <div class="CommonHeader-wrap">
     <div class="title">
       <div style="cursor: pointer" @click="push(0)">
-        <img src="@/statics/svg/Logo.svg" />
+        <img style="width: 36px" src="@/statics/img/Logo.png" />
       </div>
       <span>&nbsp;&nbsp;兴趣使然的学术资源分享小站</span>
     </div>
@@ -134,7 +134,6 @@ const push = (num: number) => {
       route_path = `/message/${user_id.value}`;
       break;
   }
-  console.log(route_path);
   router.push({
     path: route_path,
   });

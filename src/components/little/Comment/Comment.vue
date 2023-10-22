@@ -122,7 +122,6 @@ const commentListGetter = async () => {
   const res = await getCommentList({
     article_id: Number(route.params.id),
   });
-  console.log("getCommentList", res.data.result);
   //清空input相关的数组
   showInput.value = [];
   showInputNext.value = [];
@@ -152,7 +151,6 @@ const commentListGetter = async () => {
         total.value.push(0);
       }
     });
-    console.log("response_list", response_list.value);
   }
   //创建用于初始化“评论”不打开状态的数组
   initShowInput.value = showInput.value.slice(0);

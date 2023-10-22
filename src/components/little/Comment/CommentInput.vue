@@ -76,7 +76,6 @@ const inputComment = async () => {
       paramsList.response_to_comment_id = props.commentId;
       paramsList.comment_level = 1;
     }
-    console.log("评论参数", JSON.stringify(paramsList));
     const res = await commentAction(paramsList);
 
     if (res.data.result_code === 0) {

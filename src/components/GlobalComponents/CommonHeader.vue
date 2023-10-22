@@ -2,7 +2,7 @@
   <div class="CommonHeader-wrap">
     <div class="title">
       <div style="cursor: pointer" @click="push(0)">
-        <img style="width: 36px" src="@/statics/img/Logo.png" />
+        <img style="width: 36px" src="@/statics/img/logo.png" />
       </div>
       <span>&nbsp;&nbsp;兴趣使然的学术资源分享小站</span>
     </div>

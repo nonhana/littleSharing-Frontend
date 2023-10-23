@@ -86,6 +86,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
+import { useUserStore } from "@/store/user";
 import { getCommentList } from "@/api/comment";
 import { getArticleMain } from "@/api/article";
 import CommentContent from "./CommentContent.vue";
@@ -94,6 +95,8 @@ import CommentInput from "./CommentInput.vue";
 const comments = ref<HTMLUListElement>();
 
 const route = useRoute();
+
+const userStore = useUserStore();
 
 const gettingComments = ref<boolean>(false);
 const user_head_photo = ref<string>("");
@@ -194,13 +197,11 @@ const refreshComment = async () => {
 onMounted(async () => {
   gettingComments.value = true;
   // 获取目前用户的头像
-  if (!localStorage.getItem("user_info")) {
+  if (!userStore.userInfo) {
     user_head_photo.value =
       "https://cdn.staticaly.com/gh/apprehen/pciture@master/1.1rkws8wwaf9c.webp";
   } else {
-    user_head_photo.value = JSON.parse(
-      localStorage.getItem("user_info") as string
-    ).headphoto;
+    user_head_photo.value = userStore.userInfo.headphoto;
   }
   // 调用获取评论方法
   await commentListGetter();

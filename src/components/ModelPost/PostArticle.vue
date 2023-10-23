@@ -207,6 +207,8 @@
 <script setup lang="ts">
 import { ref, watch, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { useUserStore } from "@/store/user";
+import { useArticleLabelStore } from "@/store/articleLabels";
 import {
   postArticle,
   addArticleLabel,
@@ -226,6 +228,9 @@ const labelSelect = ref<any>();
 const route = useRoute();
 const router = useRouter();
 
+const userStore = useUserStore();
+const articleLabelStore = useArticleLabelStore();
+
 const present_step = ref<number>(0);
 const part1_top = ref<string>("0px");
 const part2_top = ref<string>("-1000px");
@@ -243,9 +248,7 @@ const ruleForm = ref<EditArticleInfo>({
   article_details: "",
   article_md: "",
   // 作者id
-  author_id: localStorage.getItem("user_info")
-    ? JSON.parse(localStorage.getItem("user_info") as string).user_id
-    : null,
+  author_id: userStore.userInfo.user_id,
 });
 const html = ref<string>(""); // 通过markdown及时转的html
 const rules = ref<any>({
@@ -360,9 +363,7 @@ const submitArticle = async () => {
       article_introduce: "",
       article_details: "",
       article_md: "",
-      author_id: localStorage.getItem("user_info")
-        ? JSON.parse(localStorage.getItem("user_info") as string).user_id
-        : null,
+      author_id: userStore.userInfo.user_id,
     };
     ElNotification({
       title: "发布成功！",
@@ -412,15 +413,9 @@ onMounted(async () => {
         localStorage.removeItem("not_saved_article_info");
       });
   }
-  if (localStorage.getItem("article_labels")) {
-    for (
-      var i = 0;
-      i < JSON.parse(localStorage.getItem("article_labels") as string).length;
-      i++
-    ) {
-      optionsSubject.value.push(
-        JSON.parse(localStorage.getItem("article_labels") as string)[i]
-      );
+  if (articleLabelStore.articleLabelInfo) {
+    for (var i = 0; i < articleLabelStore.articleLabelInfo.length; i++) {
+      optionsSubject.value.push(articleLabelStore.articleLabelInfo[i]);
     }
   }
   if (route.query.article_id) {

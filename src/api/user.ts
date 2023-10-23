@@ -47,10 +47,11 @@ export const login = (paramsList: { account: string; password: string }) => {
 };
 
 // 获取用户的keywords
-export const getUserKeywords = () => {
+export const getUserKeywords = (paramsList: { user_id?: number }) => {
   return myAxios({
     url: "/user/get-user-keywords",
     method: "GET",
+    params: paramsList,
   });
 };
 

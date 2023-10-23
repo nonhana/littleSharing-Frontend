@@ -2,7 +2,7 @@
   <div class="CommonHeader-wrap">
     <div class="title">
       <div style="cursor: pointer" @click="push(0)">
-        <img style="width: 36px" src="@/statics/img/logo.png" />
+        <img style="width: 36px" src="@/statics/svg/Logo.svg" />
       </div>
       <span>&nbsp;&nbsp;兴趣使然的学术资源分享小站</span>
     </div>
@@ -103,8 +103,11 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
+import { useUserStore } from "@/store/user";
 
 const router = useRouter();
+
+const userStore = useUserStore();
 
 const PostSvgTop1 = ref(15);
 const PostSvgTop2 = ref(65);
@@ -183,13 +186,9 @@ const moveMessageSvg = (num: number) => {
 };
 
 onMounted(() => {
-  if (localStorage.getItem("user_info")) {
-    user_head.value = JSON.parse(
-      localStorage.getItem("user_info") as string
-    ).headphoto;
-    user_id.value = JSON.parse(
-      localStorage.getItem("user_info") as string
-    ).user_id;
+  if (userStore.userInfo) {
+    user_head.value = userStore.userInfo.headphoto;
+    user_id.value = userStore.userInfo.user_id;
   }
 });
 </script>

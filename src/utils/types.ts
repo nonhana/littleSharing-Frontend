@@ -41,3 +41,53 @@ export interface EditArticleInfo {
   article_md: string;
   author_id: number;
 }
+
+// 用户信息
+export interface UserInfo {
+  account: string;
+  article_num: number;
+  backgroundphoto: string;
+  collect_num: number;
+  comment_num: number;
+  headphoto: string;
+  introduce: string;
+  like_num: number;
+  major: string[];
+  name: string;
+  signature: string;
+  university: string;
+  user_id: number;
+}
+
+// 关键词信息
+export interface KeywordInfo {
+  keywords_name: string;
+  keywords_count: number;
+}
+
+// 文章标签信息
+export interface ArticleLabelInfo {
+  value: string;
+  label: string;
+}
+
+// 书签信息
+export interface BookMarkInfo {
+  article_id: number;
+  bookmark_id: number;
+  topHeight: string;
+  user_id: number;
+}
+
+// 个人中心用户信息
+export interface HeaderUserInfo {
+  background_photo: string;
+  header_photo: string;
+  user_name: string;
+  sign: string;
+  follow_count: number;
+  follower_count: number;
+  total_like: number;
+  total_collect: number;
+  total_artcile: number;
+}

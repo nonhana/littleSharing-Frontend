@@ -39,6 +39,7 @@
 <script setup lang="ts">
 import { ref, watch, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { useUserStore } from "@/store/user";
 import { getUserInfo, focusUserActions, getUserFocusList } from "@/api/user";
 import { ElMessage } from "element-plus";
 
@@ -48,6 +49,8 @@ const props = defineProps<{
 
 const route = useRoute();
 const router = useRouter();
+
+const userStore = useUserStore();
 
 const gettingInfo = ref<boolean>(false);
 const execFollow = ref<boolean>(false);
@@ -62,8 +65,7 @@ const follow = async (num: number) => {
     case 0: {
       execFollow.value = true;
       const res = await focusUserActions({
-        first_user_id: JSON.parse(localStorage.getItem("user_info") as string)
-          .id,
+        first_user_id: userStore.userInfo.user_id,
         second_user_id: props.user_id,
         action_type: num,
       });
@@ -80,8 +82,7 @@ const follow = async (num: number) => {
     case 1: {
       execFollow.value = true;
       const res = await focusUserActions({
-        first_user_id: JSON.parse(localStorage.getItem("user_info") as string)
-          .id,
+        first_user_id: userStore.userInfo.user_id,
         second_user_id: props.user_id,
         action_type: num,
       });
@@ -107,9 +108,7 @@ const enterSpace = (id: number): void => {
 watch(
   () => route.params,
   (newV, _) => {
-    if (
-      newV.id == JSON.parse(localStorage.getItem("user_info") as string).user_id
-    ) {
+    if (Number(newV.id) === userStore.userInfo.user_id) {
       isMyCenter.value = true;
     }
   },
@@ -124,7 +123,7 @@ onMounted(async () => {
     details.value = res.data.result.signature;
     headphoto.value = res.data.result.headphoto;
     const userFocusListRes = await getUserFocusList({
-      user_id: JSON.parse(localStorage.getItem("user_info") as string).user_id,
+      user_id: userStore.userInfo.user_id,
     });
     if (userFocusListRes.data.result_code === 0) {
       userFocusListRes.data.result.forEach((item: any) => {

@@ -5,6 +5,7 @@ import ElementPlus from "element-plus";
 import "./styles/index.scss"; // Element Plus自定义主题
 import "element-plus/dist/index.css";
 import { createPinia } from "pinia";
+import piniaPersist from "pinia-plugin-persist";
 import "animate.css";
 import router from "./router";
 // 全局组件
@@ -23,13 +24,15 @@ router.beforeEach((to, _, next) => {
   }
 });
 
+const pinia = createPinia();
+pinia.use(piniaPersist); // 引入pinia持久化插件
+
 app.use(ElementPlus);
-app.use(createPinia());
+app.use(pinia);
 app.use(router);
 
 // 注册全局组件
-app.component("NoList", NoList);
-app.component("CommonHeader", CommonHeader);
+app.component("NoList", NoList).component("CommonHeader", CommonHeader);
 
 // 挂载app
 app.mount("#app");

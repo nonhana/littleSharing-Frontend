@@ -46,11 +46,14 @@
 <script setup lang="ts">
 import { ref, computed, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import FocusItem from "@/components/Little/Item/FocusItem.vue";
+import { useUserStore } from "@/store/user";
 import { getUserFocusList } from "@/api/user";
+import FocusItem from "@/components/Little/Item/FocusItem.vue";
 
 const router = useRouter();
 const route = useRoute();
+
+const userStore = useUserStore();
 
 const loading = ref<boolean>(false);
 const isMyCenter = ref<boolean>(false);
@@ -83,10 +86,7 @@ watch(
   async (newV, _) => {
     loading.value = true;
     user_id.value = Number(newV.params.id);
-    if (
-      user_id.value ==
-      JSON.parse(localStorage.getItem("user_info") as string).user_id
-    ) {
+    if (user_id.value === userStore.userInfo.user_id) {
       isMyCenter.value = true;
     }
     const res = await getUserFocusList({ user_id: user_id.value });

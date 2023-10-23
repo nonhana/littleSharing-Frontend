@@ -106,6 +106,9 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { useUserStore } from "@/store/user";
+import { useKeywordStore } from "@/store/keywords";
+import { useArticleLabelStore } from "@/store/articleLabels";
 import {
   login,
   register,
@@ -116,6 +119,10 @@ import {
 import { ElNotification } from "element-plus";
 
 const router = useRouter();
+
+const userStore = useUserStore();
+const keywordStore = useKeywordStore();
+const articleLabelStore = useArticleLabelStore();
 
 const loginForm = ref({
   account: "",
@@ -153,28 +160,19 @@ const useLogin = async () => {
       if (userInfoRes.data.result_code === 0) {
         userInfoRes.data.result.major =
           userInfoRes.data.result.major.split(",");
-        localStorage.setItem(
-          "user_info",
-          JSON.stringify(userInfoRes.data.result)
-        );
+        userStore.setUserInfo(userInfoRes.data.result);
       }
 
       // 获取用户关键词
-      const userKeywordsRes = await getUserKeywords();
+      const userKeywordsRes = await getUserKeywords({});
       if (userKeywordsRes.data.result_code === 0) {
-        localStorage.setItem(
-          "keywords_list",
-          JSON.stringify(userKeywordsRes.data.result)
-        );
+        keywordStore.setKeywordList(userKeywordsRes.data.result);
       }
 
       // 获取文章标签
       const articleLabelsRes = await getArticleLabels();
       if (articleLabelsRes.data.result_code === 0) {
-        localStorage.setItem(
-          "article_labels",
-          JSON.stringify(articleLabelsRes.data.result)
-        );
+        articleLabelStore.setArticleLabels(articleLabelsRes.data.result);
       }
       ElNotification({
         title: "登录成功！",

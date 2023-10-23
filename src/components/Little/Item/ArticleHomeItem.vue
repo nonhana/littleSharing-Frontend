@@ -154,7 +154,8 @@
 <script setup lang="ts">
 import { watch, onMounted, computed, ref } from "vue";
 import { ArticleInfo } from "@/types";
-import router from "@/router";
+import { useRouter } from "vue-router";
+import { useUserStore } from "@/store/user";
 import {
   addLike,
   getUserLikeList,
@@ -172,11 +173,16 @@ const props = defineProps<{
   articleList: ArticleInfo;
 }>();
 
+const router = useRouter();
+
+const userStore = useUserStore();
+
 const likemark = ref<number>(0);
 const collectionmark = ref<number>(0);
 const like_num = ref<number>(props.articleList.like_num);
 const collection_num = ref<number>(props.articleList.collection_num);
 const share_num = ref<number>(props.articleList.share_num);
+
 let cover_image = props.articleList.cover_image;
 let id = props.articleList.article_id;
 let article_status = props.articleList.article_status;
@@ -259,7 +265,7 @@ const addlike = async () => {
     like_num.value++;
     const paramsList = {
       article_id: id,
-      user_id: JSON.parse(localStorage.getItem("user_info") as string).id,
+      user_id: userStore.userInfo.user_id,
       update_date: present_date.value,
       action_type: 0,
     };
@@ -273,7 +279,7 @@ const addlike = async () => {
     const paramsList = {
       article_id: id,
       action_type: 1,
-      user_id: JSON.parse(localStorage.getItem("user_info") as string).id,
+      user_id: userStore.userInfo.user_id,
     };
     await addLike(paramsList);
     ElMessage({
@@ -287,7 +293,7 @@ const addcollection = async () => {
     collection_num.value++;
     const paramsList = {
       article_id: id,
-      user_id: JSON.parse(localStorage.getItem("user_info") as string).id,
+      user_id: userStore.userInfo.user_id,
       update_date: present_date.value,
       action_type: 0,
     };
@@ -301,7 +307,7 @@ const addcollection = async () => {
     const paramsList = {
       article_id: id,
       action_type: 1,
-      user_id: JSON.parse(localStorage.getItem("user_info") as string).id,
+      user_id: userStore.userInfo.user_id,
     };
     await addCollection(paramsList);
     ElMessage({

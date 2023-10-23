@@ -29,6 +29,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
+import { useUserStore } from "@/store/user";
 import {
   addLike,
   addCollection,
@@ -50,6 +51,9 @@ interface articleData {
 }
 
 const route = useRoute();
+
+const userStore = useUserStore();
+
 const currentArticleId: number = Number(route.params.id);
 
 let article_data = ref<articleData>({
@@ -68,7 +72,7 @@ const addlike = async () => {
     const paramsList = {
       article_id: currentArticleId,
       action_type: 0,
-      user_id: JSON.parse(localStorage.getItem("user_info") as string).id,
+      user_id: userStore.userInfo.user_id,
     };
     const res = await addLike(paramsList);
     if (res.data.result_code === 0) {
@@ -82,7 +86,7 @@ const addlike = async () => {
     const paramsList = {
       article_id: currentArticleId,
       action_type: 1,
-      user_id: JSON.parse(localStorage.getItem("user_info") as string).id,
+      user_id: userStore.userInfo.user_id,
     };
     const res = await addLike(paramsList);
     if (res.data.result_code === 0) {
@@ -99,7 +103,7 @@ const addcollection = async () => {
     const paramsList = {
       article_id: currentArticleId,
       action_type: 0,
-      user_id: JSON.parse(localStorage.getItem("user_info") as string).id,
+      user_id: userStore.userInfo.user_id,
     };
     const res = await addCollection(paramsList);
     if (res.data.result_code === 0) {
@@ -113,7 +117,7 @@ const addcollection = async () => {
     const paramsList = {
       article_id: currentArticleId,
       action_type: 1,
-      user_id: JSON.parse(localStorage.getItem("user_info") as string).id,
+      user_id: userStore.userInfo.user_id,
     };
     const res = await addCollection(paramsList);
     if (res.data.result_code === 0) {

@@ -124,6 +124,8 @@
 <script setup lang="ts">
 import { ref, computed, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
+import { useUserStore } from "@/store/user";
+import { HeaderUserInfo } from "@/utils/types";
 import {
   getUserInfo,
   getUserLikeNum,
@@ -133,25 +135,15 @@ import {
 } from "@/api/user";
 import { ElMessage } from "element-plus";
 
-interface UserInfo {
-  background_photo: string;
-  header_photo: string;
-  user_name: string;
-  sign: string;
-  follow_count: number;
-  follower_count: number;
-  total_like: number;
-  total_collect: number;
-  total_artcile: number;
-}
-
 const router = useRouter();
 const route = useRoute();
+
+const userStore = useUserStore();
 
 const gettingData = ref<boolean>(false);
 const isMyCenter = ref<boolean>(false);
 const isMyFocus = ref<boolean>(false);
-const user = ref<UserInfo>({
+const user = ref<HeaderUserInfo>({
   background_photo: "",
   header_photo: "",
   user_name: "",
@@ -220,17 +212,13 @@ watch(
     if (newV !== oldV) {
       gettingData.value = true;
       user_id.value = Number(newV);
-      if (
-        user_id.value ===
-        JSON.parse(localStorage.getItem("user_info") as string).user_id
-      ) {
+      if (user_id.value === userStore.userInfo.user_id) {
         isMyCenter.value = true;
       } else {
         isMyCenter.value = false;
       }
       const focusListRes = await getUserFocusList({
-        user_id: JSON.parse(localStorage.getItem("user_info") as string)
-          .user_id,
+        user_id: userStore.userInfo.user_id,
       });
       if (focusListRes.data.result_code === 0) {
         if (focusListRes.data.result.length > 0) {
@@ -272,12 +260,11 @@ const moveline = (num: number) => {
 const focusAction = async (num: number) => {
   if (num === 0) {
     const res = await focusUserActions({
-      first_user_id: JSON.parse(localStorage.getItem("user_info") as string)
-        .user_id,
+      first_user_id: userStore.userInfo.user_id,
       second_user_id: user_id.value,
       action_type: num,
     });
-    if (res.data.result_code == 0) {
+    if (res.data.result_code === 0) {
       isMyFocus.value = !isMyFocus.value;
       ElMessage({
         type: "success",
@@ -291,8 +278,7 @@ const focusAction = async (num: number) => {
     }
   } else {
     const res = await focusUserActions({
-      first_user_id: JSON.parse(localStorage.getItem("user_info") as string)
-        .user_id,
+      first_user_id: userStore.userInfo.user_id,
       second_user_id: user_id.value,
       action_type: num,
     });

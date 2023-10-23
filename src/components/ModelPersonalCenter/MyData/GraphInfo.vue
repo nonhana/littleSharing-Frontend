@@ -1,31 +1,54 @@
 <template>
   <div name="GraphInfo" class="GraphInfo-wrap">
     <div class="userinfo-charts">
-      <div ref="keywordschart" class="chart" style="width: 540px" />
-      <div
-        v-if="!noArticle"
-        ref="articletagschart"
-        class="chart"
-        style="width: 540px"
-      />
-      <div v-else class="chart" style="width: 540px">
-        <el-empty description="暂无数据"></el-empty>
+      <div v-loading="loading[0]">
+        <div
+          v-if="!noKeyWords"
+          ref="keywordschart"
+          class="chart"
+          style="width: 540px"
+        />
+        <div v-else class="chart" style="width: 540px">
+          <div style="display: flex; justify-content: center">
+            <h3>浏览文章关键词统计</h3>
+          </div>
+          <el-empty description="暂无数据" />
+        </div>
+      </div>
+
+      <div v-loading="loading[1]">
+        <div
+          v-if="!noArticle"
+          ref="articletagschart"
+          class="chart"
+          style="width: 540px"
+        />
+        <div v-else class="chart" style="width: 540px">
+          <div style="display: flex; justify-content: center">
+            <h3>发布文章类别统计</h3>
+          </div>
+          <el-empty description="暂无数据" />
+        </div>
       </div>
     </div>
     <br />
     <br />
-    <div ref="likedatachart" class="chart" />
+    <div v-loading="loading[2]" ref="likedatachart" class="chart" />
     <br />
     <br />
-    <div ref="collectdatachart" class="chart" />
+    <div v-loading="loading[3]" ref="collectdatachart" class="chart" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, watch, onMounted } from "vue";
 import { useRoute } from "vue-router";
+import { useUserStore } from "@/store/user";
+import { useKeywordStore } from "@/store/keywords";
 import * as echarts from "echarts";
+import { formatDate } from "@/utils";
 import {
+  getUserKeywords,
   getUserArticleTags,
   getLikedArticles,
   getCollectedArticles,
@@ -39,15 +62,20 @@ const collectdatachart = ref<HTMLDivElement>();
 
 const route = useRoute();
 
+const keywordStore = useKeywordStore();
+const userStore = useUserStore();
+
 const user_id = ref<number>(0);
 const liked_articles = ref<any[]>([]);
 const collected_articles = ref<any[]>([]);
 const date_list = ref<any[]>([]);
 const like_num_list = ref<any[]>([]);
 const collect_num_list = ref<any[]>([]);
+const noKeyWords = ref<boolean>(false);
 const noArticle = ref<boolean>(false);
+const loading = ref<boolean[]>([false, false, false, false]);
 
-const CompareDate = (d1: string, d2: string) => {
+const compareDate = (d1: string, d2: string) => {
   return new Date(d1.replace(/-/g, "\/")) > new Date(d2.replace(/-/g, "\/"));
 };
 const doHandleMonth = (month: number) => {
@@ -68,57 +96,105 @@ const getDay = (day: number) => {
   const dateStr = doHandleMonth(tDate);
   return tYear + "-" + monthStr + "-" + dateStr;
 };
-const getEchartKeyWords = () => {
+const getEchartKeyWords = async () => {
   // 1. 先用$refs获取到需要渲染echarts的div节点
   if (keywordschart) {
+    loading.value[0] = true;
     // 2. 初始化echarts
     const myChart = echarts.init(keywordschart.value as HTMLDivElement);
     // 3. 请求获取用户发布的文章类别数据
-    if (
-      JSON.parse(localStorage.getItem("keywords_list") as string).length > 0
-    ) {
-      // 4. 处理数据，将类别名称和数量组成echarts需要的格式
-      const data = JSON.parse(localStorage.getItem("keywords_list") as string)
-        .sort((a: any, b: any) => b.keywords_count - a.keywords_count)
-        .slice(0, 5)
-        .map((item: any) => {
-          return { name: item.keywords_name, value: item.keywords_count };
-        });
-      // 5. 书写配置项
-      const option = {
-        title: {
-          text: "浏览文章关键词统计",
-          x: "center",
-        },
-        tooltip: {
-          trigger: "item",
-          formatter: "{b}: {c} ({d}%)",
-        },
-        series: [
-          {
-            name: "类别",
-            type: "pie",
-            radius: "55%",
-            center: ["50%", "60%"],
-            data: data,
-            emphasis: {
-              itemStyle: {
-                shadowBlur: 10,
-                shadowOffsetX: 0,
-                shadowColor: "rgba(0, 0, 0, 0.5)",
+    if (user_id.value === userStore.userInfo.user_id) {
+      if (keywordStore.keywordInfo.length > 0) {
+        // 4. 处理数据，将类别名称和数量组成echarts需要的格式
+        const data = keywordStore.keywordInfo
+          .sort((a: any, b: any) => b.keywords_count - a.keywords_count)
+          .slice(0, 5)
+          .map((item: any) => {
+            return { name: item.keywords_name, value: item.keywords_count };
+          });
+        // 5. 书写配置项
+        const option = {
+          title: {
+            text: "浏览文章关键词统计",
+            x: "center",
+          },
+          tooltip: {
+            trigger: "item",
+            formatter: "{b}: {c} ({d}%)",
+          },
+          series: [
+            {
+              name: "类别",
+              type: "pie",
+              radius: "55%",
+              center: ["50%", "60%"],
+              data: data,
+              emphasis: {
+                itemStyle: {
+                  shadowBlur: 10,
+                  shadowOffsetX: 0,
+                  shadowColor: "rgba(0, 0, 0, 0.5)",
+                },
               },
             },
+          ],
+        };
+        // 6. 挂载配置项
+        myChart.setOption(option);
+      } else {
+        noKeyWords.value = true;
+      }
+    } else {
+      const keywords = (await getUserKeywords({ user_id: user_id.value })).data
+        .result;
+      if (keywords.length > 0) {
+        // 4. 处理数据，将类别名称和数量组成echarts需要的格式
+        const data = keywords
+          .sort((a: any, b: any) => b.keywords_count - a.keywords_count)
+          .slice(0, 5)
+          .map((item: any) => {
+            return { name: item.keywords_name, value: item.keywords_count };
+          });
+        // 5. 书写配置项
+        const option = {
+          title: {
+            text: "浏览文章关键词统计",
+            x: "center",
           },
-        ],
-      };
-      // 6. 挂载配置项
-      myChart.setOption(option);
+          tooltip: {
+            trigger: "item",
+            formatter: "{b}: {c} ({d}%)",
+          },
+          series: [
+            {
+              name: "类别",
+              type: "pie",
+              radius: "55%",
+              center: ["50%", "60%"],
+              data: data,
+              emphasis: {
+                itemStyle: {
+                  shadowBlur: 10,
+                  shadowOffsetX: 0,
+                  shadowColor: "rgba(0, 0, 0, 0.5)",
+                },
+              },
+            },
+          ],
+        };
+        // 6. 挂载配置项
+        myChart.setOption(option);
+      } else {
+        noKeyWords.value = true;
+      }
     }
+    loading.value[0] = false;
   }
 };
 const getEchartArticleTags = async () => {
   // 1. 先用$refs获取到需要渲染echarts的div节点
   if (articletagschart) {
+    loading.value[1] = true;
     // 2. 初始化echarts
     const myChart = echarts.init(articletagschart.value as HTMLDivElement);
     // 3. 请求获取用户发布的文章类别数据
@@ -164,10 +240,12 @@ const getEchartArticleTags = async () => {
     };
     // 6. 挂载配置项
     myChart.setOption(option);
+    loading.value[1] = false;
   }
 };
 const getEchartLikeData = () => {
   if (likedatachart) {
+    loading.value[2] = true;
     const myChart = echarts.init(likedatachart.value as HTMLDivElement);
     const option = {
       title: {
@@ -216,11 +294,13 @@ const getEchartLikeData = () => {
       ],
     };
     myChart.setOption(option);
+    loading.value[2] = false;
   }
 };
 const getEchartCollectData = () => {
   // 1.先用$refs获取到需要渲染echarts的div节点
   if (collectdatachart) {
+    loading.value[3] = true;
     // 2.初始化echarts
     const myChart = echarts.init(collectdatachart.value as HTMLDivElement);
     // 3.书写配置项
@@ -280,6 +360,7 @@ const getEchartCollectData = () => {
     };
     // 挂载书写好的配置项
     myChart.setOption(option);
+    loading.value[3] = false;
   }
 };
 
@@ -306,7 +387,7 @@ onMounted(async () => {
   date_list.value.forEach((item1) => {
     let total_num = 0;
     liked_articles.value.forEach((item2: any) => {
-      if (CompareDate(item1, item2.update_date)) {
+      if (compareDate(item1, formatDate(item2.createdAt))) {
         total_num++;
       }
     });
@@ -321,7 +402,7 @@ onMounted(async () => {
   date_list.value.forEach((item1) => {
     let total_num = 0;
     collected_articles.value.forEach((item2: any) => {
-      if (CompareDate(item1, item2.update_date)) {
+      if (compareDate(item1, formatDate(item2.createdAt))) {
         total_num++;
       }
     });

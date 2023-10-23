@@ -103,7 +103,8 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from "vue";
-import router from "@/router";
+import { useRouter } from "vue-router";
+import { useUserStore } from "@/store/user";
 import { deleteArticle } from "@/api/article";
 import { addCollection } from "@/api/user";
 import { ElMessageBox, ElNotification } from "element-plus";
@@ -116,6 +117,10 @@ const props = defineProps<{
 const emits = defineEmits<{
   (e: "getArticleList", data: boolean): void;
 }>();
+
+const router = useRouter();
+
+const userStore = useUserStore();
 
 const routeStatus = ref<number>(0);
 const id = ref<number>(props.articleList.article_id);
@@ -195,7 +200,7 @@ const articlechoices = (num: string) => {
       const paramsList = {
         article_id: id.value,
         action_type: 1,
-        user_id: JSON.parse(localStorage.getItem("user_info") as string).id,
+        user_id: userStore.userInfo.user_id,
       };
       const res = await addCollection(paramsList);
       if (res.data.result_code === 0) {

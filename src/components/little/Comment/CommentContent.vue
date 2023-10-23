@@ -76,6 +76,7 @@ import {
 import { getArticleMain } from "@/api/article";
 import { formatDate } from "@/utils/index";
 import { useRoute, useRouter } from "vue-router";
+import { useUserStore } from "@/store/user";
 import { ElNotification, ElMessage } from "element-plus";
 import LikeBtn from "@/components/Little/Button/LikeBtn.vue";
 import CommentBtn from "@/components/Little/Button/CommentBtn.vue";
@@ -100,6 +101,8 @@ const emits = defineEmits<{
 
 const route = useRoute();
 const router = useRouter();
+
+const userStore = useUserStore();
 
 const message_send = ref<boolean>(true);
 const deleteshow = ref<boolean>(false);
@@ -184,7 +187,7 @@ const openComment = () => {
 };
 const addlike = async (id: number) => {
   //判断是否登录
-  if (!localStorage.getItem("user_info")) {
+  if (!userStore.userInfo) {
     ElNotification({
       title: "操作失败",
       message: "您还未登录，无法进行此操作",
@@ -230,8 +233,7 @@ watch(
   () => props.commentList,
   () => {
     //判断是否有删除权限
-    userId.value ==
-    JSON.parse(localStorage.getItem("user_info") as string).user_id
+    userId.value === userStore.userInfo.user_id
       ? ((deleteshow.value = true), (message_send.value = false))
       : ((deleteshow.value = false), (message_send.value = true));
   },

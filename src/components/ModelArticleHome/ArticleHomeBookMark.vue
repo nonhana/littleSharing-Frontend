@@ -36,21 +36,20 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import router from "@/router";
+import { useRouter } from "vue-router";
+import { useUserStore } from "@/store/user";
+import { BookMarkInfo } from "@/utils/types";
 import { addBookMark, removeBookMark, getBookMark } from "@/api/article";
 import { ElNotification, ElMessageBox } from "element-plus";
 
-type BookMarkInfo = {
-  article_id: number;
-  bookmark_id: number;
-  topHeight: string;
-  user_id: number;
-};
+const router = useRouter();
 
-let topHeight = ref<string>("0px");
-let bookmarks = ref<BookMarkInfo[]>([]);
-let bookmark_exist = ref<number>(0);
-let presentBookMarkPosition = ref<string>("0px");
+const userStore = useUserStore();
+
+const topHeight = ref<string>("0px");
+const bookmarks = ref<BookMarkInfo[]>([]);
+const bookmark_exist = ref<number>(0);
+const presentBookMarkPosition = ref<string>("0px");
 
 const scroll = () => {
   topHeight.value = window.scrollY.toFixed(2) + "px";
@@ -60,7 +59,7 @@ const addbookmark = async () => {
     const paramsList = {
       article_id: Number(router.currentRoute.value.params.id),
       topHeight: topHeight.value,
-      user_id: JSON.parse(localStorage.getItem("user_info") as string).id,
+      user_id: userStore.userInfo.user_id,
     };
     const res = await addBookMark(paramsList);
     if (res.data.result_code === 0) {
@@ -102,7 +101,7 @@ const deletebookmark = async () => {
   bookmark_exist.value = 0;
   const paramsList = {
     article_id: Number(router.currentRoute.value.params.id),
-    user_id: JSON.parse(localStorage.getItem("user_info") as string).id,
+    user_id: userStore.userInfo.user_id,
   };
   const res = await removeBookMark(paramsList);
   if (res.data.result_code === 0) {
@@ -114,9 +113,7 @@ const deletebookmark = async () => {
 };
 
 onMounted(async () => {
-  const userId = JSON.parse(
-    localStorage.getItem("user_info") as string
-  ).user_id;
+  const userId = userStore.userInfo.user_id;
   const articleId = Number(router.currentRoute.value.params.id);
 
   window.addEventListener("scroll", scroll);

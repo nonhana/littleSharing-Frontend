@@ -20,6 +20,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRoute } from "vue-router";
+import { useUserStore } from "@/store/user";
 import { commentAction } from "@/api/comment";
 import { ElNotification } from "element-plus";
 
@@ -46,10 +47,12 @@ const emits = defineEmits<{
 
 const route = useRoute();
 
+const userStore = useUserStore();
+
 const commentContent = ref<string>("");
 
 const inputComment = async () => {
-  if (!localStorage.getItem("user_info")) {
+  if (!userStore.userInfo) {
     ElNotification({
       title: "操作失败",
       message: "您还未登录，无法进行此操作",

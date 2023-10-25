@@ -10,7 +10,5 @@ export const useArticleLabelStore = defineStore("articleLabel", {
       this.articleLabelInfo = articleLabels;
     },
   },
-  persist: {
-    enabled: true,
-  },
+  persist: true,
 });

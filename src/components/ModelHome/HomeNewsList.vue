@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import { ArticleInfo } from "@/types";
+import { ArticleInfo } from "@/utils/types";
 import { getArticleList } from "@/api/article";
 import NewHomeItem from "@/components/Little/Item/NewHomeItem.vue";
 

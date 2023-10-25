@@ -153,7 +153,7 @@
 
 <script setup lang="ts">
 import { watch, onMounted, computed, ref } from "vue";
-import { ArticleInfo } from "@/types";
+import { ArticleInfo } from "@/utils/types";
 import { useRouter } from "vue-router";
 import { useUserStore } from "@/store/user";
 import {

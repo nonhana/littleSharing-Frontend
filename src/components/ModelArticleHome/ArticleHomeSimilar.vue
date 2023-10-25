@@ -47,7 +47,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, nextTick } from "vue";
-import { ArticleInfo } from "@/types";
+import { ArticleInfo } from "@/utils/types";
 import { useRoute } from "vue-router";
 import { getSimilarArticles, getArticleMain } from "@/api/article";
 import LittleArticleItem from "@/components/Little/Item/LittleArticleItem.vue";

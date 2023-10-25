@@ -60,7 +60,7 @@
 
 <script setup lang="ts">
 import { useRouter } from "vue-router";
-import { ArticleInfo } from "@/types";
+import { ArticleInfo } from "@/utils/types";
 
 const router = useRouter();
 

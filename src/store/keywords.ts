@@ -10,7 +10,5 @@ export const useKeywordStore = defineStore("keyword", {
       this.keywordInfo = keywords;
     },
   },
-  persist: {
-    enabled: true,
-  },
+  persist: true,
 });

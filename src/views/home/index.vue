@@ -42,7 +42,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref, nextTick } from "vue";
-import { ArticleInfo } from "@/types";
+import { ArticleInfo } from "@/utils/types";
 import { getArticleList } from "@/api/article";
 import FilterBar from "@/components/Little/Tool/FilterBar.vue";
 import HomeNewsList from "@/components/ModelHome/HomeNewsList.vue";

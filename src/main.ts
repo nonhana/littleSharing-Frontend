@@ -5,7 +5,7 @@ import ElementPlus from "element-plus";
 import "./styles/index.scss"; // Element Plus自定义主题
 import "element-plus/dist/index.css";
 import { createPinia } from "pinia";
-import piniaPersist from "pinia-plugin-persist";
+import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 import "animate.css";
 import router from "./router";
 // 全局组件
@@ -24,11 +24,11 @@ router.beforeEach((to, _, next) => {
   }
 });
 
-const pinia = createPinia();
-pinia.use(piniaPersist); // 引入pinia持久化插件
+const store = createPinia();
+store.use(piniaPluginPersistedstate); // 引入pinia持久化插件
 
 app.use(ElementPlus);
-app.use(pinia);
+app.use(store);
 app.use(router);
 
 // 注册全局组件

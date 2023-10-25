@@ -190,11 +190,11 @@
           }"
         >
           <el-row type="flex" justify="space-between">
-            <el-form-item prop="article_details">
+            <el-form-item prop="article_md">
               <MdEditor
                 style="height: 630px; width: 1340px"
                 @on-upload-img="onUploadImg"
-                v-model="ruleForm.article_details"
+                v-model="ruleForm.article_md"
               />
             </el-form-item>
           </el-row>
@@ -238,24 +238,20 @@ const editStatus = ref<boolean>(false);
 const optionsSubject = ref<any[]>([]);
 const value = ref<any[]>([]);
 const ruleForm = ref<EditArticleInfo>({
-  // 文章信息
   article_status: "1", //默认为转载，1-转载，2-原创
   article_link: "",
   article_title: "",
   article_major: [],
   article_labels: [],
   article_introduce: "",
-  article_details: "",
   article_md: "",
-  // 作者id
   author_id: userStore.userInfo.user_id,
 });
-const html = ref<string>(""); // 通过markdown及时转的html
 const rules = ref<any>({
   article_title: [
     { required: true, message: "请输入文章标题", trigger: "blur" },
   ],
-  article_details: [
+  article_md: [
     { required: true, message: "请输入文章详细内容", trigger: "blur" },
   ],
   article_introduce: [
@@ -328,24 +324,19 @@ const submitArticle = async () => {
       ruleForm.value.article_title &&
       ruleForm.value.article_major &&
       ruleForm.value.article_introduce &&
-      ruleForm.value.article_details) ||
+      ruleForm.value.article_md) ||
     (ruleForm.value.article_status == "2" &&
       ruleForm.value.article_title &&
       ruleForm.value.article_major &&
       ruleForm.value.article_introduce &&
-      ruleForm.value.article_details)
+      ruleForm.value.article_md)
   ) {
-    // 统一处理ruleForm
-    ruleForm.value.article_md = ruleForm.value.article_details;
-    ruleForm.value.article_details = html.value;
-
     // 将所有的标签一并提交给后端数据库
     await addArticleLabel({ label_list: ruleForm.value.article_labels });
 
     // 发布文章
     if (!editStatus.value) {
       await postArticle(ruleForm.value);
-      localStorage.removeItem("not_saved_article_info");
     } else {
       await editArticle({
         article_id: Number(route.query.article_id),
@@ -361,10 +352,10 @@ const submitArticle = async () => {
       article_major: [],
       article_labels: [],
       article_introduce: "",
-      article_details: "",
       article_md: "",
       author_id: userStore.userInfo.user_id,
     };
+    localStorage.removeItem("not_saved_article_info");
     ElNotification({
       title: "发布成功！",
       message: "快快前往首页看看吧！",
@@ -400,7 +391,7 @@ onMounted(async () => {
         const localData = JSON.parse(
           localStorage.getItem("not_saved_article_info") as string
         );
-        ruleForm.value.article_details = localData.article_md;
+        ruleForm.value.article_md = localData.article_md;
         ruleForm.value.article_introduce = localData.article_introduce;
         ruleForm.value.article_labels = localData.article_labels;
         ruleForm.value.article_link = localData.article_link;
@@ -434,7 +425,7 @@ onMounted(async () => {
         ...sourceArticle
       } = res.data.result;
 
-      ruleForm.value.article_details = sourceArticle.article_md;
+      ruleForm.value.article_md = sourceArticle.article_md;
       ruleForm.value.article_introduce = sourceArticle.article_introduce;
       ruleForm.value.article_labels = sourceArticle.article_labels;
       ruleForm.value.article_link = sourceArticle.article_link;

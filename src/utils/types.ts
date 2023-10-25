@@ -4,7 +4,6 @@
 // 文章信息
 export interface ArticleInfo {
   article_id: number;
-  article_details: string;
   article_introduce: string;
   article_labels: Array<string>;
   article_link?: string;
@@ -37,7 +36,6 @@ export interface EditArticleInfo {
   article_major: string[];
   article_labels: string[];
   article_introduce: string;
-  article_details: string;
   article_md: string;
   author_id: number;
 }

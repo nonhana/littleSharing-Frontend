@@ -22,7 +22,7 @@ export const getArticleList = () => {
 
 // 上传文章
 export const postArticle = (paramsList: {
-  article_details: string;
+  article_md: string;
   article_introduce: string;
   article_labels: string[];
   article_link?: string;
@@ -97,7 +97,7 @@ export const deleteArticle = (paramsList: { article_id: number }) => {
 // 编辑文章
 export const editArticle = (paramsList: {
   article_id: number;
-  article_details: string;
+  article_md: string;
   article_introduce: string;
   article_labels: string[];
   article_link?: string;

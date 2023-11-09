@@ -1,7 +1,7 @@
 <template>
   <div class="MessageUsers-wrap">
     <div class="head">
-      <img src="@/statics/svg/MessageUsersHead.svg" />
+      <img src="@/assets/svgs/MessageUsersHead.svg" />
       <span>用户私信</span>
     </div>
     <div class="chat-window">

@@ -2,7 +2,7 @@
   <div class="MessageReplies-wrap">
     <div class="head">
       <div style="display: flex; align-items: center">
-        <img src="@/statics/svg/MessageRepliesHead.svg" />
+        <img src="@/assets/svgs/MessageRepliesHead.svg" />
         <span>回复我的</span>
       </div>
       <el-button

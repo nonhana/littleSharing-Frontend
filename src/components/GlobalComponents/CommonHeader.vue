@@ -2,13 +2,13 @@
   <div class="CommonHeader-wrap">
     <div class="title">
       <div style="cursor: pointer" @click="push(0)">
-        <img style="width: 36px" src="@/statics/svg/Logo.svg" />
+        <img style="width: 36px" src="@/assets/svgs/Logo.svg" />
       </div>
       <span>&nbsp;&nbsp;兴趣使然的学术资源分享小站</span>
     </div>
 
     <div class="search_box">
-      <img src="@/statics/svg/Search.svg" />
+      <img src="@/assets/svgs/Search.svg" />
       <el-input
         v-model="keyvalue"
         placeholder="输入关键字进行检索~"
@@ -30,7 +30,7 @@
             top: `${MessageSvgTop1}px`,
           }"
         >
-          <img src="@/statics/svg/Message_1.svg" />
+          <img src="@/assets/svgs/Message_1.svg" />
         </div>
         <div
           style="position: relative; transition: all 0.3s"
@@ -39,7 +39,7 @@
             transform: svgChange,
           }"
         >
-          <img src="@/statics/svg/Message_2.svg" />
+          <img src="@/assets/svgs/Message_2.svg" />
         </div>
       </div>
 
@@ -60,7 +60,7 @@
             top: `${PostSvgTop1}px`,
           }"
         >
-          <img src="@/statics/svg/PostArticle_1.svg" />
+          <img src="@/assets/svgs/PostArticle_1.svg" />
         </div>
         <div
           style="position: relative; transition: all 0.3s"
@@ -69,7 +69,7 @@
             transform: svgChange,
           }"
         >
-          <img src="@/statics/svg/PostArticle_2.svg" />
+          <img src="@/assets/svgs/PostArticle_2.svg" />
         </div>
       </div>
 
@@ -84,13 +84,13 @@
         <el-dropdown-menu>
           <el-dropdown-item command="1" style="display: flex">
             <div style="margin: 6px 6px 0 0">
-              <img src="@/statics/svg/PersonalCenter.svg" />
+              <img src="@/assets/svgs/PersonalCenter.svg" />
             </div>
             <span>个人主页</span>
           </el-dropdown-item>
           <el-dropdown-item command="2" style="display: flex">
             <div style="margin: 6px 6px 0 0">
-              <img src="@/statics/svg/ExitLogin.svg" />
+              <img src="@/assets/svgs/ExitLogin.svg" />
             </div>
             <span>退出登录</span>
           </el-dropdown-item>

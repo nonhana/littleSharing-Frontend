@@ -81,7 +81,7 @@
         @mouseleave="moveline(lineCnt)"
         @click="push(1)"
       >
-        <img src="@/statics/svg/MyArticles.svg" />
+        <img src="@/assets/svgs/MyArticles.svg" />
         <span :class="className[0]">我的文章</span>
       </div>
       <div
@@ -89,7 +89,7 @@
         @mouseleave="moveline(lineCnt)"
         @click="push(2)"
       >
-        <img src="@/statics/svg/MyCollections.svg" />
+        <img src="@/assets/svgs/MyCollections.svg" />
         <span :class="className[1]">我的收藏</span>
       </div>
       <div
@@ -97,7 +97,7 @@
         @mouseleave="moveline(lineCnt)"
         @click="push(3)"
       >
-        <img src="@/statics/svg/MyInfo.svg" />
+        <img src="@/assets/svgs/MyInfo.svg" />
         <span :class="className[2]">个人资料</span>
       </div>
       <div
@@ -105,7 +105,7 @@
         @mouseleave="moveline(lineCnt)"
         @click="push(4)"
       >
-        <img src="@/statics/svg/MyFocus.svg" />
+        <img src="@/assets/svgs/MyFocus.svg" />
         <span :class="className[3]">我的关注</span>
       </div>
       <div
@@ -113,7 +113,7 @@
         @mouseleave="moveline(lineCnt)"
         @click="push(5)"
       >
-        <img src="@/statics/svg/MyData.svg" />
+        <img src="@/assets/svgs/MyData.svg" />
         <span :class="className[4]">我的数据</span>
       </div>
       <div class="line" :style="{ left: `${linePosition}px` }"></div>

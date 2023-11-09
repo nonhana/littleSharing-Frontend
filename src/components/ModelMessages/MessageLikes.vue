@@ -2,7 +2,7 @@
   <div class="MessageLikes-wrap">
     <div class="head">
       <div style="display: flex; align-items: center">
-        <img src="@/statics/svg/MessageLikesHead.svg" />
+        <img src="@/assets/svgs/MessageLikesHead.svg" />
         <span>赞我的</span>
       </div>
       <el-button

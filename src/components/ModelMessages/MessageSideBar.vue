@@ -1,7 +1,7 @@
 <template>
   <div class="MessageSideBar-wrap">
     <div class="title">
-      <img src="@/statics/svg/MessageSideBar.svg" />
+      <img src="@/assets/svgs/MessageSideBar.svg" />
       <span>我的消息</span>
     </div>
     <div style="margin: 30px 0 0 0">

@@ -2,7 +2,7 @@
   <div class="MessageCollections-wrap">
     <div class="head">
       <div style="display: flex; align-items: center">
-        <img src="@/statics/svg/MessageCollectionsHead.svg" />
+        <img src="@/assets/svgs/MessageCollectionsHead.svg" />
         <span>收藏我的</span>
       </div>
       <el-button

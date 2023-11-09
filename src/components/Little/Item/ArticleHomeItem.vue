@@ -28,13 +28,13 @@
 
         <el-dropdown @command="articlechoices">
           <div class="el-dropdown-link more">
-            <img src="@/statics/svg/More.svg" />
+            <img src="@/assets/svgs/More.svg" />
           </div>
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item command="1" style="display: flex">
                 <div style="margin: 6px 6px 0 0">
-                  <img src="@/statics/svg/Report.svg" />
+                  <img src="@/assets/svgs/Report.svg" />
                 </div>
                 <span>举报</span>
               </el-dropdown-item>

@@ -29,7 +29,7 @@
           :style="{ transform: rorate, top: topHeight }"
           @click="foldList()"
         >
-          <img src="@/statics/svg/FoldList.svg" />
+          <img src="@/assets/svgs/FoldList.svg" />
         </div>
       </el-row>
     </el-row>

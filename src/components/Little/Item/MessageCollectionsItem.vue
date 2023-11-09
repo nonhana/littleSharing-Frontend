@@ -27,7 +27,7 @@
           <span>{{ collectMessageInfo.article_info }}</span>
         </div>
         <div class="button">
-          <img src="@/statics/svg/MessageActions.svg" />
+          <img src="@/assets/svgs/MessageActions.svg" />
         </div>
       </div>
     </el-row>

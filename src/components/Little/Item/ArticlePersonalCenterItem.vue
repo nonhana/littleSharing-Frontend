@@ -23,19 +23,19 @@
 
       <el-dropdown @command="articlechoices">
         <div class="more">
-          <img src="@/statics/svg/More.svg" />
+          <img src="@/assets/svgs/More.svg" />
         </div>
         <template #dropdown>
           <el-dropdown-menu v-if="routeStatus == 0">
             <el-dropdown-item command="1" style="display: flex">
               <div style="margin: 6px 6px 0 0">
-                <img src="@/statics/svg/ReEdit.svg" />
+                <img src="@/assets/svgs/ReEdit.svg" />
               </div>
               <span>重新编辑</span></el-dropdown-item
             >
             <el-dropdown-item command="2" style="display: flex">
               <div style="margin: 6px 6px 0 0">
-                <img src="@/statics/svg/DeleteArticle.svg" />
+                <img src="@/assets/svgs/DeleteArticle.svg" />
               </div>
               <span>删除文章</span></el-dropdown-item
             >
@@ -43,7 +43,7 @@
           <el-dropdown-menu v-if="routeStatus == 1">
             <el-dropdown-item command="3" style="display: flex">
               <div style="margin: 6px 6px 0 0">
-                <img src="@/statics/svg/CancelCollect.svg" />
+                <img src="@/assets/svgs/CancelCollect.svg" />
               </div>
               <span>取消收藏</span></el-dropdown-item
             >
@@ -72,19 +72,19 @@
       <el-col :span="0.5">
         <el-row type="flex" class="action_list">
           <div>
-            <img src="@/statics/svg/LittleLike.svg" />
+            <img src="@/assets/svgs/LittleLike.svg" />
             <span>{{ like_num }}</span>
           </div>
           <div>
-            <img src="@/statics/svg/LittleCollection.svg" />
+            <img src="@/assets/svgs/LittleCollection.svg" />
             <span>{{ collection_num }}</span>
           </div>
           <div>
-            <img src="@/statics/svg/LittleShare.svg" />
+            <img src="@/assets/svgs/LittleShare.svg" />
             <span>{{ share_num }}</span>
           </div>
           <div>
-            <img src="@/statics/svg/LittleComment.svg" />
+            <img src="@/assets/svgs/LittleComment.svg" />
             <span>{{ comment_num }}</span>
           </div>
         </el-row>

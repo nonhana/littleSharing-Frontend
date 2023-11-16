@@ -1,6 +1,7 @@
 <template>
   <div
     class="Comment-wrap"
+    id="comment"
     :style="{ height: `${limitli * 108 + initheight}px+200` }"
   >
     <el-row>

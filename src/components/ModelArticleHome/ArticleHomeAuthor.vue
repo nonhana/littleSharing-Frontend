@@ -27,7 +27,7 @@
     </div>
 
     <el-divider
-      ><span style="font-size: 10px; color: #9e9e9e"
+      ><span style="font-size: 12px; color: #9e9e9e"
         >ta的其他文章</span
       ></el-divider
     >
@@ -148,7 +148,7 @@ onMounted(async () => {
   }
   .author_info {
     font-family: SourceHanSansCN-Regular;
-    font-size: 10px;
+    font-size: 12px;
     font-weight: normal;
     color: #3d3d3d;
   }

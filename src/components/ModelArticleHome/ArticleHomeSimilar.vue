@@ -96,7 +96,7 @@ onMounted(async () => {
       article_id: Number(route.params.id),
     })
   ).data.result;
-  similar_article_list.value = similarArticleList;
+  similar_article_list.value = similarArticleList.slice(0, 3); // 只取前三个
 
   loadingStatus.value = false;
   await nextTick();

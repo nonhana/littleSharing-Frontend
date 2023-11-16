@@ -374,7 +374,7 @@ watch(
     align-items: center;
     span {
       font-family: SourceHanSansCN-Regular;
-      font-size: 10px;
+      font-size: 12px;
       font-weight: normal;
       color: #ffffff;
     }
@@ -391,7 +391,7 @@ watch(
     > * span {
       height: 14px;
       font-family: SourceHanSansCN-Regular;
-      font-size: 10px;
+      font-size: 12px;
       font-weight: normal;
       color: #3d3d3d;
     }
@@ -448,7 +448,7 @@ watch(
     align-items: center;
     span {
       font-family: SourceHanSansCN-Regular;
-      font-size: 10px;
+      font-size: 12px;
       font-weight: normal;
       color: #ffffff;
     }

@@ -4,21 +4,21 @@
       <span class="title">文章数据栏</span>
     </el-row>
     <div style="display: flex; margin: 10px 0 0 0; justify-content: center">
-      <div @click="addlike()">
+      <div @click="addlike">
         <like-btn :likemark="likemark" />
       </div>
       <span class="datafont">{{ article_data.like_num }}</span>
-      <div @click="addcollection()">
+      <div @click="addcollection">
         <collection-btn :collectionmark="collectionmark" />
       </div>
       <span class="datafont">{{ article_data.collection_num }}</span>
 
-      <div @click="addshare()">
+      <div @click="addshare">
         <share-btn />
       </div>
       <span class="datafont">{{ article_data.share_num }}</span>
 
-      <div @click="addcomment()">
+      <div @click="jumpToComment">
         <comment-btn />
       </div>
       <span class="datafont">{{ article_data.comment_num }}</span>
@@ -140,8 +140,13 @@ const addshare = () => {
     },
   });
 };
-const addcomment = () => {
-  article_data.value.comment_num++;
+// 点击跳转到评论区
+const jumpToComment = () => {
+  const element = document.getElementById("comment");
+  if (element) {
+    const top = element.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo({ top, behavior: "smooth" });
+  }
 };
 
 onMounted(async () => {

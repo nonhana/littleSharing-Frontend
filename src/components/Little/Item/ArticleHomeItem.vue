@@ -475,7 +475,7 @@ onMounted(async () => {
 
   .article_num span {
     font-family: SourceHanSansCN-Regular;
-    font-size: 10px;
+    font-size: 12px;
     font-weight: normal;
     color: #ffffff;
   }
@@ -565,7 +565,7 @@ onMounted(async () => {
 
   .author_university span {
     font-family: SourceHanSansCN-Regular;
-    font-size: 10px;
+    font-size: 12px;
     font-weight: normal;
     color: #ffffff;
   }

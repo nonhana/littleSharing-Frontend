@@ -141,7 +141,7 @@ const push = (num: number) => {
 
   .article_introduce {
     font-family: SourceHanSansCN-Medium;
-    font-size: 10px;
+    font-size: 12px;
     font-weight: normal;
     color: #9e9e9e;
     /* 以下是显示固定行数的文字的css，多余文字用省略号表示 */
@@ -193,7 +193,7 @@ const push = (num: number) => {
     align-items: center;
     span {
       font-family: SourceHanSansCN-Regular;
-      font-size: 10px;
+      font-size: 12px;
       font-weight: normal;
       color: #ffffff;
     }
@@ -201,7 +201,7 @@ const push = (num: number) => {
 
   .label_font {
     font-family: SourceHanSansCN-Regular;
-    font-size: 10px;
+    font-size: 12px;
     font-weight: normal;
     color: #3d3d3d;
   }

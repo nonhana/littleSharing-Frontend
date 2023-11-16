@@ -101,7 +101,7 @@ const push = (num: number) => {
 
   .article_introduce {
     font-family: SourceHanSansCN-Regular;
-    font-size: 10px;
+    font-size: 12px;
     font-weight: normal;
     color: #3d3d3d;
     cursor: pointer;
@@ -142,7 +142,7 @@ const push = (num: number) => {
 
   .author_name {
     font-family: SourceHanSansCN-Regular;
-    font-size: 10px;
+    font-size: 12px;
     font-weight: bold;
     color: #3d3d3d;
     cursor: pointer;
@@ -155,7 +155,7 @@ const push = (num: number) => {
 
   .article_uploaddate {
     font-family: SourceHanSansCN-Regular;
-    font-size: 10px;
+    font-size: 12px;
     font-weight: normal;
     color: #aeaeae;
   }

@@ -26,7 +26,7 @@
           </div>
         </el-row>
 
-        <el-row style="width: 100%; margin-bottom: 10px">
+        <el-row style="width: 640px; margin-bottom: 10px">
           <span class="details">{{ details }}</span>
         </el-row>
 
@@ -297,7 +297,7 @@ onMounted(async () => {
   }
   .details {
     margin-bottom: 10px;
-    width: 80%;
+    width: 100%;
     word-break: break-all;
     font-family: SourceHanSansCN-Normal;
     font-size: 14px;

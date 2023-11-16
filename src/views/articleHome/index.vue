@@ -1,7 +1,13 @@
 <template>
   <div class="index">
     <el-row type="flex" justify="center">
-      <div class="sideBar" style="left: 175px">
+      <div
+        :style="{
+          top: offset + 'px',
+        }"
+        style="margin-right: 30px"
+        class="sideBar"
+      >
         <el-row>
           <ArticleHomeSimilar />
         </el-row>
@@ -16,7 +22,13 @@
         <ArticleHomeMain />
         <Comment />
       </div>
-      <div class="sideBar" style="right: 175px">
+      <div
+        :style="{
+          top: offset + 'px',
+        }"
+        style="margin-left: 30px"
+        class="sideBar"
+      >
         <ArticleHomeAuthor />
       </div>
     </el-row>
@@ -24,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 import { useRoute } from "vue-router";
 import { increaseArticleViews } from "@/api/article";
 import ArticleHomeMain from "@/components/ModelArticleHome/ArticleHomeMain.vue";
@@ -34,27 +46,30 @@ import ArticleHomeBookMark from "@/components/ModelArticleHome/ArticleHomeBookMa
 import ArticleHomeData from "@/components/ModelArticleHome/ArticleHomeData.vue";
 import Comment from "@/components/Little/Comment/Comment.vue";
 
-interface articleData {
-  like_num: number;
-  collection_num: number;
-  share_num: number;
-  comment_num: number;
-}
-
 const route = useRoute();
 
-const article_data = ref<articleData>({
+const article_data = ref({
   like_num: 0,
   collection_num: 0,
   share_num: 0,
   comment_num: 0,
 });
+const offset = ref<number>(0); // 用于控制侧边栏到顶部的距离
+
+const updatePosition = () => {
+  offset.value = window.scrollY;
+};
 
 onMounted(async () => {
+  window.addEventListener("scroll", updatePosition); // 加上全局的滚动监听
   const articleId = Number(route.params.id);
   await increaseArticleViews({
     article_id: articleId,
   });
+});
+
+onUnmounted(() => {
+  window.removeEventListener("scroll", updatePosition); // 组件销毁时移除监听
 });
 </script>
 
@@ -62,7 +77,8 @@ onMounted(async () => {
 .index {
   width: 100%;
   .sideBar {
-    position: fixed;
+    position: relative;
+    height: 0px;
   }
   .actionbox {
     padding: 10px;

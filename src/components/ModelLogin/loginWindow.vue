@@ -318,7 +318,7 @@ const turnToLogin = () => {
 
 .register span {
   font-family: SourceHanSansCN-Medium;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 500;
   line-height: 17px;
   color: #3d3d3d;

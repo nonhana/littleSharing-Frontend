@@ -26,8 +26,8 @@ interface DEVRequestConfig<T, R> extends RequestConfig<DEVResponse<R>> {
 
 // 创建axios的实例
 const request = new Request({
-  baseURL: 'http://127.0.0.1:4000', // 本地服务器环境(api-server)
-  // baseURL: 'https://www.nonhana.site:4000', // AWS服务端环境
+  // baseURL: 'http://127.0.0.1:4000', // 本地服务器环境(api-server)
+  baseURL: 'https://www.nonhana.site:4000', // AWS服务端环境
   timeout: 1000 * 60 * 5, // 超时时间5分钟
   interceptors: {
     // 请求拦截器

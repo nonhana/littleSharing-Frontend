@@ -1,5 +1,5 @@
 <template>
-  <div class="CommentContent-wrap">
+  <div class="commentcontent-wrap">
     <el-row>
       <div>
         <img
@@ -10,7 +10,7 @@
         />
       </div>
 
-      <div style="margin-left: 15px">
+      <div style="margin-left: 15px; max-width: 600px">
         <el-row>
           <div class="username">
             <span
@@ -26,19 +26,19 @@
           </div>
         </el-row>
 
-        <el-row style="width: 640px; margin-bottom: 10px">
+        <el-row style="margin-bottom: 10px; width: 640px">
           <span class="details">{{ details }}</span>
         </el-row>
 
         <el-row type="flex">
-          <div class="dataAbout">
+          <div class="data-about">
             <div>
               <span class="date">{{ date }}</span>
             </div>
             <div>
               <div class="response">
                 <input
-                  class="responseInput"
+                  class="response-input"
                   type="checkbox"
                   :checked="isShow"
                   disabled
@@ -67,167 +67,159 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from "vue";
+import { ref, computed, watch, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useStore } from '@/store'
 import {
   commentAction,
   commentLikeAction,
-  getCommentLikeList,
-} from "@/api/comment";
-import { getArticleMain } from "@/api/article";
-import { formatDate } from "@/utils/index";
-import { useRoute, useRouter } from "vue-router";
-import { useUserStore } from "@/store/user";
-import { ElNotification, ElMessage } from "element-plus";
-import LikeBtn from "@/components/Little/Button/LikeBtn.vue";
-import CommentBtn from "@/components/Little/Button/CommentBtn.vue";
+  getCommentLikeList
+} from '@/api/comment'
+import { getArticleMain } from '@/api/article'
+import { formatDate } from '@/utils'
+import type { Level0Comment, Level1Comment } from '@/api/comment/types'
+import { ElNotification, ElMessage } from 'element-plus'
+import LikeBtn from '@/components/Little/Button/LikeBtn.vue'
+import CommentBtn from '@/components/Little/Button/CommentBtn.vue'
 
 const props = defineProps<{
-  commentList?: any;
-  responseList?: any;
-  index?: number;
-  indexNext?: number;
-  isShow?: boolean;
-  commentatorId?: number;
-}>();
+  commentList?: Level0Comment
+  responseList?: Level1Comment
+  index?: number
+  indexNext?: number
+  isShow?: boolean
+  commentatorId?: number
+}>()
 
 const emits = defineEmits<{
   (
-    e: "openComment",
+    e: 'openComment',
     index: number | undefined,
     indexNext: number | undefined
-  ): void;
-  (e: "refreshComment"): void;
-}>();
+  ): void
+  (e: 'refreshComment'): void
+}>()
 
-const route = useRoute();
-const router = useRouter();
+const route = useRoute()
+const router = useRouter()
 
-const userStore = useUserStore();
+const { userStore } = useStore()
 
-const message_send = ref<boolean>(true);
-const deleteshow = ref<boolean>(false);
-const likemark = ref<number>(0);
+const message_send = ref<boolean>(true)
+const deleteshow = ref<boolean>(false)
+const likemark = ref<number>(0)
 const likenum = ref<number>(
-  props.commentList ? props.commentList.likes : props.responseList.likes
-);
-const authorId = ref<number | null>(null);
+  props.commentList ? props.commentList.likes : props.responseList!.likes
+)
+const authorId = ref<number | null>(null)
 
 const userId = computed(() => {
   if (props.commentList) {
-    return props.commentList.commentator.user_id;
+    return props.commentList.commentator.user_id
   } else {
-    return props.responseList.respondent.user_id;
+    return props.responseList!.respondent.user_id
   }
-});
+})
 const username = computed(() => {
   if (props.commentList) {
-    return props.commentList.commentator.name;
+    return props.commentList.commentator.name
   } else {
-    return props.responseList.respondent.name;
+    return props.responseList!.respondent.name
   }
-});
+})
 const date = computed(() => {
   if (props.commentList) {
-    return formatDate(props.commentList.create_date);
+    return formatDate(props.commentList.create_date)
   } else {
-    return formatDate(props.responseList.response_date);
+    return formatDate(props.responseList!.response_date)
   }
-});
+})
 const details = computed(() => {
   if (props.commentList) {
-    return props.commentList.comment_content;
+    return props.commentList.comment_content
   } else {
-    return props.responseList.comment_content;
+    return props.responseList!.comment_content
   }
-});
+})
 const responsenum = computed(() => {
   if (props.commentList) {
-    return props.commentList.response.length;
+    return props.commentList.response.length
   } else {
-    return "回复";
+    return '回复'
   }
-});
+})
 const pictureurl = computed(() => {
   if (props.commentList) {
-    return props.commentList.commentator.header_photo;
+    return props.commentList.commentator.header_photo
   } else {
-    return props.responseList.respondent.header_photo;
+    return props.responseList!.respondent.header_photo
   }
-});
+})
 const response_to = computed(() => {
-  if (props.responseList) {
-    if (props.responseList.response_to.name) {
-      return props.responseList.response_to.name;
-    } else {
-      return "";
-    }
-  }
-});
+  return props.responseList?.response_to?.name || ''
+})
 const comment_id = computed(() => {
   if (props.commentList) {
-    return props.commentList.comment_id;
+    return props.commentList.comment_id
   } else {
-    return props.responseList.comment_id;
+    return props.responseList!.comment_id
   }
-});
+})
 
 const enterSpace = (user_id: number) => {
   router.push({
-    path: "/personalCenter/" + user_id,
-  });
-};
+    path: '/personalCenter/' + user_id
+  })
+}
 const openComment = () => {
   if (!props.isShow) {
-    emits("openComment", props.index, props.indexNext);
+    emits('openComment', props.index, props.indexNext)
     //记录上一次传值
   } else {
     //这里传值undefined，所以comment对应的v-if参数是不存在的（如：showInput[undefined] == true）
-    emits("openComment", undefined, undefined);
+    emits('openComment', undefined, undefined)
   }
-};
+}
 const addlike = async (id: number) => {
   //判断是否登录
   if (!userStore.userInfo) {
     ElNotification({
-      title: "操作失败",
-      message: "您还未登录，无法进行此操作",
-      type: "error",
-    });
-    return;
+      title: '操作失败',
+      message: '您还未登录，无法进行此操作',
+      type: 'error'
+    })
+    return
   }
   if (likemark.value !== 1) {
-    likemark.value = 1;
-    likenum.value++;
-    const paramsList = {
+    likemark.value = 1
+    likenum.value++
+    await commentLikeAction({
       comment_id: id,
-      action_type: 0,
-    };
-    await commentLikeAction(paramsList);
+      action_type: 0
+    })
     ElMessage({
-      message: "点赞成功",
-    });
+      message: '点赞成功'
+    })
   } else {
-    likemark.value = 0;
-    likenum.value--;
-    const paramsList = {
+    likemark.value = 0
+    likenum.value--
+    await commentLikeAction({
       comment_id: id,
-      action_type: 1,
-    };
-    await commentLikeAction(paramsList);
+      action_type: 1
+    })
     ElMessage({
-      message: "取消点赞",
-    });
+      message: '取消点赞'
+    })
   }
-};
+}
 const deleteComment = async () => {
-  const paramsList = {
+  await commentAction({
     action_type: 1,
-    delete_comment_id: comment_id.value,
-  };
-  await commentAction(paramsList);
+    delete_comment_id: comment_id.value
+  })
   //如果删除成功，通知父组件重新拉取数据
-  emits("refreshComment");
-};
+  emits('refreshComment')
+}
 
 watch(
   () => props.commentList,
@@ -235,147 +227,155 @@ watch(
     //判断是否有删除权限
     userId.value === userStore.userInfo.user_id
       ? ((deleteshow.value = true), (message_send.value = false))
-      : ((deleteshow.value = false), (message_send.value = true));
+      : ((deleteshow.value = false), (message_send.value = true))
   },
-  { immediate: true, deep: true }
-);
+  { immediate: true }
+)
 
 watch(
   () => route.params,
   async (newV, _) => {
-    const res = await getArticleMain({ article_id: Number(newV.id) });
-    authorId.value = res.data.result.author_id;
+    const res = await getArticleMain({ article_id: Number(newV.id) })
+    authorId.value = res.result.author_id
   },
-  { immediate: true, deep: true }
-);
+  { immediate: true }
+)
 
 onMounted(async () => {
   // 获取一级评论的点赞列表
-  const res = await getCommentLikeList();
-  if (res.data.result.length > 0) {
-    res.data.result.forEach((item: any) => {
+  const res = await getCommentLikeList()
+  if (res.result.length > 0) {
+    res.result.forEach((item: any) => {
       if (item == comment_id.value) {
-        likemark.value = 1;
+        likemark.value = 1
       }
-    });
+    })
   }
-});
+})
 </script>
 
 <style scoped lang="less">
-.CommentContent-wrap {
+.commentcontent-wrap {
   position: relative;
-  width: 100%;
-  height: 100%;
   margin-top: 10px;
   margin-bottom: 10px;
+  width: 100%;
+  height: 100%;
+
   .username {
     height: 20px;
+
     span {
-      font-family: SourceHanSansCN-Medium;
+      margin-right: 10px;
       font-size: 14px;
-      font-weight: 500;
+      font-family: SourceHanSansCN-Medium, sans-serif;
       color: #00d5cc;
-      margin-right: 10px;
     }
+
     font span {
-      font-family: SourceHanSansCN-Medium;
-      font-size: 12px;
-      font-weight: bold;
-      color: #00d5cc;
       margin-right: 10px;
+      font-size: 12px;
+      font-family: SourceHanSansCN-Medium, sans-serif;
+      color: #00d5cc;
+      font-weight: bold;
     }
   }
+
   .username :nth-child(2) {
     color: #808080;
   }
+
   .headphoto {
     width: 48px;
     height: 48px;
     cursor: pointer;
     border-radius: 50%;
   }
+
   .details {
     margin-bottom: 10px;
     width: 100%;
-    word-break: break-all;
-    font-family: SourceHanSansCN-Normal;
     font-size: 14px;
+    font-family: SourceHanSansCN-Normal, sans-serif;
+    color: #3d3d3d;
+    word-break: break-all;
     font-weight: 350;
     line-height: 24px;
-    color: #3d3d3d;
   }
+
   .response {
     cursor: pointer;
+
     svg {
       position: relative;
       top: 3px;
       margin-right: 13px;
     }
+
     span {
-      font-family: SourceHanSansCN-Regular;
       font-size: 14px;
-      font-weight: normal;
+      font-family: SourceHanSansCN-Regular, sans-serif;
       color: #808080;
       cursor: pointer;
     }
   }
+
   .response:hover svg {
     stroke: #00d5cc;
   }
-  .responseInput {
+
+  .response-input {
     display: none;
+
+    &:checked ~ div {
+      svg {
+        stroke: #00d5cc;
+      }
+
+      span {
+        color: #00d5cc;
+      }
+    }
   }
-  .responseInput:checked ~ div svg {
-    stroke: #00d5cc;
-  }
-  .responseInput:checked ~ div span {
-    color: #00d5cc;
-  }
+
   .info {
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
+
     span {
       margin: 0 0 0 5px;
-      font-family: SourceHanSansCN-Regular;
       font-size: 14px;
-      font-weight: normal;
+      font-family: SourceHanSansCN-Regular, sans-serif;
       color: #808080;
       cursor: pointer;
     }
   }
-  .likesInput {
-    display: none;
-  }
-  .likesInput:checked ~ div svg {
-    stroke: #00d5cc;
-  }
-  .likesInput:checked ~ div span {
-    color: #00d5cc;
-  }
+
   .delete {
-    font-family: SourceHanSansCN-Regular;
     font-size: 14px;
-    font-weight: normal;
+    font-family: SourceHanSansCN-Regular, sans-serif;
     color: #808080;
     cursor: pointer;
+
+    &:hover {
+      color: #00d5cc;
+    }
   }
-  .delete:hover {
-    color: #00d5cc;
-  }
-  .dataAbout {
+
+  .data-about {
     display: flex;
     justify-content: space-around;
     align-items: center;
     width: 317px;
   }
+
   .date {
-    font-family: SourceHanSansCN-Regular;
     font-size: 14px;
-    font-weight: normal;
+    font-family: SourceHanSansCN-Regular, sans-serif;
     color: #808080;
   }
 }
 </style>
+@/api/article/article @/api/comment/comment @/store/modules/user

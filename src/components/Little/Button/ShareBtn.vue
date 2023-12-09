@@ -30,17 +30,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
-import mojs from "@mojs/core";
+import { ref, onMounted } from 'vue'
+import mojs from '@mojs/core'
 
-const share = ref<HTMLDivElement>();
-let burst: any;
+const share = ref<HTMLDivElement>()
+let burst: object
 
 const thumbsUp = (num: number) => {
   if (num == 0) {
-    new mojs.Timeline().add(burst).play();
+    new mojs.Timeline().add(burst).play()
   }
-};
+}
 
 onMounted(() => {
   burst = new mojs.Burst({
@@ -58,35 +58,36 @@ onMounted(() => {
     children: {
       duration: 750,
       // 随机数范围爆炸
-      radius: { 0: "rand(5,25)" },
-      shape: ["circle", "rect", "polygon"],
+      radius: { 0: 'rand(5,25)' },
+      shape: ['circle', 'rect', 'polygon'],
       // 粒子可选色
       fill: [
-        "#1abc9c",
-        "#2ecc71",
-        "#00cec9",
-        "#3498db",
-        "#9b59b6",
-        "#fdcb6e",
-        "#f1c40f",
-        "#e67e22",
-        "#e74c3c",
-        "#e84393",
+        '#1abc9c',
+        '#2ecc71',
+        '#00cec9',
+        '#3498db',
+        '#9b59b6',
+        '#fdcb6e',
+        '#f1c40f',
+        '#e67e22',
+        '#e74c3c',
+        '#e84393'
       ],
-      degreeShift: "rand(-90, 90)",
-      delay: "stagger(0, 20)",
+      degreeShift: 'rand(-90, 90)',
+      delay: 'stagger(0, 20)'
     },
     // 透明度
     opacity: 0.5,
     // 生成粒子数量
-    count: 10,
-  });
-});
+    count: 10
+  })
+})
 </script>
 
 <style scoped lang="less">
 .share-wrap {
   position: relative;
+
   svg {
     cursor: pointer;
   }

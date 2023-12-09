@@ -1,18 +1,18 @@
 <template>
-  <div class="ArticleHomeMain-wrap">
+  <div class="articlehomemain-wrap">
     <el-row type="flex" style="flex-flow: row wrap">
       <div class="title">
         <span>{{ article_title }}</span>
       </div>
       <div
-        v-if="article_status == '1'"
+        v-if="article_status === 1"
         class="copied"
         style="margin: 3px 0 5px 10px"
       >
         <span>转载文章</span>
       </div>
       <div
-        v-if="article_status == '2'"
+        v-if="article_status === 2"
         class="original"
         style="margin: 3px 0 5px 10px"
       >
@@ -24,7 +24,7 @@
 
     <el-row type="flex">
       <div
-        class="article_labels"
+        class="article-labels"
         style="margin: 5px 10px 0"
         v-for="(_, index) in article_labels"
         :key="index"
@@ -65,130 +65,126 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, nextTick } from "vue";
-import { useRoute } from "vue-router";
-import { getArticleMain, postArticleTrend } from "@/api/article";
-import { formatDate } from "@/utils";
-import { MdPreview } from "md-editor-v3";
-import "md-editor-v3/lib/preview.css";
+import { ref, onMounted, nextTick } from 'vue'
+import { useRoute } from 'vue-router'
+import { getArticleMain, postArticleTrend } from '@/api/article'
+import { formatDate } from '@/utils'
+import { MdPreview } from 'md-editor-v3'
+import 'md-editor-v3/lib/preview.css'
 
-const route = useRoute();
+const route = useRoute()
 
-const article_status = ref<string>("1"); // 默认为转载文章
-const article_link = ref<string>("");
-const article_labels = ref<string[]>([]);
-const article_title = ref<string>("");
-const article_md = ref<string>("");
-const activeImg = ref<string>("");
+const article_status = ref<number>(1) // 默认为转载文章
+const article_link = ref<string>('')
+const article_labels = ref<string[]>([])
+const article_title = ref<string>('')
+const article_md = ref<string>('')
+const activeImg = ref<string>('')
 
 onMounted(async () => {
   const res = await getArticleMain({
-    article_id: Number(route.params.id),
-  });
-  const article_main = res.data.result;
-  article_status.value = article_main.article_status;
-  article_link.value = article_main.article_link || "";
-  article_labels.value.push(...article_main.article_labels);
-  article_title.value = article_main.article_title;
-  article_md.value = article_main.article_md;
+    article_id: Number(route.params.id)
+  })
+  const article_main = res.result
+  article_status.value = article_main.article_status
+  article_link.value = article_main.article_link || ''
+  article_labels.value.push(...article_main.article_labels)
+  article_title.value = article_main.article_title
+  article_md.value = article_main.article_md
 
-  await nextTick();
+  await nextTick()
 
   const trend_params = {
-    present_date: formatDate(new Date(), "yyyy-MM-dd"),
-    label_list: article_labels.value,
-  };
+    present_date: formatDate(new Date(), 'yyyy-MM-dd'),
+    label_list: article_labels.value
+  }
 
-  await postArticleTrend(trend_params);
-});
+  await postArticleTrend(trend_params)
+})
 </script>
 
 <style scoped lang="less">
-.ArticleHomeMain-wrap {
+.articlehomemain-wrap {
+  position: relative;
   padding: 20px;
   margin-bottom: 25px;
-  position: relative;
   width: 710px;
+  background: #fff;
   border-radius: 20px;
-  background: #ffffff;
+
   .title {
-    word-break: break-all;
-    font-family: SourceHanSansCN-Bold;
     font-size: 30px;
-    font-weight: bold;
+    font-family: SourceHanSansCN-Bold, sans-serif;
     color: #3d3d3d;
+    word-break: break-all;
+    font-weight: bold;
   }
+
   .copied {
-    width: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding: 0 10px;
+    width: 80px;
     height: 36px;
-    border-radius: 18px;
+    font-size: 16px;
+    font-family: SourceHanSansCN-Regular, sans-serif;
+    color: #fff;
     background: #ff6c6c;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    span {
-      font-family: SourceHanSansCN-Regular;
-      font-size: 16px;
-      font-weight: normal;
-      color: #ffffff;
-    }
+    border-radius: 18px;
   }
+
   .original {
-    width: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding: 0 10px;
+    width: 80px;
     height: 36px;
-    border-radius: 18px;
+    font-size: 16px;
+    font-family: SourceHanSansCN-Regular, sans-serif;
+    color: #fff;
     background: #ff8200;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    span {
-      font-family: SourceHanSansCN-Regular;
-      font-size: 16px;
-      font-weight: normal;
-      color: #ffffff;
-    }
-  }
-  .article_labels {
-    width: max-content;
-    padding: 0 15px;
-    height: 36px;
     border-radius: 18px;
-    background: #4aff98;
+  }
+
+  .article-labels {
     display: flex;
     justify-content: center;
     align-items: center;
-    span {
-      font-family: SourceHanSansCN-Regular;
-      font-size: 16px;
-      font-weight: normal;
-      color: #3d3d3d;
-    }
+    padding: 0 15px;
+    width: max-content;
+    height: 36px;
+    font-size: 16px;
+    font-family: SourceHanSansCN-Regular, sans-serif;
+    color: #3d3d3d;
+    background: #4aff98;
+    border-radius: 18px;
   }
+
   .markdown-body :deep(img) {
     position: relative;
     margin: 0 auto;
   }
+
   .link {
-    width: 680px;
-    margin-top: 20px;
-    padding: 9px 14px;
-    background-color: #eeeeee;
-    border-radius: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 9px 14px;
+    margin-top: 20px;
+    width: 680px;
+    background-color: #eee;
+    border-radius: 10px;
+
     a {
-      word-break: break-all;
-      font-family: SourceHanSansCN-Regular;
       font-size: 14px;
-      font-weight: normal;
-      line-height: 20px;
-      letter-spacing: 0em;
+      font-family: SourceHanSansCN-Regular, sans-serif;
       color: #0098b3;
+      word-break: break-all;
+      line-height: 20px;
+      letter-spacing: 0;
     }
   }
 }
 </style>
-@/api/article

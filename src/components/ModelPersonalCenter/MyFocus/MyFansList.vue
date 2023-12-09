@@ -1,5 +1,5 @@
 <template>
-  <div name="FocusMain" class="FocusMain-wrap">
+  <div class="focusmain-wrap">
     <el-row class="title" type="flex" justify="space-between">
       <div>
         <span v-if="isMyCenter" @click="push(1)" class="behovered"
@@ -44,86 +44,90 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from "vue";
-import { useRouter, useRoute } from "vue-router";
-import { useUserStore } from "@/store/user";
-import { getUserFansList } from "@/api/user";
-import FocusItem from "@/components/Little/Item/FocusItem.vue";
+import { ref, computed, watch } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import { useStore } from '@/store'
+import { getUserFansList } from '@/api/user'
+import FocusItem from '@/components/Little/Item/FocusItem.vue'
 
-const router = useRouter();
-const route = useRoute();
+const router = useRouter()
+const route = useRoute()
 
-const userStore = useUserStore();
+const { userStore } = useStore()
 
-const loading = ref<boolean>(false);
-const isMyCenter = ref<boolean>(false);
-const user_id = ref<number>(0);
-const user_list = ref<any[]>([]);
+const loading = ref<boolean>(false)
+const isMyCenter = ref<boolean>(false)
+const user_id = ref<number>(0)
+const user_list = ref<any[]>([])
 
 const emptyList = computed(() => {
   if (user_list.value.length == 0) {
-    return true;
+    return true
   } else {
-    return false;
+    return false
   }
-});
+})
 
 const push = (num: number) => {
-  let route_name;
+  let route_name
   if (num == 1) {
-    route_name = "MyFocusList";
+    route_name = 'MyFocusList'
   }
   if (num == 2) {
-    route_name = "MyFansList";
+    route_name = 'MyFansList'
   }
   router.push({
-    name: route_name,
-  });
-};
+    name: route_name
+  })
+}
 
 watch(
   () => route.params.id,
   async (newV, _) => {
-    loading.value = true;
-    user_id.value = Number(newV);
+    loading.value = true
+    user_id.value = Number(newV)
     if (user_id.value === userStore.userInfo.user_id) {
-      isMyCenter.value = true;
+      isMyCenter.value = true
     }
-    const res = await getUserFansList({ user_id: user_id.value });
-    res.data.result.forEach((item: any) => {
-      user_list.value.push(item.first_user_id);
-    });
-    loading.value = false;
+    const res = await getUserFansList({ user_id: user_id.value })
+    res.result.forEach((item: any) => {
+      user_list.value.push(item.first_user_id)
+    })
+    loading.value = false
   },
-  { immediate: true, deep: true }
-);
+  { immediate: true }
+)
 </script>
 
 <style scoped lang="less">
-.FocusMain-wrap {
+.focusmain-wrap {
   position: relative;
-  width: 100%;
-  border-radius: 10px;
-  background: #ffffff;
   padding-bottom: 20px;
+  width: 100%;
+  background: #fff;
+  border-radius: 10px;
+
   .beclicked {
     color: #ff5900 !important;
   }
+
   .behovered:hover {
     color: #ff5900 !important;
   }
+
   .title {
-    width: 400px;
     padding: 20px 0 20px 100px;
+    width: 400px;
+
     > * {
       height: 20px;
-      font-family: SourceHanSansCN-Regular;
       font-size: 18px;
-      font-weight: normal;
+      font-family: SourceHanSansCN-Regular, sans-serif;
       color: #3d3d3d;
       cursor: pointer;
     }
   }
+
   ul {
     position: relative;
     top: 50px;

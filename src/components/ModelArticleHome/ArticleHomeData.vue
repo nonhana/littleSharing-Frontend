@@ -1,9 +1,9 @@
 <template>
-  <el-col :span="0.5" class="ArticleHomeData-wrap">
+  <div class="articlehomedata-wrap">
     <el-row>
       <span class="title">文章数据栏</span>
     </el-row>
-    <div style="display: flex; margin: 10px 0 0 0; justify-content: center">
+    <div style="display: flex; justify-content: center; margin: 10px 0 0">
       <div @click="addlike">
         <like-btn :likemark="likemark" />
       </div>
@@ -23,177 +23,170 @@
       </div>
       <span class="datafont">{{ article_data.comment_num }}</span>
     </div>
-  </el-col>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
-import { useRoute } from "vue-router";
-import { useUserStore } from "@/store/user";
+import { ref, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+import { useStore } from '@/store'
 import {
   addLike,
   addCollection,
   getUserLikeList,
-  getUserCollectList,
-} from "@/api/user";
-import { getArticleMain } from "@/api/article";
-import LikeBtn from "@/components/Little/Button/LikeBtn.vue";
-import CollectionBtn from "@/components/Little/Button/CollectionBtn.vue";
-import ShareBtn from "@/components/Little/Button/ShareBtn.vue";
-import CommentBtn from "@/components/Little/Button/CommentBtn.vue";
-import { ElMessage, ElMessageBox } from "element-plus";
+  getUserCollectList
+} from '@/api/user'
+import { getArticleMain } from '@/api/article'
+import LikeBtn from '@/components/Little/Button/LikeBtn.vue'
+import CollectionBtn from '@/components/Little/Button/CollectionBtn.vue'
+import ShareBtn from '@/components/Little/Button/ShareBtn.vue'
+import CommentBtn from '@/components/Little/Button/CommentBtn.vue'
+import { ElMessage, ElMessageBox } from 'element-plus'
 
-interface articleData {
-  like_num: number;
-  collection_num: number;
-  share_num: number;
-  comment_num: number;
-}
+const route = useRoute()
+const { userStore } = useStore()
 
-const route = useRoute();
+const currentArticleId: number = Number(route.params.id)
 
-const userStore = useUserStore();
-
-const currentArticleId: number = Number(route.params.id);
-
-let article_data = ref<articleData>({
+const article_data = ref<{
+  like_num: number
+  collection_num: number
+  share_num: number
+  comment_num: number
+}>({
   like_num: 0,
   collection_num: 0,
   share_num: 0,
-  comment_num: 0,
-});
-let likemark = ref<number>(0);
-let collectionmark = ref<number>(0);
+  comment_num: 0
+})
+const likemark = ref<number>(0)
+const collectionmark = ref<number>(0)
 
 const addlike = async () => {
   if (likemark.value != 1) {
-    likemark.value = 1;
-    article_data.value.like_num++;
-    const paramsList = {
+    likemark.value = 1
+    article_data.value.like_num++
+    const res = await addLike({
       article_id: currentArticleId,
       action_type: 0,
-      user_id: userStore.userInfo.user_id,
-    };
-    const res = await addLike(paramsList);
-    if (res.data.result_code === 0) {
+      user_id: userStore.userInfo.user_id
+    })
+    if (res.result_code === 0) {
       ElMessage({
-        message: "点赞成功",
-      });
+        message: '点赞成功'
+      })
     }
   } else {
-    likemark.value = 0;
-    article_data.value.like_num--;
-    const paramsList = {
+    likemark.value = 0
+    article_data.value.like_num--
+    const res = await addLike({
       article_id: currentArticleId,
       action_type: 1,
-      user_id: userStore.userInfo.user_id,
-    };
-    const res = await addLike(paramsList);
-    if (res.data.result_code === 0) {
+      user_id: userStore.userInfo.user_id
+    })
+    if (res.result_code === 0) {
       ElMessage({
-        message: "取消点赞",
-      });
+        message: '取消点赞'
+      })
     }
   }
-};
+}
 const addcollection = async () => {
   if (collectionmark.value != 1) {
-    collectionmark.value = 1;
-    article_data.value.collection_num++;
-    const paramsList = {
+    collectionmark.value = 1
+    article_data.value.collection_num++
+    const res = await addCollection({
       article_id: currentArticleId,
       action_type: 0,
-      user_id: userStore.userInfo.user_id,
-    };
-    const res = await addCollection(paramsList);
-    if (res.data.result_code === 0) {
+      user_id: userStore.userInfo.user_id
+    })
+    if (res.result_code === 0) {
       ElMessage({
-        message: "收藏成功",
-      });
+        message: '收藏成功'
+      })
     }
   } else {
-    collectionmark.value = 0;
-    article_data.value.collection_num--;
-    const paramsList = {
+    collectionmark.value = 0
+    article_data.value.collection_num--
+    const res = await addCollection({
       article_id: currentArticleId,
       action_type: 1,
-      user_id: userStore.userInfo.user_id,
-    };
-    const res = await addCollection(paramsList);
-    if (res.data.result_code === 0) {
+      user_id: userStore.userInfo.user_id
+    })
+    if (res.result_code === 0) {
       ElMessage({
-        message: "取消收藏",
-      });
+        message: '取消收藏'
+      })
     }
   }
-};
+}
 const addshare = () => {
-  ElMessageBox.alert(window.location.href, "点击确定复制链接", {
-    confirmButtonText: "确定",
+  ElMessageBox.alert(window.location.href, '点击确定复制链接', {
+    confirmButtonText: '确定',
     callback: async () => {
-      article_data.value.share_num++;
-      await navigator.clipboard.writeText(window.location.href);
+      article_data.value.share_num++
+      await navigator.clipboard.writeText(window.location.href)
       ElMessage({
-        type: "info",
-        message: "复制成功！请尽快转发哦~",
-      });
-    },
-  });
-};
+        type: 'info',
+        message: '复制成功！请尽快转发哦~'
+      })
+    }
+  })
+}
 // 点击跳转到评论区
 const jumpToComment = () => {
-  const element = document.getElementById("comment");
+  const element = document.getElementById('comment')
   if (element) {
-    const top = element.getBoundingClientRect().top + window.scrollY;
-    window.scrollTo({ top, behavior: "smooth" });
+    const top = element.getBoundingClientRect().top + window.scrollY
+    window.scrollTo({ top, behavior: 'smooth' })
   }
-};
+}
 
 onMounted(async () => {
   const articleDataRes = await getArticleMain({
-    article_id: Number(route.params.id),
-  });
-  const article_main = articleDataRes.data.result;
+    article_id: Number(route.params.id)
+  })
+  const article_main = articleDataRes.result
   article_data.value = {
     like_num: article_main.like_num,
     collection_num: article_main.collection_num,
     share_num: article_main.share_num,
-    comment_num: article_main.comment_num,
-  };
+    comment_num: article_main.comment_num
+  }
 
-  const articleId = Number(route.params.id);
+  const articleId = Number(route.params.id)
 
-  const likeListRes = await getUserLikeList();
+  const likeListRes = await getUserLikeList()
   // 检查当前文章是否已经被点赞
-  const hasLiked = likeListRes.data.result.includes(articleId);
-  likemark.value = hasLiked ? 1 : 0;
+  const hasLiked = likeListRes.result.includes(articleId)
+  likemark.value = hasLiked ? 1 : 0
 
-  const collectListRes = await getUserCollectList();
-  const hasCollected = collectListRes.data.result.includes(articleId);
-  collectionmark.value = hasCollected ? 1 : 0;
-});
+  const collectListRes = await getUserCollectList()
+  const hasCollected = collectListRes.result.includes(articleId)
+  collectionmark.value = hasCollected ? 1 : 0
+})
 </script>
 
 <style scoped lang="less">
-.ArticleHomeData-wrap {
+.articlehomedata-wrap {
   padding: 10px;
-  width: 270px;
+  width: 250px;
+  background: #fff;
   border-radius: 20px;
-  background: #ffffff;
+
   .title {
     height: 35px;
-    font-family: SourceHanSansCN-Bold;
     font-size: 24px;
+    font-family: SourceHanSansCN-Bold, sans-serif;
+    color: #3d3d3d;
     font-weight: bold;
-    color: #3d3d3d;
   }
+
   .datafont {
-    font-family: SourceHanSansCN-Regular;
-    font-size: 16px;
-    font-weight: normal;
-    color: #3d3d3d;
     margin: 0 10px;
+    font-size: 16px;
+    font-family: SourceHanSansCN-Regular, sans-serif;
+    color: #3d3d3d;
   }
 }
 </style>
-@/api/comment @/api/article

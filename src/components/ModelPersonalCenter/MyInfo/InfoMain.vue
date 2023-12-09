@@ -1,10 +1,10 @@
 <template>
-  <div class="InfoMain-wrap">
+  <div class="infomain-wrap">
     <el-row>
       <div style="display: flex; margin: 20px 0 20px 100px">
         <div class="titleline"></div>
         <div style="margin: 10px 0 0 10px">
-          <span class="title">&nbsp;个人资料信息设置</span>
+          <span class="title">个人资料信息设置</span>
         </div>
       </div>
     </el-row>
@@ -124,7 +124,7 @@
         <el-row
           type="flex"
           justify="space-between"
-          style="width: 897px; margin: 20px 0 0 0"
+          style="margin: 20px 0 0; width: 897px"
         >
           <span>背景图片：</span>
           <el-upload
@@ -160,237 +160,270 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import { onBeforeRouteLeave } from "vue-router";
-import { useUserStore } from "@/store/user";
-import { optionChoices } from "@/utils/constants";
-import { editUserInfo } from "@/api/user";
-import { Plus } from "@element-plus/icons-vue";
-import { ElNotification, ElMessageBox } from "element-plus";
-import ImgCropper from "@/components/Little/Tool/ImgCropper.vue";
+import { ref } from 'vue'
+import { onBeforeRouteLeave } from 'vue-router'
+import { useStore } from '@/store'
+import { optionChoices } from '@/utils/constants'
+import { editUserInfo } from '@/api/user'
+import type { User } from '@/api/user/types'
+import { Plus } from '@element-plus/icons-vue'
+import { ElNotification, ElMessageBox } from 'element-plus'
+import ImgCropper from '@/components/Little/Tool/ImgCropper.vue'
+import type { FormRules, UploadFile } from 'element-plus'
 
-const userStore = useUserStore();
+const { userStore } = useStore()
 
-const originUserInfo = ref<any>({
-  ...userStore.userInfo,
-});
-const value = ref<any[]>([]);
+const originUserInfo = ref<User>({
+  ...userStore.userInfo
+})
+const value = ref<
+  {
+    value: string
+    label: string
+  }[]
+>([])
 
-const ruleForm = ref<any>({
-  ...userStore.userInfo,
-});
-const rules = ref<any>({
-  name: [{ required: true, message: "用户名是必填项！", trigger: "blur" }],
-  major: [{ required: true, message: "专业设置是必填项！", trigger: "blur" }],
+const ruleForm = ref<User>({
+  ...userStore.userInfo
+})
+interface RuleForm {
+  name: string
+  major: string[]
+  university: string
+  signature: string
+  introduce: string
+}
+const rules = ref<FormRules<RuleForm>>({
+  name: [{ required: true, message: '用户名是必填项！', trigger: 'blur' }],
+  major: [{ required: true, message: '专业设置是必填项！', trigger: 'blur' }],
   university: [
-    { required: true, message: "学校设置是必填项！", trigger: "blur" },
+    { required: true, message: '学校设置是必填项！', trigger: 'blur' }
   ],
   introduce: [
-    { required: true, message: "个人简介是必填项！", trigger: "blur" },
-  ],
-});
+    { required: true, message: '个人简介是必填项！', trigger: 'blur' }
+  ]
+})
 
 // 头像图片相关
-const header_dialogFormVisible = ref<boolean>(false);
-let headerSourceFile: File | null | undefined = null;
-let headerCroppedFileType: string = ""; // 裁剪后的文件类型
-const handlehead = (file: any) => {
-  headerSourceFile = file.raw;
-  headerCroppedFileType = headerSourceFile?.type ?? "";
-  header_dialogFormVisible.value = true;
-};
+const header_dialogFormVisible = ref<boolean>(false)
+let headerSourceFile: File | null | undefined = null
+let headerCroppedFileType: string = '' // 裁剪后的文件类型
+const handlehead = (file: UploadFile) => {
+  headerSourceFile = file.raw
+  headerCroppedFileType = headerSourceFile?.type ?? ''
+  header_dialogFormVisible.value = true
+}
 
 // 背景图片相关
-const background_dialogFormVisible = ref<boolean>(false);
-let bgSourceFile: File | null | undefined = null;
-let bgCroppedFileType: string = ""; // 裁剪后的文件类型
-const handlebg = (file: any) => {
-  bgSourceFile = file.raw;
-  bgCroppedFileType = bgSourceFile?.type ?? "";
-  background_dialogFormVisible.value = true;
-};
+const background_dialogFormVisible = ref<boolean>(false)
+let bgSourceFile: File | null | undefined = null
+let bgCroppedFileType: string = '' // 裁剪后的文件类型
+const handlebg = (file: UploadFile) => {
+  bgSourceFile = file.raw
+  bgCroppedFileType = bgSourceFile?.type ?? ''
+  background_dialogFormVisible.value = true
+}
 
 // ImgCropper子传父事件
 const uploadImage = (value: { type: number; imgURL: string }) => {
   if (value.type === 0) {
-    ruleForm.value.headphoto = value.imgURL;
+    ruleForm.value.headphoto = value.imgURL
   } else {
-    ruleForm.value.backgroundphoto = value.imgURL;
+    ruleForm.value.backgroundphoto = value.imgURL
   }
-};
+}
 const closeDialog = (type: number) => {
   if (type === 0) {
-    header_dialogFormVisible.value = false;
+    header_dialogFormVisible.value = false
   } else {
-    background_dialogFormVisible.value = false;
+    background_dialogFormVisible.value = false
   }
-};
+}
 
 // 提交修改个人信息
 const submit = async () => {
-  localStorage.setItem("user_info", JSON.stringify(ruleForm.value));
-  const res = await editUserInfo(ruleForm.value);
-  if (res.data.result_code === 0) {
+  localStorage.setItem('user_info', JSON.stringify(ruleForm.value))
+  const res = await editUserInfo(ruleForm.value)
+  if (res.result_code === 0) {
     ElNotification({
-      title: "更新个人资料成功！",
-      message: "2s后刷新页面...",
-      type: "success",
-    });
+      title: '更新个人资料成功！',
+      message: '2s后刷新页面...',
+      type: 'success'
+    })
   }
   setTimeout(() => {
-    window.location.reload();
-  }, 2000);
-};
+    window.location.reload()
+  }, 2000)
+}
 
 onBeforeRouteLeave((_, __, next) => {
   if (JSON.stringify(ruleForm.value) == JSON.stringify(originUserInfo.value)) {
-    next(true);
+    next(true)
   } else {
     ElMessageBox.confirm(
-      "检测到未保存的内容，离开此页面后修改内容将不会被保存",
-      "确认离开此页面？",
+      '检测到未保存的内容，离开此页面后修改内容将不会被保存',
+      '确认离开此页面？',
       {
         distinguishCancelAndClose: true,
-        confirmButtonText: "确认",
-        cancelButtonText: "取消",
+        confirmButtonText: '确认',
+        cancelButtonText: '取消'
       }
     )
       .then(async () => {
-        next(true);
+        next(true)
       })
       .catch(() => {
-        next(false);
-      });
+        next(false)
+      })
   }
-});
+})
 </script>
 
 <style scoped lang="less">
-.InfoMain-wrap {
+.infomain-wrap {
   position: relative;
-  width: 100%;
-  background: #ffffff;
-  border-radius: 10px;
   padding: 20px 20px 30px;
+  width: 100%;
+  background: #fff;
+  border-radius: 10px;
+
   .titleline {
     width: 10px;
     height: 50px;
     background-color: #ff5900;
   }
+
   .title {
-    font-family: SourceHanSansCN-Bold;
     font-size: 24px;
-    font-weight: bold;
+    font-family: SourceHanSansCN-Bold, sans-serif;
     color: #3d3d3d;
+    font-weight: bold;
   }
+
   .forms {
     margin: 0 0 0 150px;
+
     > * {
-      margin: 20px 0 20px 0;
+      margin: 20px 0;
     }
+
     > * span {
-      font-family: SourceHanSansCN-Regular;
       font-size: 18px;
-      font-weight: normal;
+      font-family: SourceHanSansCN-Regular, sans-serif;
       color: #3d3d3d;
     }
   }
+
   .button {
-    width: 150px;
-    height: 60px;
-    border-radius: 30px;
-    background: #76fff5;
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor: pointer;
+    width: 150px;
+    height: 60px;
+    background: #76fff5;
+    border-radius: 30px;
     transition: all 0.5s;
+    cursor: pointer;
+
     span {
-      font-family: SourceHanSansCN-Regular;
       font-size: 18px;
-      font-weight: normal;
-      line-height: 18px;
+      font-family: SourceHanSansCN-Regular, sans-serif;
       color: #3d3d3d;
       transition: all 0.5s;
+      line-height: 18px;
     }
   }
+
   .button:hover {
     background-color: #00ead8;
+
     span {
-      color: #ffffff;
+      color: #fff;
     }
   }
+
   .head-avatar-uploader {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
     position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     overflow: hidden;
     width: 200px;
     height: 200px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
     transition: all 0.2s;
+    cursor: pointer;
   }
+
   .head-avatar-uploader:hover {
     border-color: #409eff;
   }
+
   .head-avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
     width: 198px;
     height: 198px;
-    line-height: 198px;
+    font-size: 28px;
     text-align: center;
+    color: #8c939d;
+    line-height: 198px;
   }
+
   .head-avatar {
-    height: 198px;
     display: block;
+    height: 198px;
   }
+
   .back-avatar-uploader {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
     position: relative;
-    overflow: hidden;
-    width: 675px;
-    height: 142.5px;
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
+    width: 675px;
+    height: 142.5px;
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
     transition: all 0.2s;
+    cursor: pointer;
   }
+
   .back-avatar-uploader:hover {
     border-color: #409eff;
   }
+
   .back-avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
     width: 673px;
     height: 140.5px;
-    line-height: 140.5px;
+    font-size: 28px;
     text-align: center;
+    color: #8c939d;
+    line-height: 140.5px;
   }
+
   .back-avatar {
-    height: 140.5px;
     display: block;
+    height: 140.5px;
   }
+
   :deep(.el-dialog) {
     position: relative;
     margin: 100px auto 50px;
-    background: #ffffff;
+    width: 900px;
+    height: 600px;
+    background: #fff;
     border-radius: 10px;
     box-shadow: 0 1px 3px rgb(0 0 0 / 30%);
     box-sizing: border-box;
-    width: 900px;
-    height: 600px;
   }
+
   :deep(.el-form-item) {
     margin: 0;
   }
+
   :deep(.el-cascader .el-input) {
     height: 50px;
   }
 }
 </style>
+@/api/user/user @/store/modules/user

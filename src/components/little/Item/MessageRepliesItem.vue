@@ -1,5 +1,5 @@
 <template>
-  <div class="MessageRepliesItem-wrap">
+  <div class="messagerepliesitem-wrap">
     <el-row type="flex" justify="space-between">
       <div class="part1">
         <div class="img">
@@ -53,126 +53,137 @@
 <script setup lang="ts">
 defineProps<{
   commentMessageInfo: {
-    user_id: number;
-    user_name: string;
-    user_img: string;
-    article_id: number;
-    article_title: string;
-    comment_id: number;
-    comment_status: number;
-    comment_content: string;
-    comment_date: string;
-  };
-}>();
+    user_id: number
+    user_name: string
+    user_img: string
+    article_id: number
+    article_title: string
+    comment_id: number
+    comment_status: number
+    comment_content: string
+    comment_date: string
+  }
+}>()
 </script>
 
 <style scoped lang="less">
-.MessageRepliesItem-wrap {
+.messagerepliesitem-wrap {
   position: relative;
-  width: 950px;
   padding: 10px;
-  border-radius: 10px;
-  box-sizing: border-box;
+  width: 950px;
   background-color: #fff;
+  border-radius: 10px;
   opacity: 0.7;
   transition: all 0.5s ease;
+  box-sizing: border-box;
+
+  &:hover {
+    opacity: 1;
+  }
 
   .part1 {
     display: flex;
     justify-content: start;
     align-items: center;
+
     .img {
       display: flex;
       justify-content: center;
       align-items: center;
+      overflow: hidden;
       width: 40px;
       height: 40px;
       border: 0.5px solid #3d3d3d;
       border-radius: 20px;
-      overflow: hidden;
       cursor: pointer;
+
       img {
-        width: 40px;
-        height: 40px;
+        width: 100%;
+        height: 100%;
       }
     }
+
     .details {
       margin-left: 10px;
+
       &-content {
-        width: 400px;
-        white-space: nowrap;
-        text-overflow: ellipsis;
         overflow: hidden;
-        font-family: Microsoft YaHei;
+        width: 400px;
         font-size: 14px;
-        font-weight: normal;
+        font-family: 'Microsoft YaHei', sans-serif;
+        text-overflow: ellipsis;
+        white-space: nowrap;
         color: #3d3d3d;
+
         .clickable {
           font-weight: 700;
           cursor: pointer;
+
+          &:hover {
+            color: #76fff5;
+          }
         }
-        .clickable:hover {
+      }
+
+      &-inner {
+        overflow: hidden;
+        width: 400px;
+        font-size: 14px;
+        font-family: 'Microsoft YaHei', sans-serif;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: #3d3d3d;
+        cursor: pointer;
+
+        &:hover {
           color: #76fff5;
         }
       }
-      &-inner {
-        width: 400px;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        font-family: Microsoft YaHei;
-        font-size: 14px;
-        font-weight: normal;
-        color: #3d3d3d;
-        cursor: pointer;
-      }
-      &-inner:hover {
-        color: #76fff5;
-      }
+
       &-date {
-        font-family: Microsoft YaHei;
         font-size: 12px;
-        font-weight: normal;
+        font-family: 'Microsoft YaHei', sans-serif;
         color: #9e9e9e;
       }
     }
   }
+
   .part2 {
     display: flex;
     align-items: start;
+
     .content {
+      display: -webkit-box;
+      overflow: hidden;
       margin-right: 10px;
       width: 120px;
-      font-family: Microsoft YaHei;
       font-size: 12px;
-      font-weight: normal;
+      font-family: 'Microsoft YaHei', sans-serif;
+      text-overflow: ellipsis;
       color: #9e9e9e;
-      display: -webkit-box;
       -webkit-line-clamp: 4;
       -webkit-box-orient: vertical;
-      overflow: hidden;
-      text-overflow: ellipsis;
       cursor: pointer;
+
+      &:hover {
+        color: #76fff5;
+      }
     }
-    .content:hover {
-      color: #76fff5;
-    }
+
     .button {
-      width: 16px;
-      height: 16px;
       display: flex;
       justify-content: center;
       align-items: center;
       overflow: hidden;
+      width: 16px;
+      height: 16px;
       cursor: pointer;
+
       img {
-        width: 16px;
-        height: 16px;
+        width: 100%;
+        height: 100%;
       }
     }
   }
-}
-.MessageRepliesItem-wrap:hover {
-  opacity: 1;
 }
 </style>

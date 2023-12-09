@@ -1,5 +1,5 @@
 <template>
-  <div class="PostArticle-wrap">
+  <div class="postarticle-wrap">
     <el-row
       style="margin: 10px 0 50px 50px"
       type="flex"
@@ -16,7 +16,6 @@
         v-if="present_step == 0"
         style="
           margin: 0 0 0 400px;
-          border-radius: 15px;
           width: 150px;
           height: 60px;
           border-radius: 30px;
@@ -31,7 +30,6 @@
         v-else
         style="
           margin: 0 0 0 400px;
-          border-radius: 15px;
           width: 150px;
           height: 60px;
           border-radius: 30px;
@@ -59,20 +57,20 @@
         <div
           style="position: relative; transition: all, 0.5s"
           :style="{
-            top: part1_top,
+            top: part1_top
           }"
         >
           <el-row
             type="flex"
             justify="space-between"
-            style="align-items: center; width: 600px; margin: 0 0 30px 0"
+            style="align-items: center; margin: 0 0 30px; width: 600px"
           >
             <span>是否为转载文章？</span>
             <el-radio-group
               style="
                 display: flex;
-                width: 400px;
                 justify-content: space-between;
+                width: 400px;
               "
               v-model="ruleForm.article_status"
             >
@@ -82,10 +80,10 @@
           </el-row>
 
           <el-row
-            v-if="ruleForm.article_status === '1'"
+            v-if="ruleForm.article_status === 1"
             type="flex"
             justify="space-between"
-            style="align-items: center; width: 600px; margin: 0 0 30px 0"
+            style="align-items: center; margin: 0 0 30px; width: 600px"
           >
             <span><span>*&nbsp;</span>转载网址：</span>
             <el-form-item prop="article_link">
@@ -102,7 +100,7 @@
           <el-row
             type="flex"
             justify="space-between"
-            style="align-items: center; width: 600px; margin: 0 0 30px 0"
+            style="align-items: center; margin: 0 0 30px; width: 600px"
           >
             <span><span>*&nbsp;</span>文章标题：</span>
             <el-form-item prop="article_title">
@@ -121,7 +119,7 @@
           <el-row
             type="flex"
             justify="space-between"
-            style="align-items: center; width: 600px; margin: 0 0 30px 0"
+            style="align-items: center; margin: 0 0 30px; width: 600px"
           >
             <span><span>*&nbsp;</span>文章所属专业：</span>
             <el-cascader
@@ -137,7 +135,7 @@
           <el-row
             type="flex"
             justify="space-between"
-            style="align-items: center; width: 600px; margin: 0 0 30px 0"
+            style="align-items: center; margin: 0 0 30px; width: 600px"
           >
             <span style="margin: 0 0 0 13px">文章标签：</span>
             <el-select
@@ -149,7 +147,7 @@
               default-first-option
               placeholder="请输入文章标签(自定义)"
               style="width: 400px; height: 50px"
-              @input.native="filterData"
+              @input="filterData"
               @change="bindChange"
             >
               <el-option
@@ -165,7 +163,7 @@
           <el-row
             type="flex"
             justify="space-between"
-            style="align-items: center; width: 900px; margin: 0 0 30px 0"
+            style="align-items: center; margin: 0 0 30px; width: 900px"
           >
             <span><span>*&nbsp;</span>文章内容简介：</span>
             <el-form-item prop="article_introduce">
@@ -184,15 +182,15 @@
           </el-row>
         </div>
         <div
-          style="position: absolute; transition: all, 0.5s; left: 5px"
+          style="position: absolute; left: 5px; transition: all, 0.5s"
           :style="{
-            top: part2_top,
+            top: part2_top
           }"
         >
           <el-row type="flex" justify="space-between">
             <el-form-item prop="article_md">
               <MdEditor
-                style="height: 630px; width: 1340px"
+                style="width: 1340px; height: 630px"
                 @on-upload-img="onUploadImg"
                 v-model="ruleForm.article_md"
               />
@@ -205,323 +203,333 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import { useUserStore } from "@/store/user";
-import { useArticleLabelStore } from "@/store/articleLabels";
+import { ref, watch, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useStore } from '@/store'
 import {
   postArticle,
   addArticleLabel,
   getArticleMain,
   editArticle,
-  uploadArticleImg,
-} from "@/api/article";
-import { optionChoices } from "@/utils/constants";
-import { EditArticleInfo } from "@/utils/types";
-import { ElMessageBox, ElMessage, ElNotification } from "element-plus";
-import { MdEditor } from "md-editor-v3"; // 引入md编辑器
-import "md-editor-v3/lib/style.css"; // 编辑器的样式
+  uploadArticleImg
+} from '@/api/article'
+import { optionChoices } from '@/utils/constants'
+import type { IPostArticleParams } from '@/api/article/types'
+import { ElMessageBox, ElMessage, ElNotification } from 'element-plus'
+import { MdEditor } from 'md-editor-v3' // 引入md编辑器
+import 'md-editor-v3/lib/style.css' // 编辑器的样式
+import { ElSelect } from 'element-plus'
+import type { FormRules, CascaderValue } from 'element-plus'
 
 // 通过ref拿到dom
-const labelSelect = ref<any>();
+const labelSelect = ref<InstanceType<typeof ElSelect> | null>(null)
 
-const route = useRoute();
-const router = useRouter();
+const route = useRoute()
+const router = useRouter()
 
-const userStore = useUserStore();
-const articleLabelStore = useArticleLabelStore();
+const { userStore, articleLabelStore } = useStore()
 
-const present_step = ref<number>(0);
-const part1_top = ref<string>("0px");
-const part2_top = ref<string>("-1000px");
-const editStatus = ref<boolean>(false);
-const optionsSubject = ref<any[]>([]);
-const value = ref<any[]>([]);
-const ruleForm = ref<EditArticleInfo>({
-  article_status: "1", //默认为转载，1-转载，2-原创
-  article_link: "",
-  article_title: "",
+const present_step = ref<number>(0)
+const part1_top = ref<string>('0px')
+const part2_top = ref<string>('-1000px')
+const editStatus = ref<boolean>(false)
+const optionsSubject = ref<{ value: string; label: string }[]>([])
+const value = ref<{ value: string; label: string }[]>([])
+const ruleForm = ref<IPostArticleParams>({
+  article_status: 1, //默认为转载，1-转载，2-原创
+  article_link: '',
+  article_title: '',
   article_major: [],
   article_labels: [],
-  article_introduce: "",
-  article_md: "",
-  author_id: userStore.userInfo.user_id,
-});
-const rules = ref<any>({
+  article_introduce: '',
+  article_md: '',
+  author_id: userStore.userInfo.user_id
+})
+interface RuleForm {
+  article_title: string
+  article_md: string
+  article_introduce: string
+  article_link: string
+}
+const rules = ref<FormRules<RuleForm>>({
   article_title: [
-    { required: true, message: "请输入文章标题", trigger: "blur" },
+    { required: true, message: '请输入文章标题', trigger: 'blur' }
   ],
   article_md: [
-    { required: true, message: "请输入文章详细内容", trigger: "blur" },
+    { required: true, message: '请输入文章详细内容', trigger: 'blur' }
   ],
   article_introduce: [
     {
       required: true,
-      message: "请简要写一下这篇文章的简介",
-      trigger: "blur",
-    },
+      message: '请简要写一下这篇文章的简介',
+      trigger: 'blur'
+    }
   ],
   article_link: [
     {
       required: true,
-      message: "转载文章请务必填写原文地址！",
-      trigger: "blur",
-    },
-  ],
-});
+      message: '转载文章请务必填写原文地址！',
+      trigger: 'blur'
+    }
+  ]
+})
 
 const changeStep = () => {
   if (present_step.value == 0) {
-    part1_top.value = "-1000px";
-    part2_top.value = "120px";
-    present_step.value = 1;
+    part1_top.value = '-1000px'
+    part2_top.value = '120px'
+    present_step.value = 1
   } else {
-    part1_top.value = "0px";
-    part2_top.value = "-1000px";
-    present_step.value = 0;
+    part1_top.value = '0px'
+    part2_top.value = '-1000px'
+    present_step.value = 0
   }
-};
+}
 const exitEdit = () => {
   ElMessageBox.confirm(
-    "注：编辑模式下退出编辑的内容将不会被保存！",
-    "是否退出编辑？",
+    '注：编辑模式下退出编辑的内容将不会被保存！',
+    '是否退出编辑？',
     {
       distinguishCancelAndClose: true,
-      confirmButtonText: "确认",
-      cancelButtonText: "取消",
+      confirmButtonText: '确认',
+      cancelButtonText: '取消'
     }
   ).then(() => {
-    router.back();
-  });
-};
-const bindChange = (e: any[]) => {
+    router.back()
+  })
+}
+const bindChange = (e: CascaderValue[]) => {
   if (e.length > 5) {
-    ElMessage.warning("最多只能添加五个文章标签哦~");
-    ruleForm.value.article_labels.splice(-1);
+    ElMessage.warning('最多只能添加五个文章标签哦~')
+    ruleForm.value.article_labels.splice(-1)
   }
-};
-const filterData = () => {
-  var str = labelSelect.value.$data.selectedLabel; // 此属性得到输入的文字
-  if (str.length > 20) {
-    labelSelect.value.$data.selectedLabel = str.substr(0, 21);
+}
+const filterData = (str: string) => {
+  console.log(str)
+  if (labelSelect.value) {
+    // var str = labelSelect.value.$data.selectedLabel // 此属性得到输入的文字
+    // if (str.length > 20) {
+    //   labelSelect.value.$data.selectedLabel = str.substr(0, 21)
+    // }
   }
-};
+}
 // 在编辑器里面上传图片时，会自动传给后端进行保存，然后返回url地址。
-const onUploadImg = async (files: Array<File>, callback: Function) => {
+const onUploadImg = async (
+  files: Array<File>,
+  callback: (res: Array<string>) => void
+) => {
   const res = await Promise.all(
     files.map((file) => {
       return uploadArticleImg({
-        articleImg: file,
-      });
+        articleImg: file
+      })
     })
-  );
-  callback(res.map((item) => item.data.result));
-};
+  )
+  callback(res.map((item) => item.result))
+}
 const submitArticle = async () => {
   if (
-    (ruleForm.value.article_status == "1" &&
+    (ruleForm.value.article_status === 1 &&
       ruleForm.value.article_link &&
       ruleForm.value.article_title &&
       ruleForm.value.article_major &&
       ruleForm.value.article_introduce &&
       ruleForm.value.article_md) ||
-    (ruleForm.value.article_status == "2" &&
+    (ruleForm.value.article_status === 2 &&
       ruleForm.value.article_title &&
       ruleForm.value.article_major &&
       ruleForm.value.article_introduce &&
       ruleForm.value.article_md)
   ) {
     // 将所有的标签一并提交给后端数据库
-    await addArticleLabel({ label_list: ruleForm.value.article_labels });
+    await addArticleLabel({ label_list: ruleForm.value.article_labels })
 
     // 发布文章
     if (!editStatus.value) {
-      await postArticle(ruleForm.value);
+      await postArticle(ruleForm.value)
     } else {
       await editArticle({
         article_id: Number(route.query.article_id),
-        ...ruleForm.value,
-      });
+        ...ruleForm.value
+      })
     }
 
     // 将表单初始化
     ruleForm.value = {
-      article_status: "1",
-      article_link: "",
-      article_title: "",
+      article_status: 1,
+      article_link: '',
+      article_title: '',
       article_major: [],
       article_labels: [],
-      article_introduce: "",
-      article_md: "",
-      author_id: userStore.userInfo.user_id,
-    };
-    localStorage.removeItem("not_saved_article_info");
+      article_introduce: '',
+      article_md: '',
+      author_id: userStore.userInfo.user_id
+    }
+    localStorage.removeItem('not_saved_article_info')
     ElNotification({
-      title: "发布成功！",
-      message: "快快前往首页看看吧！",
-      type: "success",
-    });
+      title: '发布成功！',
+      message: '快快前往首页看看吧！',
+      type: 'success'
+    })
   } else {
     ElNotification({
-      title: "发布文章失败！",
-      message: "必填项未填满！",
-      type: "error",
-    });
+      title: '发布文章失败！',
+      message: '必填项未填满！',
+      type: 'error'
+    })
   }
-};
+}
 
 watch(
   ruleForm,
   (newV, _) => {
     if (!editStatus.value) {
-      localStorage.setItem("not_saved_article_info", JSON.stringify(newV));
+      localStorage.setItem('not_saved_article_info', JSON.stringify(newV))
     }
   },
   { deep: true }
-);
+)
 
 onMounted(async () => {
-  if (localStorage.getItem("not_saved_article_info")) {
-    ElMessageBox.confirm("是否继续上次编辑？", "上次编辑内容未发布", {
+  if (localStorage.getItem('not_saved_article_info')) {
+    ElMessageBox.confirm('是否继续上次编辑？', '上次编辑内容未发布', {
       distinguishCancelAndClose: true,
-      confirmButtonText: "确认",
-      cancelButtonText: "取消",
+      confirmButtonText: '确认',
+      cancelButtonText: '取消'
     })
       .then(() => {
         const localData = JSON.parse(
-          localStorage.getItem("not_saved_article_info") as string
-        );
-        ruleForm.value.article_md = localData.article_md;
-        ruleForm.value.article_introduce = localData.article_introduce;
-        ruleForm.value.article_labels = localData.article_labels;
-        ruleForm.value.article_link = localData.article_link;
-        ruleForm.value.article_major = localData.article_major;
-        ruleForm.value.article_status = localData.article_status;
-        ruleForm.value.article_title = localData.article_title;
-        ruleForm.value.author_id = localData.author_id;
+          localStorage.getItem('not_saved_article_info') as string
+        )
+        ruleForm.value.article_md = localData.article_md
+        ruleForm.value.article_introduce = localData.article_introduce
+        ruleForm.value.article_labels = localData.article_labels
+        ruleForm.value.article_link = localData.article_link
+        ruleForm.value.article_major = localData.article_major
+        ruleForm.value.article_status = localData.article_status
+        ruleForm.value.article_title = localData.article_title
+        ruleForm.value.author_id = localData.author_id
       })
       .catch(() => {
-        localStorage.removeItem("not_saved_article_info");
-      });
+        localStorage.removeItem('not_saved_article_info')
+      })
   }
   if (articleLabelStore.articleLabelInfo) {
     for (var i = 0; i < articleLabelStore.articleLabelInfo.length; i++) {
-      optionsSubject.value.push(articleLabelStore.articleLabelInfo[i]);
+      optionsSubject.value.push(articleLabelStore.articleLabelInfo[i])
     }
   }
   if (route.query.article_id) {
-    editStatus.value = true;
+    editStatus.value = true
     const res = await getArticleMain({
-      article_id: Number(route.query.article_id),
-    });
-    if (res.data.result_code === 0) {
-      const {
-        article_id,
-        collection_num,
-        comment_num,
-        like_num,
-        share_num,
-        view_num,
-        ...sourceArticle
-      } = res.data.result;
+      article_id: Number(route.query.article_id)
+    })
+    if (res.result_code === 0) {
+      const sourceArticle = res.result
 
-      ruleForm.value.article_md = sourceArticle.article_md;
-      ruleForm.value.article_introduce = sourceArticle.article_introduce;
-      ruleForm.value.article_labels = sourceArticle.article_labels;
-      ruleForm.value.article_link = sourceArticle.article_link;
-      ruleForm.value.article_major = sourceArticle.article_major;
-      ruleForm.value.article_status = sourceArticle.article_status;
-      ruleForm.value.article_title = sourceArticle.article_title;
-      ruleForm.value.author_id = sourceArticle.author_id;
+      ruleForm.value.article_md = sourceArticle.article_md
+      ruleForm.value.article_introduce = sourceArticle.article_introduce
+      ruleForm.value.article_labels = sourceArticle.article_labels
+      ruleForm.value.article_link = sourceArticle.article_link
+      ruleForm.value.article_major = sourceArticle.article_major
+      ruleForm.value.article_status = sourceArticle.article_status
+      ruleForm.value.article_title = sourceArticle.article_title
+      ruleForm.value.author_id = sourceArticle.author_id
     }
   }
-});
+})
 </script>
 
 <style scoped lang="less">
-.PostArticle-wrap {
-  margin-bottom: 30px;
+.postarticle-wrap {
   padding: 20px;
+  margin-bottom: 30px;
   width: 1300px;
-  border-radius: 5px;
-  background: #ffffff;
   min-height: 710px;
+  background: #fff;
+  border-radius: 5px;
+
   .title {
-    font-family: SourceHanSansCN-Bold;
     font-size: 36px;
-    font-weight: bold;
+    font-family: SourceHanSansCN-Bold, sans-serif;
     color: #3d3d3d;
+    font-weight: bold;
+
     span {
-      font-family: SourceHanSansCN-Bold;
       font-size: 16px;
-      font-weight: normal;
+      font-family: SourceHanSansCN-Bold, sans-serif;
       color: #9e9e9e;
     }
   }
+
   .forms {
     margin: 0 0 0 100px;
+
     span {
-      font-family: SourceHanSansCN-Regular;
       font-size: 18px;
-      font-weight: normal;
+      font-family: SourceHanSansCN-Regular, sans-serif;
       color: #3d3d3d;
+
       span {
         color: #ff8200;
       }
     }
   }
+
   .button {
-    width: 150px;
-    height: 60px;
-    border-radius: 30px;
-    background: #76fff5;
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor: pointer;
+    width: 150px;
+    height: 60px;
+    font-size: 18px;
+    font-family: SourceHanSansCN-Regular, sans-serif;
+    color: #3d3d3d;
+    background: #76fff5;
+    border-radius: 30px;
     transition: all 0.5s;
-    span {
-      font-family: SourceHanSansCN-Regular;
-      font-size: 18px;
-      font-weight: normal;
-      line-height: 18px;
-      color: #3d3d3d;
-      transition: all 0.5s;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #00ead8;
+
+      span {
+        color: #fff;
+      }
     }
   }
-  .button:hover {
-    background-color: #00ead8;
-    span {
-      color: #ffffff;
-    }
-  }
+
+  /* stylelint-disable-next-line selector-class-pattern */
   :deep(.el-textarea__inner) {
     display: block;
-    resize: vertical;
     padding: 5px 15px;
-    line-height: 1.5;
-    box-sizing: border-box;
     width: 100%;
     font-size: inherit;
+    font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
+      'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
     color: #606266;
-    background-color: #ffffff;
-    background-image: none;
+    background-color: #fff;
     border: 1px solid #dcdfe6;
-    transition: border 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
     border-radius: 5px;
-    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
-      "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    resize: vertical;
+    transition: border 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+    line-height: 1.5;
+    box-sizing: border-box;
+    background-image: none;
   }
+
   :deep(.el-form-item) {
     margin: 0;
   }
+
   :deep(.el-cascader .el-input) {
     height: 50px;
   }
+
+  /* stylelint-disable-next-line selector-class-pattern */
   :deep(.el-select .el-input__wrapper) {
-    height: 50px;
     padding: 0 11px;
+    height: 50px;
   }
 }
 </style>
-@/api/comment @/api/article

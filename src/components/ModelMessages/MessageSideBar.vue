@@ -1,23 +1,24 @@
 <template>
-  <div class="MessageSideBar-wrap">
+  <div class="messagesidebar-wrap">
     <div class="title">
       <img src="@/assets/svgs/MessageSideBar.svg" />
       <span>我的消息</span>
     </div>
-    <div style="margin: 30px 0 0 0">
+    <div style="margin: 30px 0 0">
       <div
         :style="{
-          backgroundColor: animeStyle.background[index],
+          backgroundColor: animeStyle.background[index]
         }"
         @mouseenter="changeClass(index)"
         @mouseleave="changeClass(4)"
         @click="toPage(index)"
         class="choice-item"
         v-for="(item, index) in menuList"
+        :key="index"
       >
         <svg
           :style="{
-            left: `${animeStyle.svg_left_pos[index]}px`,
+            left: `${animeStyle.svg_left_pos[index]}px`
           }"
           class="svg"
           xmlns="http://www.w3.org/2000/svg"
@@ -45,7 +46,7 @@
         </svg>
         <span
           :style="{
-            color: animeStyle.color[index],
+            color: animeStyle.color[index]
           }"
           >{{ item }}</span
         >
@@ -55,116 +56,117 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
-type AnimeStyle = {
-  background: string[];
-  color: string[];
-  svg_left_pos: number[];
-};
-
-const route = useRoute();
-const router = useRouter();
+const route = useRoute()
+const router = useRouter()
 const routeList: string[] = [
-  "messageReplies",
-  "messageCollections",
-  "messageLikes",
-  "messageUsers",
-];
-const menuList: string[] = ["回复我的", "收藏我的", "赞我的", "用户私信"];
+  'messageReplies',
+  'messageCollections',
+  'messageLikes',
+  'messageUsers'
+]
+const menuList: string[] = ['回复我的', '收藏我的', '赞我的', '用户私信']
 
-let animeStyle = ref<AnimeStyle>({
-  background: ["#fff", "#fff", "#fff", "#fff"],
-  color: ["#3d3d3d", "#3d3d3d", "#3d3d3d", "#3d3d3d"],
-  svg_left_pos: [10, 10, 10, 10],
-});
+let animeStyle = ref<{
+  background: string[]
+  color: string[]
+  svg_left_pos: number[]
+}>({
+  background: ['#fff', '#fff', '#fff', '#fff'],
+  color: ['#3d3d3d', '#3d3d3d', '#3d3d3d', '#3d3d3d'],
+  svg_left_pos: [10, 10, 10, 10]
+})
 
 const changeClass = (index: number) => {
   if (index < 4) {
     animeStyle.value = {
-      background: ["#fff", "#fff", "#fff", "#fff"],
-      color: ["#3d3d3d", "#3d3d3d", "#3d3d3d", "#3d3d3d"],
-      svg_left_pos: [10, 10, 10, 10],
-    };
-    animeStyle.value.background[index] = "#76fff5";
-    animeStyle.value.color[index] = "#fff";
-    animeStyle.value.svg_left_pos[index] = 40;
+      background: ['#fff', '#fff', '#fff', '#fff'],
+      color: ['#3d3d3d', '#3d3d3d', '#3d3d3d', '#3d3d3d'],
+      svg_left_pos: [10, 10, 10, 10]
+    }
+    animeStyle.value.background[index] = '#76fff5'
+    animeStyle.value.color[index] = '#fff'
+    animeStyle.value.svg_left_pos[index] = 40
   } else {
-    const index = routeList.findIndex((item) => item === route.name);
+    const index = routeList.findIndex((item) => item === route.name)
     animeStyle.value = {
-      background: ["#fff", "#fff", "#fff", "#fff"],
-      color: ["#3d3d3d", "#3d3d3d", "#3d3d3d", "#3d3d3d"],
-      svg_left_pos: [10, 10, 10, 10],
-    };
-    animeStyle.value.background[index] = "#76fff5";
-    animeStyle.value.color[index] = "#fff";
-    animeStyle.value.svg_left_pos[index] = 40;
+      background: ['#fff', '#fff', '#fff', '#fff'],
+      color: ['#3d3d3d', '#3d3d3d', '#3d3d3d', '#3d3d3d'],
+      svg_left_pos: [10, 10, 10, 10]
+    }
+    animeStyle.value.background[index] = '#76fff5'
+    animeStyle.value.color[index] = '#fff'
+    animeStyle.value.svg_left_pos[index] = 40
   }
-};
+}
 const toPage = (index: number) => {
   router.push({
-    name: `${routeList[index]}`,
-  });
-};
+    name: `${routeList[index]}`
+  })
+}
 
 watch(
   route,
   (newV, _) => {
-    const index: number = routeList.findIndex((item) => item === newV.name);
-    animeStyle.value.background[index] = "#76fff5";
-    animeStyle.value.color[index] = "#fff";
-    animeStyle.value.svg_left_pos[index] = 40;
+    const index: number = routeList.findIndex((item) => item === newV.name)
+    animeStyle.value.background[index] = '#76fff5'
+    animeStyle.value.color[index] = '#fff'
+    animeStyle.value.svg_left_pos[index] = 40
   },
-  { immediate: true, deep: true }
-);
+  { immediate: true }
+)
 </script>
 
 <style scoped lang="less">
-.MessageSideBar-wrap {
+.messagesidebar-wrap {
   position: relative;
   width: 200px;
   height: 381px;
+  background: #fff;
   border-radius: 20px;
-  background: #ffffff;
   opacity: 0.7;
   transition: all 0.5s ease;
 
+  &:hover {
+    opacity: 1;
+  }
+
   .title {
-    margin: 20px 0 0 0;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 20px 0 0;
+
     span {
       margin-left: 10px;
-      font-family: Microsoft YaHei;
       font-size: 18px;
-      font-weight: normal;
+      font-family: 'Microsoft YaHei', sans-serif;
       color: #3d3d3d;
     }
   }
 }
-.MessageSideBar-wrap:hover {
-  opacity: 1;
-}
+
 .choice-item {
-  width: 200px;
-  height: 50px;
   display: flex;
   align-items: center;
-  cursor: pointer;
+  width: 200px;
+  height: 50px;
   transition: all 0.3s ease;
+  cursor: pointer;
+
   .svg {
     position: absolute;
     width: 16px;
     height: 16px;
     transition: all 0.3s ease;
   }
+
   span {
     margin: 0 auto;
-    font-family: Microsoft YaHei;
     font-size: 14px;
-    font-weight: normal;
+    font-family: 'Microsoft YaHei', sans-serif;
   }
 }
 </style>

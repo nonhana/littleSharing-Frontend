@@ -1,5 +1,4 @@
-declare module "@mojs/core" {
-  import { Component } from "vue";
-  const Mojs: any;
-  export default Mojs;
+declare module '@mojs/core' {
+  const Mojs: any
+  export default Mojs
 }

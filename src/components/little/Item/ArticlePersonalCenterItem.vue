@@ -1,19 +1,19 @@
 <template>
-  <div class="ArticleHomeItem-wrap">
+  <div class="articlepersonalcenteritem-wrap">
     <el-row type="flex" justify="space-between">
       <div style="display: flex">
         <div class="title" @click="push(1)">
           <span>{{ article_title }}</span>
         </div>
         <div
-          v-if="article_status == '1'"
+          v-if="article_status == 1"
           class="copied"
           style="margin: 0 0 0 10px"
         >
           <span>转载</span>
         </div>
         <div
-          v-if="article_status == '2'"
+          v-if="article_status == 2"
           class="original"
           style="margin: 0 0 0 10px"
         >
@@ -52,11 +52,11 @@
       </el-dropdown>
     </el-row>
     <el-row type="flex" style="margin-top: 10px">
-      <div class="article_major">
+      <div class="article-major">
         <span>{{ major }}</span>
       </div>
       <div
-        class="article_labels"
+        class="article-labels"
         v-for="(_, index) in article_labels"
         :key="index"
       >
@@ -65,12 +65,12 @@
     </el-row>
     <el-row>
       <div @click="push(1)">
-        <span class="article_introduce">{{ article_introduce }}</span>
+        <span class="article-introduce">{{ article_introduce }}</span>
       </div>
     </el-row>
     <el-row type="flex" justify="start">
-      <el-col :span="0.5">
-        <el-row type="flex" class="action_list">
+      <div>
+        <el-row type="flex" class="action-list">
           <div>
             <img src="@/assets/svgs/LittleLike.svg" />
             <span>{{ like_num }}</span>
@@ -89,379 +89,367 @@
           </div>
         </el-row>
         <el-row type="flex" style="margin-top: 10px">
-          <span class="article_date"
+          <span class="article-date"
             >文章发表时间：{{ article_uploaddate }}</span
           >
-          <span class="article_date" style="margin: 0 0 0 20px"
+          <span class="article-date" style="margin: 0 0 0 20px"
             >最后更新时间：{{ article_updatedate }}</span
           >
         </el-row>
-      </el-col>
+      </div>
     </el-row>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from "vue";
-import { useRouter } from "vue-router";
-import { useUserStore } from "@/store/user";
-import { deleteArticle } from "@/api/article";
-import { addCollection } from "@/api/user";
-import { ElMessageBox, ElNotification } from "element-plus";
-import { formatDate } from "@/utils";
+import { ref, computed, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import { useStore } from '@/store'
+import type { Article } from '@/api/article/types'
+import { deleteArticle } from '@/api/article'
+import { addCollection } from '@/api/user'
+import { ElMessageBox, ElNotification } from 'element-plus'
+import { formatDate } from '@/utils'
 
 const props = defineProps<{
-  articleList: any;
-}>();
+  articleList: Article
+}>()
 
 const emits = defineEmits<{
-  (e: "getArticleList", data: boolean): void;
-}>();
+  (e: 'getArticleList', data: boolean): void
+}>()
 
-const router = useRouter();
+const router = useRouter()
 
-const userStore = useUserStore();
+const { userStore } = useStore()
 
-const routeStatus = ref<number>(0);
-const id = ref<number>(props.articleList.article_id);
-const article_status = ref<string>(props.articleList.article_status);
-const article_link = ref<string>(props.articleList.article_link);
-const article_title = ref<string>(props.articleList.article_title);
-const article_major = ref<any[]>(props.articleList.article_major);
-const article_labels = ref<any[]>(props.articleList.article_labels);
-const article_introduce = ref<string>(props.articleList.article_introduce);
+const routeStatus = ref<number>(0)
+const id = ref<number>(props.articleList.article_id)
+const article_status = ref<number>(props.articleList.article_status)
+const article_link = ref<string>(props.articleList.article_link ?? '')
+const article_title = ref<string>(props.articleList.article_title)
+const article_major = ref<any[]>(props.articleList.article_major)
+const article_labels = ref<any[]>(props.articleList.article_labels)
+const article_introduce = ref<string>(props.articleList.article_introduce)
 const article_uploaddate = ref<string>(
   formatDate(props.articleList.article_uploaddate)
-);
+)
 const article_updatedate = ref<string>(
   formatDate(props.articleList.article_updatedate)
-);
-const author_id = ref<number>(props.articleList.author_id);
-const author_head = ref<string>(props.articleList.author_headphoto);
-const author_name = ref<string>(props.articleList.author_name);
-const author_signature = ref<string>(props.articleList.author_signature);
-const author_university = ref<string>(props.articleList.author_university);
-const article_num = ref<number>(props.articleList.article_num);
-const like_num = ref<number>(props.articleList.like_num);
-const collection_num = ref<number>(props.articleList.collection_num);
-const share_num = ref<number>(props.articleList.share_num);
-const comment_num = ref<number>(props.articleList.comment_num);
+)
+const author_id = ref<number>(props.articleList.author_id)
+const author_head = ref<string>(props.articleList.author_headphoto)
+const author_name = ref<string>(props.articleList.author_name)
+const author_signature = ref<string>(props.articleList.author_signature)
+const author_university = ref<string>(props.articleList.author_university)
+const author_article_num = ref<number>(props.articleList.author_article_num)
+const like_num = ref<number>(props.articleList.like_num)
+const collection_num = ref<number>(props.articleList.collection_num)
+const share_num = ref<number>(props.articleList.share_num)
+const comment_num = ref<number>(props.articleList.comment_num)
 
-const major = computed(() => article_major.value.join("-"));
+const major = computed(() => article_major.value.join('-'))
 
 const push = (num: number) => {
   if (num === 1) {
     const routeUrl = router.resolve({
-      path: "/articleHome/" + id.value,
-    });
-    window.open(routeUrl.href, "_blank");
+      path: '/articleHome/' + id.value
+    })
+    window.open(routeUrl.href, '_blank')
   }
   if (num === 2) {
     router.push({
-      path: "/personalCenter/" + author_id.value,
-    });
+      path: '/personalCenter/' + author_id.value
+    })
   }
-};
+}
 const articlechoices = (num: string) => {
-  if (num === "1") {
+  if (num === '1') {
     router.push({
-      path: "/postArticle",
+      path: '/postArticle',
       query: {
-        article_id: id.value,
-      },
-    });
+        article_id: id.value
+      }
+    })
   }
-  if (num === "2") {
+  if (num === '2') {
     ElMessageBox.confirm(
-      "注：删除之后的文章无法被再次找回！",
-      "是否删除该文章？",
+      '注：删除之后的文章无法被再次找回！',
+      '是否删除该文章？',
       {
         distinguishCancelAndClose: true,
-        confirmButtonText: "确认",
-        cancelButtonText: "取消",
+        confirmButtonText: '确认',
+        cancelButtonText: '取消'
       }
     ).then(async () => {
-      const res = await deleteArticle({ article_id: id.value });
-      if (res.data.result_code === 0) {
+      const res = await deleteArticle({ article_id: id.value })
+      if (res.result_code === 0) {
         ElNotification({
-          title: "文章删除成功！",
-          type: "success",
-        });
-        emits("getArticleList", true);
+          title: '文章删除成功！',
+          type: 'success'
+        })
+        emits('getArticleList', true)
       }
-    });
+    })
   }
-  if (num === "3") {
-    ElMessageBox.confirm("您确定要取消收藏该文章吗？", "提醒", {
+  if (num === '3') {
+    ElMessageBox.confirm('您确定要取消收藏该文章吗？', '提醒', {
       distinguishCancelAndClose: true,
-      confirmButtonText: "确认",
-      cancelButtonText: "取消",
+      confirmButtonText: '确认',
+      cancelButtonText: '取消'
     }).then(async () => {
-      const paramsList = {
+      const res = await addCollection({
         article_id: id.value,
         action_type: 1,
-        user_id: userStore.userInfo.user_id,
-      };
-      const res = await addCollection(paramsList);
-      if (res.data.result_code === 0) {
+        user_id: userStore.userInfo.user_id
+      })
+      if (res.result_code === 0) {
         ElNotification({
-          title: "取消收藏成功！",
-          message: "2s后刷新页面...",
-          type: "success",
-        });
+          title: '取消收藏成功！',
+          message: '2s后刷新页面...',
+          type: 'success'
+        })
         setTimeout(() => {
-          window.location.reload();
-        }, 2000);
+          window.location.reload()
+        }, 2000)
       }
-    });
+    })
   }
-};
+}
 
 watch(
   routeStatus,
   () => {
-    if (router.currentRoute.value.name == "MyCollection") {
-      routeStatus.value = 1;
+    if (router.currentRoute.value.name == 'MyCollection') {
+      routeStatus.value = 1
     }
   },
   {
-    immediate: true,
+    immediate: true
   }
-);
+)
 
 watch(
   () => props.articleList,
   (newV, _) => {
-    id.value = newV.article_id;
-    article_status.value = newV.article_status;
-    article_link.value = newV.article_link;
-    article_title.value = newV.article_title;
-    article_major.value = newV.article_major;
-    article_labels.value = newV.article_labels;
-    article_introduce.value = newV.article_introduce;
-    article_uploaddate.value = formatDate(newV.article_uploaddate);
-    article_updatedate.value = formatDate(newV.article_updatedate);
-    author_head.value = newV.author_headphoto;
-    author_name.value = newV.author_name;
-    author_signature.value = newV.author_signature;
-    author_university.value = newV.author_university;
-    like_num.value = newV.like_num;
-    collection_num.value = newV.collection_num;
-    share_num.value = newV.share_num;
-    comment_num.value = newV.comment_num;
-    article_num.value = newV.article_num;
+    id.value = newV.article_id
+    article_status.value = newV.article_status
+    article_link.value = newV.article_link ?? ''
+    article_title.value = newV.article_title
+    article_major.value = newV.article_major
+    article_labels.value = newV.article_labels
+    article_introduce.value = newV.article_introduce
+    article_uploaddate.value = formatDate(newV.article_uploaddate)
+    article_updatedate.value = formatDate(newV.article_updatedate)
+    author_head.value = newV.author_headphoto
+    author_name.value = newV.author_name
+    author_signature.value = newV.author_signature
+    author_university.value = newV.author_university
+    like_num.value = newV.like_num
+    collection_num.value = newV.collection_num
+    share_num.value = newV.share_num
+    comment_num.value = newV.comment_num
+    author_article_num.value = newV.author_article_num
   },
-  { immediate: true, deep: true }
-);
+  { immediate: true }
+)
 </script>
 
 <style scoped lang="less">
-.ArticleHomeItem-wrap {
+.articlepersonalcenteritem-wrap {
   position: relative;
-  width: 500px;
-  border-radius: 20px;
-  border: 1px solid #9e9e9e;
-  background: #ffffff;
   padding: 9px 14px;
   margin: 30px;
+  width: 500px;
+  background: #fff;
+  border: 1px solid #9e9e9e;
+  border-radius: 20px;
   transition: all 0.3s;
+
+  &:hover {
+    box-shadow: 4px 4px 10px 0 rgb(0 0 0 / 30%);
+  }
+
   .title {
-    height: 26px;
+    display: -webkit-box;
+    overflow: hidden;
     width: 400px;
-    font-family: SourceHanSansCN-Bold;
+    height: 26px;
     font-size: 18px;
-    font-weight: bold;
+    font-family: SourceHanSansCN-Bold, sans-serif;
+    text-overflow: ellipsis;
     color: #3d3d3d;
-    /* 以下是显示固定行数的文字的css，多余文字用省略号表示 */
-    text-overflow: ellipsis;
-    overflow: hidden;
-    display: -webkit-box;
+    font-weight: bold;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
-    word-wrap: break-word;
-    word-break: break-all;
     cursor: pointer;
   }
+
   .copied {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding: 0 10px;
     height: 26px;
-    border-radius: 13px;
+    font-size: 14px;
+    font-family: SourceHanSansCN-Regular, sans-serif;
+    color: #fff;
     background: #ff6c6c;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    span {
-      font-family: SourceHanSansCN-Regular;
-      font-size: 14px;
-      font-weight: normal;
-      color: #ffffff;
-    }
-  }
-  .original {
-    width: max-content;
-    padding: 0 10px;
-    height: 26px;
     border-radius: 13px;
-    background: #ff8200;
+  }
+
+  .original {
     display: flex;
     justify-content: center;
     align-items: center;
-    span {
-      font-family: SourceHanSansCN-Regular;
-      font-size: 14px;
-      font-weight: normal;
-      color: #ffffff;
-    }
+    padding: 0 10px;
+    width: max-content;
+    height: 26px;
+    font-size: 14px;
+    font-family: SourceHanSansCN-Regular, sans-serif;
+    color: #fff;
+    background: #ff8200;
+    border-radius: 13px;
   }
-  .article_introduce {
-    width: 100%;
-    word-break: break-all;
-    font-family: SourceHanSansCN-Regular;
-    font-size: 12px;
-    line-height: 36px;
-    font-weight: normal;
-    color: #9e9e9e;
-    cursor: pointer;
-    /* 以下是显示固定行数的文字的css，多余文字用省略号表示 */
-    text-overflow: ellipsis;
-    overflow: hidden;
+
+  .article-introduce {
     display: -webkit-box;
+    overflow: hidden;
+    width: 100%;
+    font-size: 12px;
+    font-family: SourceHanSansCN-Regular, sans-serif;
+    text-overflow: ellipsis;
+    color: #9e9e9e;
+    line-height: 36px;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
-    word-wrap: break-word;
-    word-break: break-all;
     cursor: pointer;
+
+    &:hover {
+      color: #00ead8;
+    }
   }
-  .article_introduce:hover {
-    color: #00ead8;
-  }
-  .author_head {
+
+  .author-head {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
     width: 48px;
     height: 48px;
-    border-radius: 24px;
     background-color: #76fff5;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    border-radius: 24px;
     cursor: pointer;
+
     img {
       width: 48px;
     }
   }
-  .author_name {
+
+  .author-name {
     height: 20px;
-    font-family: SourceHanSansCN-Regular;
     font-size: 14px;
-    font-weight: normal;
+    font-family: SourceHanSansCN-Regular, sans-serif;
     color: #3d3d3d;
   }
-  .author_signature {
+
+  .author-signature {
     height: 20px;
-    font-family: SourceHanSansCN-Regular;
     font-size: 14px;
-    font-weight: normal;
+    font-family: SourceHanSansCN-Regular, sans-serif;
     color: #3d3d3d;
   }
-  .article_num {
-    width: max-content;
-    padding: 0 10px;
-    height: 20px;
-    border-radius: 10px;
-    background: #76fff5;
+
+  .article-num {
     display: flex;
     justify-content: center;
     align-items: center;
-    span {
-      font-family: SourceHanSansCN-Regular;
-      font-size: 12px;
-      font-weight: normal;
-      color: #ffffff;
-    }
+    padding: 0 10px;
+    width: max-content;
+    height: 20px;
+    font-size: 12px;
+    font-family: SourceHanSansCN-Regular, sans-serif;
+    color: #fff;
+    background: #76fff5;
+    border-radius: 10px;
   }
-  .action_list {
-    width: 150px;
-    height: 16px;
+
+  .action-list {
     display: flex;
     justify-content: space-between;
+    width: 150px;
+    height: 16px;
+
     div {
       display: flex;
       align-items: center;
     }
+
     > * span {
       height: 14px;
-      font-family: SourceHanSansCN-Regular;
       font-size: 12px;
-      font-weight: normal;
+      font-family: SourceHanSansCN-Regular, sans-serif;
       color: #3d3d3d;
     }
+
     > * svg {
       cursor: pointer;
     }
   }
-  .article_major {
-    width: max-content;
-    margin: 0 5px;
+
+  .article-major {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding: 0 10px;
+    margin: 0 5px;
+    width: max-content;
     height: 20px;
-    border-radius: 10px;
+    font-size: 12px;
+    font-family: SourceHanSansCN-Regular, sans-serif;
+    color: #3d3d3d;
     background: #4aff98;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    span {
-      font-family: SourceHanSansCN-Regular;
-      font-size: 12px;
-      font-weight: normal;
-      color: #3d3d3d;
-    }
-  }
-  .article_labels {
-    width: max-content;
-    margin: 0 5px;
-    padding: 0 10px;
-    height: 20px;
     border-radius: 10px;
-    background: #d9fe32;
+  }
+
+  .article-labels {
     display: flex;
     justify-content: center;
     align-items: center;
-    span {
-      font-family: SourceHanSansCN-Regular;
-      font-size: 12px;
-      font-weight: normal;
-      color: #3d3d3d;
-    }
+    padding: 0 10px;
+    margin: 0 5px;
+    width: max-content;
+    height: 20px;
+    font-size: 12px;
+    font-family: SourceHanSansCN-Regular, sans-serif;
+    color: #3d3d3d;
+    background: #d9fe32;
+    border-radius: 10px;
   }
+
   .more {
     margin: 0 10px 0 0;
     cursor: pointer;
   }
-  .author_university {
-    width: max-content;
-    padding: 0 10px;
-    height: 20px;
-    border-radius: 10px;
-    background: #bb76ff;
+
+  .author-university {
     display: flex;
     justify-content: center;
     align-items: center;
-    span {
-      font-family: SourceHanSansCN-Regular;
-      font-size: 12px;
-      font-weight: normal;
-      color: #ffffff;
-    }
-  }
-  .article_date {
-    font-family: SourceHanSansCN-Regular;
+    padding: 0 10px;
+    width: max-content;
+    height: 20px;
     font-size: 12px;
-    font-weight: normal;
+    font-family: SourceHanSansCN-Regular, sans-serif;
+    color: #fff;
+    background: #bb76ff;
+    border-radius: 10px;
+  }
+
+  .article-date {
+    font-size: 12px;
+    font-family: SourceHanSansCN-Regular, sans-serif;
     color: #9e9e9e;
   }
 }
-.ArticleHomeItem-wrap:hover {
-  box-shadow: 4px 4px 10px 0px rgba(0, 0, 0, 0.3);
-}
 </style>
-@/api/comment @/api/article

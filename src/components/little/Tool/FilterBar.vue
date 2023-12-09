@@ -91,7 +91,7 @@
             placeholder="请输入你想要搜索的内容"
             v-model="keywords"
             style="width: 200px"
-            @keyup.enter.native="search(keywords)"
+            @keyup.enter="search(keywords)"
           >
           </el-input>
           <el-button v-loading="searching" @click="search(keywords)"
@@ -104,125 +104,125 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref, watch } from 'vue'
 import {
   options1,
   options2,
   options3,
   options4,
-  options5,
-} from "@/utils/constants";
-import { searchArticle } from "@/api/article";
-import { ArticleInfo } from "@/utils/types";
-import { ElNotification } from "element-plus";
+  options5
+} from '@/utils/constants'
+import { searchArticle } from '@/api/article'
+import type { Article } from '@/api/article/types'
+import { ElNotification } from 'element-plus'
 
 const props = defineProps<{
-  articleListAll: ArticleInfo[];
-}>();
+  articleListAll: Article[]
+}>()
 
 watch(
   () => props.articleListAll,
   () => {
     if (props.articleListAll.length > 0) {
-      article_list_all = props.articleListAll;
+      article_list_all = props.articleListAll
     }
   }
-);
+)
 
 const emit = defineEmits<{
-  (e: "sendArticleList", arr: ArticleInfo[]): void;
-}>();
+  (e: 'sendArticleList', arr: Article[]): void
+}>()
 
-const searchStatus = ref<boolean>(false);
-const searching = ref<boolean>(false);
-const keywords = ref<string>("");
-const activeIndex = ref<string>("1");
-const searchchoicenum = ref<number>(0);
-const searchchoice = ref<string[]>([]);
-const value = ref<string[]>([]);
+const searchStatus = ref<boolean>(false)
+const searching = ref<boolean>(false)
+const keywords = ref<string>('')
+const activeIndex = ref<string>('1')
+const searchchoicenum = ref<number>(0)
+const searchchoice = ref<string[]>([])
+const value = ref<string[]>([])
 
-let article_list_all: ArticleInfo[] = [];
-let article_list: ArticleInfo[] = [];
+let article_list_all: Article[] = []
+let article_list: Article[] = []
 
 const searchItem = (value: string[]) => {
-  const resultStr = value.join("/");
-  article_list = [];
-  article_list_all.forEach((item: ArticleInfo) => {
+  const resultStr = value.join('/')
+  article_list = []
+  article_list_all.forEach((item: Article) => {
     if (item.article_major.indexOf(resultStr) != -1) {
-      article_list.push(item);
+      article_list.push(item)
     }
-  });
-};
+  })
+}
 const handleSelect = (key: string) => {
   const filterArticleList = (keyword: string) => {
-    return article_list_all.filter((item: ArticleInfo) =>
+    return article_list_all.filter((item: Article) =>
       item.article_major.includes(keyword)
-    );
-  };
-  // 1.全部 2.文学 3.理学 4.工学 5.艺术学 6.农学 7.其他学科
-  if (key === "1") {
-    activeIndex.value = "1";
-    keywords.value = "";
-    searchStatus.value = false;
-    article_list = [];
-    searchchoicenum.value = 0;
-    searchchoice.value = [];
-    article_list = article_list_all;
-  } else if (key >= "2" && key <= "7") {
-    searchStatus.value = true;
-    keywords.value = "";
-    article_list = [];
-    searchchoicenum.value = parseInt(key) - 1;
-    searchchoice.value = [];
-    const keywordsMap = new Map<string, string>([
-      ["2", "文学"],
-      ["3", "理学"],
-      ["4", "工学"],
-      ["5", "艺术学"],
-      ["6", "农学"],
-      ["7", "其他学科"],
-    ]);
-    const keyword = keywordsMap.get(key) as string;
-    article_list = filterArticleList(keyword);
+    )
   }
-  emit("sendArticleList", article_list);
-};
+  // 1.全部 2.文学 3.理学 4.工学 5.艺术学 6.农学 7.其他学科
+  if (key === '1') {
+    activeIndex.value = '1'
+    keywords.value = ''
+    searchStatus.value = false
+    article_list = []
+    searchchoicenum.value = 0
+    searchchoice.value = []
+    article_list = article_list_all
+  } else if (key >= '2' && key <= '7') {
+    searchStatus.value = true
+    keywords.value = ''
+    article_list = []
+    searchchoicenum.value = parseInt(key) - 1
+    searchchoice.value = []
+    const keywordsMap = new Map<string, string>([
+      ['2', '文学'],
+      ['3', '理学'],
+      ['4', '工学'],
+      ['5', '艺术学'],
+      ['6', '农学'],
+      ['7', '其他学科']
+    ])
+    const keyword = keywordsMap.get(key) as string
+    article_list = filterArticleList(keyword)
+  }
+  emit('sendArticleList', article_list)
+}
 // 查询文章
 const search = async (keywords: string) => {
   if (!keywords) {
     ElNotification({
-      title: "请输入搜索内容",
-      type: "error",
-    });
+      title: '请输入搜索内容',
+      type: 'error'
+    })
   } else {
-    searchStatus.value = true;
-    searching.value = true;
-    article_list.splice(0);
-    const searchRes = await searchArticle({ keyword: keywords });
-    if (searchRes.data.result_code === 0) {
+    searchStatus.value = true
+    searching.value = true
+    article_list.splice(0)
+    const searchRes = await searchArticle({ keyword: keywords })
+    if (searchRes.result_code === 0) {
       // 搜索成功
-      article_list = searchRes.data.result;
+      article_list = searchRes.result
 
-      emit("sendArticleList", article_list); // 发送文章列表给父组件
+      emit('sendArticleList', article_list) // 发送文章列表给父组件
 
       if (article_list.length == 0) {
         // 提示总共搜索到几篇文章
         ElNotification({
-          title: "未找到相关文章",
-          type: "error",
-        });
+          title: '未找到相关文章',
+          type: 'error'
+        })
       } else {
         // 提示总共搜索到几篇文章
         ElNotification({
-          title: "搜索成功！",
+          title: '搜索成功！',
           message: `总共搜索到${article_list.length}篇文章`,
-          type: "success",
-        });
+          type: 'success'
+        })
       }
     }
-    searching.value = false;
+    searching.value = false
   }
-};
+}
 </script>
 
 <style scoped lang="less">
@@ -232,13 +232,13 @@ const search = async (keywords: string) => {
 }
 
 :deep(.el-menu) {
-  width: 100%;
-  background-color: #ffffff !important;
-  border-radius: 10px;
-  overflow: hidden;
   display: flex;
   align-items: center;
+  overflow: hidden;
+  width: 100%;
+  background-color: #fff !important;
   border: 0.5px solid #00ead8;
+  border-radius: 10px;
 }
 
 :deep(.el-menu-item):hover {

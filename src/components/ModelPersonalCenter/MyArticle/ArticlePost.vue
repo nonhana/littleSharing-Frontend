@@ -1,5 +1,5 @@
 <template>
-  <div class="ArticlePost-wrap">
+  <div class="articlepost-wrap">
     <FilterBar
       :article-list-all="article_list_all"
       @sendArticleList="getArticleList"
@@ -23,7 +23,7 @@
           @getArticleList="getArticleListChild"
         />
         <div
-          style="width: 502px; margin: 0 60px 30px 0; padding: 9px 14px"
+          style="padding: 9px 14px; margin: 0 60px 30px 0; width: 502px"
           v-for="item in new Array(2 - (((article_list.length - 1) % 2) + 1))"
           :key="item"
         ></div>
@@ -43,68 +43,68 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, nextTick } from "vue";
-import { useRoute } from "vue-router";
-import { getUserArticlesDetails } from "@/api/user";
-import FilterBar from "@/components/Little/Tool/FilterBar.vue";
-import ArticlePersonalcenterItem from "@/components/Little/Item/ArticlePersonalCenterItem.vue";
+import { ref, computed, onMounted, nextTick } from 'vue'
+import { useRoute } from 'vue-router'
+import { getUserArticlesDetails } from '@/api/user'
+import type { Article } from '@/api/article/types'
+import FilterBar from '@/components/Little/Tool/FilterBar.vue'
+import ArticlePersonalcenterItem from '@/components/Little/Item/ArticlePersonalCenterItem.vue'
 
-const route = useRoute();
+const route = useRoute()
 
-const loading = ref<boolean>(false);
-const article_list = ref<any[]>([]);
-const article_list_all = ref<any[]>([]);
-const articleListShow = ref<number>(0);
+const loading = ref<boolean>(false)
+const article_list = ref<Article[]>([])
+const article_list_all = ref<Article[]>([])
+const articleListShow = ref<number>(0)
 
-const post_article_num = computed(() => article_list_all.value.length);
+const post_article_num = computed(() => article_list_all.value.length)
 
-const getArticleList = async (arr: any[]) => {
-  articleListShow.value = 1;
-  article_list.value = arr;
-  await nextTick();
-  articleListShow.value = 0;
-};
-const getArticleListChild = async (val: any) => {
+const getArticleList = async (arr: Article[]) => {
+  articleListShow.value = 1
+  article_list.value = arr
+  await nextTick()
+  articleListShow.value = 0
+}
+const getArticleListChild = async (val: boolean) => {
   if (val) {
-    loading.value = true;
-    article_list_all.value.splice(0);
+    loading.value = true
+    article_list_all.value.splice(0)
     const res = await getUserArticlesDetails({
-      user_id: Number(route.params.id),
-    });
-    res.data.result.forEach((item: any) => {
-      article_list_all.value.push(item);
-    });
-    article_list_all.value.reverse();
-    article_list.value = article_list_all.value;
-    loading.value = false;
+      user_id: Number(route.params.id)
+    })
+    res.result.forEach((item) => {
+      article_list_all.value.push(item)
+    })
+    article_list_all.value.reverse()
+    article_list.value = article_list_all.value
+    loading.value = false
   }
-};
+}
 
 onMounted(async () => {
-  loading.value = true;
+  loading.value = true
   const res = await getUserArticlesDetails({
-    user_id: Number(route.params.id),
-  });
-  article_list_all.value = res.data.result;
-  article_list_all.value.reverse();
-  article_list.value = article_list_all.value;
-  loading.value = false;
-});
+    user_id: Number(route.params.id)
+  })
+  article_list_all.value = res.result
+  article_list_all.value.reverse()
+  article_list.value = article_list_all.value
+  loading.value = false
+})
 </script>
 
 <style scoped lang="less">
-.ArticlePost-wrap {
+.articlepost-wrap {
   position: relative;
-  width: 1310px;
-  background: #ffffff;
-  border-radius: 10px;
   padding: 20px;
+  width: 1310px;
+  background: #fff;
+  border-radius: 10px;
+
   .title {
-    font-family: SourceHanSansCN-Regular;
     font-size: 24px;
-    font-weight: normal;
+    font-family: SourceHanSansCN-Regular, sans-serif;
     color: #3d3d3d;
   }
 }
 </style>
-@/api/article

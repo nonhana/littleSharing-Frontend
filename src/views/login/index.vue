@@ -4,26 +4,26 @@
       <div
         class="window"
         :style="{
-          opacity: window_opacity,
+          opacity: window_opacity
         }"
       >
-        <loginWindow />
+        <LoginWindow />
       </div>
     </el-row>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
-import loginWindow from "@/components/ModelLogin/loginWindow.vue";
+import { ref, onMounted } from 'vue'
+import LoginWindow from '@/components/ModelLogin/LoginWindow.vue'
 
-const window_opacity = ref("0%");
+const window_opacity = ref('0%')
 
 onMounted(() => {
   setTimeout(() => {
-    window_opacity.value = "100%";
-  }, 600);
-});
+    window_opacity.value = '100%'
+  }, 600)
+})
 </script>
 
 <style scoped lang="less">

@@ -3,14 +3,14 @@
     <el-row type="flex" justify="center">
       <PersonalHeader />
     </el-row>
-    <el-row type="flex" justify="center" style="margin: 40px 0 30px 0">
+    <el-row type="flex" justify="center" style="margin: 40px 0 30px">
       <router-view />
     </el-row>
   </div>
 </template>
 
 <script setup lang="ts">
-import PersonalHeader from "@/components/ModelPersonalCenter/PersonalHeader.vue";
+import PersonalHeader from '@/components/ModelPersonalCenter/PersonalHeader.vue'
 </script>
 
 <style scoped lang="less">

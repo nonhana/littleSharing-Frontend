@@ -1,5 +1,5 @@
 <template>
-  <div class="MessageCollections-wrap">
+  <div class="messagecollections-wrap">
     <div class="head">
       <div style="display: flex; align-items: center">
         <img src="@/assets/svgs/MessageCollectionsHead.svg" />
@@ -19,6 +19,7 @@
           v-for="index in messageNum > collectMessageListAll.length
             ? collectMessageListAll.length
             : messageNum"
+          :key="index"
         >
           <MessageCollectionsItem
             :collect-message-info="collectMessageListAll[index - 1]"
@@ -30,71 +31,85 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, nextTick } from "vue";
-import { useRouter } from "vue-router";
-import MessageCollectionsItem from "../Little/Item/MessageCollectionsItem.vue";
+import { ref, onMounted, nextTick } from 'vue'
+import { useRouter } from 'vue-router'
+import MessageCollectionsItem from '../Little/Item/MessageCollectionsItem.vue'
 
-interface CollectMessageInfo {
-  user_id: number;
-  user_name: string;
-  user_img: string;
-  article_id: number;
-  article_title: string;
-  article_info: string;
-  collect_date: string;
+const router = useRouter()
+
+const collectMessageItem: {
+  user_id: number
+  user_name: string
+  user_img: string
+  article_id: number
+  article_title: string
+  article_info: string
+  collect_date: string
+} = {
+  user_id: 1,
+  user_name: 'Alice',
+  user_img: 'https://dummyimage.com/400X400',
+  article_id: 101,
+  article_title: 'First Article',
+  article_info:
+    '文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介',
+  collect_date: '2023-07-18 10:30:00'
 }
 
-const router = useRouter();
-const collectMessageItem: CollectMessageInfo = {
-  user_id: 1,
-  user_name: "Alice",
-  user_img: "https://dummyimage.com/400X400",
-  article_id: 101,
-  article_title: "First Article",
-  article_info:
-    "文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介文章简介",
-  collect_date: "2023-07-18 10:30:00",
-};
-const collectMessageListAll = ref<CollectMessageInfo[]>(
-  new Array(10000).fill(collectMessageItem)
-);
-
-let messageNum = ref<number>(7);
-let loading = ref<boolean>(true);
+const collectMessageListAll = ref<
+  {
+    user_id: number
+    user_name: string
+    user_img: string
+    article_id: number
+    article_title: string
+    article_info: string
+    collect_date: string
+  }[]
+>(new Array(10000).fill(collectMessageItem))
+const messageNum = ref<number>(7)
+const loading = ref<boolean>(true)
 
 const load = () => {
   if (messageNum.value < collectMessageListAll.value.length) {
-    messageNum.value += 5;
+    messageNum.value += 5
   }
-};
+}
 
 onMounted(async () => {
-  await nextTick();
-  loading.value = false;
-});
+  await nextTick()
+  loading.value = false
+})
 </script>
 
 <style scoped lang="less">
-.MessageCollections-wrap {
+.messagecollections-wrap {
   position: relative;
   width: 960px;
+
   ul {
     padding: 0;
     margin: 0;
+
     li {
       list-style: none;
     }
   }
+
   .head {
-    width: 950px;
-    height: 60px;
-    border-radius: 10px;
-    background: #ffffff;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 950px;
+    height: 60px;
+    background: #fff;
+    border-radius: 10px;
     opacity: 0.7;
     transition: all 0.5s ease;
+
+    &:hover {
+      opacity: 1;
+    }
 
     img {
       margin-left: 30px;
@@ -102,19 +117,16 @@ onMounted(async () => {
 
     span {
       margin-left: 10px;
-      font-family: Microsoft YaHei;
       font-size: 14px;
-      font-weight: normal;
+      font-family: 'Microsoft YaHei', sans-serif;
       color: #3d3d3d;
     }
   }
-  .head:hover {
-    opacity: 1;
-  }
+
   .message-list {
+    overflow-y: scroll;
     margin-top: 20px;
     height: 600px;
-    overflow-y: scroll;
   }
 }
 </style>

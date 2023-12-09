@@ -1,5 +1,5 @@
 <template>
-  <div class="MessageUsers-wrap">
+  <div class="messageusers-wrap">
     <div class="head">
       <img src="@/assets/svgs/MessageUsersHead.svg" />
       <span>用户私信</span>
@@ -20,30 +20,25 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
-
 <style scoped lang="less">
-.MessageUsers-wrap {
+.messageusers-wrap {
   position: relative;
   width: 960px;
+
   .head {
-    width: 950px;
-    height: 60px;
-    border-radius: 10px;
-    background: #ffffff;
     display: flex;
     align-items: center;
+    margin-left: 10px;
+    width: 950px;
+    height: 60px;
+    font-size: 14px;
+    font-family: 'Microsoft YaHei', sans-serif;
+    color: #3d3d3d;
+    background: #fff;
+    border-radius: 10px;
 
     img {
       margin-left: 30px;
-    }
-
-    span {
-      margin-left: 10px;
-      font-family: Microsoft YaHei;
-      font-size: 14px;
-      font-weight: normal;
-      color: #3d3d3d;
     }
   }
 }

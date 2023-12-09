@@ -1,8 +1,8 @@
 <template>
-  <div class="articleHomeItem-wrap">
+  <div class="articlehomeitem-wrap">
     <div
       :style="{
-        width: cover_status,
+        width: cover_status
       }"
     >
       <el-row type="flex" justify="space-between">
@@ -11,14 +11,14 @@
             <span>{{ article_title }}</span>
           </div>
           <div
-            v-if="article_status == '1'"
+            v-if="article_status === 1"
             class="copied"
             style="margin: 0 0 0 10px"
           >
             <span>转载</span>
           </div>
           <div
-            v-if="article_status == '2'"
+            v-if="article_status === 2"
             class="original"
             style="margin: 0 0 0 10px"
           >
@@ -26,8 +26,8 @@
           </div>
         </div>
 
-        <el-dropdown @command="articlechoices">
-          <div class="el-dropdown-link more">
+        <el-dropdown>
+          <div class="more">
             <img src="@/assets/svgs/More.svg" />
           </div>
           <template #dropdown>
@@ -44,11 +44,11 @@
       </el-row>
 
       <el-row type="flex" style="margin-top: 10px">
-        <div class="article_major">
+        <div class="article-major">
           <span>{{ major }}</span>
         </div>
         <div
-          class="article_labels"
+          class="article-labels"
           v-for="(_, index) in article_labels"
           :key="index"
         >
@@ -57,47 +57,47 @@
       </el-row>
 
       <el-row>
-        <div class="article_introduce" @click="push(1)">
+        <div class="article-introduce" @click="push(1)">
           <span>{{ article_introduce }}</span>
         </div>
       </el-row>
 
       <el-row type="flex" justify="space-between" style="width: 100%">
-        <el-col :span="0.5" style="display: flex">
-          <el-col :span="0.5">
+        <div style="display: flex">
+          <div>
             <el-tooltip
               class="item"
               effect="light"
               content="点击前往个人主页"
               placement="left"
             >
-              <div class="author_head" @click="push(2)">
+              <div class="author-head" @click="push(2)">
                 <img :src="author_head" alt="" />
               </div>
             </el-tooltip>
-          </el-col>
-          <el-col :span="0.5" style="margin-left: 20px">
+          </div>
+          <div style="margin-left: 20px">
             <el-row type="flex">
-              <span class="author_name">{{ author_name }}</span>
-              <div class="article_num" style="margin-left: 10px">
-                <span>该用户已发表{{ article_num }}篇文章</span>
+              <span class="author-name">{{ author_name }}</span>
+              <div class="article-num" style="margin-left: 10px">
+                <span>该用户已发表{{ author_article_num }}篇文章</span>
               </div>
-              <div class="author_university" style="margin-left: 10px">
+              <div class="author-university" style="margin-left: 10px">
                 <span>{{ author_university }}</span>
               </div>
             </el-row>
-            <el-row style="margin: 5px 0 0 0">
-              <span class="author_signature">{{ author_signature }}</span>
+            <el-row style="margin: 5px 0 0">
+              <span class="author-signature">{{ author_signature }}</span>
             </el-row>
-          </el-col>
-        </el-col>
-        <el-col :span="0.5">
-          <el-row type="flex" class="action_list">
+          </div>
+        </div>
+        <div>
+          <el-row type="flex" class="action-list">
             <div>
               <div @click="addlike()">
                 <LikeBtn :likemark="likemark" />
               </div>
-              <div style="margin: 3px 0 0 0">
+              <div style="margin: 3px 0 0">
                 <span>{{ like_num }}</span>
               </div>
             </div>
@@ -105,7 +105,7 @@
               <div @click="addcollection()">
                 <CollectionBtn :collectionmark="collectionmark" />
               </div>
-              <div style="margin: 3px 0 0 0">
+              <div style="margin: 3px 0 0">
                 <span>{{ collection_num }}</span>
               </div>
             </div>
@@ -113,7 +113,7 @@
               <div @click="addshare()">
                 <ShareBtn />
               </div>
-              <div style="margin: 3px 0 0 0">
+              <div style="margin: 3px 0 0">
                 <span>{{ share_num }}</span>
               </div>
             </div>
@@ -121,17 +121,17 @@
               <div>
                 <CommentBtn />
               </div>
-              <div style="margin: 3px 0 0 0">
+              <div style="margin: 3px 0 0">
                 <span>{{ comment_num }}</span>
               </div>
             </div>
           </el-row>
-          <el-row style="margin: 10px 0 0 0" type="flex">
-            <span class="article_uploaddate"
+          <el-row style="margin: 10px 0 0" type="flex">
+            <span class="article-uploaddate"
               >最后更新时间：{{ article_updatedate }}</span
             >
           </el-row>
-        </el-col>
+        </div>
       </el-row>
     </div>
 
@@ -139,10 +139,9 @@
       <el-popover placement="left" :width="400" trigger="hover">
         <template #reference>
           <el-image
-            slot="reference"
             :src="cover_image"
             :alt="cover_image"
-            style="max-height: 150px; max-width: 200px"
+            style="max-width: 200px; max-height: 150px"
           ></el-image>
         </template>
         <el-image :src="cover_image"></el-image>
@@ -152,399 +151,364 @@
 </template>
 
 <script setup lang="ts">
-import { watch, onMounted, computed, ref } from "vue";
-import { ArticleInfo } from "@/utils/types";
-import { useRouter } from "vue-router";
-import { useUserStore } from "@/store/user";
+import { watch, onMounted, computed, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useStore } from '@/store'
+import type { Article } from '@/api/article/types'
 import {
   addLike,
   getUserLikeList,
   addCollection,
-  getUserCollectList,
-} from "@/api/user";
-import { formatDate } from "@/utils";
-import LikeBtn from "@/components/Little/Button/LikeBtn.vue";
-import CollectionBtn from "@/components/Little/Button/CollectionBtn.vue";
-import ShareBtn from "@/components/Little/Button/ShareBtn.vue";
-import CommentBtn from "@/components/Little/Button/CommentBtn.vue";
-import { ElMessage, ElMessageBox } from "element-plus";
+  getUserCollectList
+} from '@/api/user'
+import { formatDate } from '@/utils'
+import LikeBtn from '@/components/Little/Button/LikeBtn.vue'
+import CollectionBtn from '@/components/Little/Button/CollectionBtn.vue'
+import ShareBtn from '@/components/Little/Button/ShareBtn.vue'
+import CommentBtn from '@/components/Little/Button/CommentBtn.vue'
+import { ElMessage, ElMessageBox } from 'element-plus'
 
 const props = defineProps<{
-  articleList: ArticleInfo;
-}>();
+  articleList: Article
+}>()
 
-const router = useRouter();
+const router = useRouter()
 
-const userStore = useUserStore();
+const { userStore } = useStore()
 
-const likemark = ref<number>(0);
-const collectionmark = ref<number>(0);
-const like_num = ref<number>(props.articleList.like_num);
-const collection_num = ref<number>(props.articleList.collection_num);
-const share_num = ref<number>(props.articleList.share_num);
+const likemark = ref<number>(0)
+const collectionmark = ref<number>(0)
+const like_num = ref<number>(props.articleList.like_num)
+const collection_num = ref<number>(props.articleList.collection_num)
+const share_num = ref<number>(props.articleList.share_num)
 
-let cover_image = props.articleList.cover_image;
-let id = props.articleList.article_id;
-let article_status = props.articleList.article_status;
-let article_title = props.articleList.article_title;
-let article_major = props.articleList.article_major;
-let article_labels = props.articleList.article_labels;
-let article_introduce = props.articleList.article_introduce;
-let article_updatedate = formatDate(props.articleList.article_updatedate);
-let author_id = props.articleList.author_id;
-let author_head = props.articleList.author_headphoto;
-let author_name = props.articleList.author_name;
-let author_signature = props.articleList.author_signature;
-let author_university = props.articleList.author_university;
-let article_num = props.articleList.article_num;
-let comment_num = props.articleList.comment_num;
+let cover_image = props.articleList.cover_image
+let article_id = props.articleList.article_id
+let article_status = props.articleList.article_status
+let article_title = props.articleList.article_title
+let article_major = props.articleList.article_major
+let article_labels = props.articleList.article_labels
+let article_introduce = props.articleList.article_introduce
+let article_updatedate = formatDate(props.articleList.article_updatedate)
+let author_id = props.articleList.author_id
+let author_head = props.articleList.author_headphoto
+let author_name = props.articleList.author_name
+let author_signature = props.articleList.author_signature
+let author_university = props.articleList.author_university
+let author_article_num = props.articleList.author_article_num
+let comment_num = props.articleList.comment_num
 
 watch(
   () => props.articleList,
   (newV, _) => {
-    id = newV.article_id;
-    article_status = newV.article_status;
-    article_title = newV.article_title;
-    article_major = newV.article_major;
-    article_labels = newV.article_labels;
-    article_introduce = newV.article_introduce;
-    article_updatedate = formatDate(newV.article_updatedate);
-    author_head = newV.author_headphoto;
-    author_name = newV.author_name;
-    author_signature = newV.author_signature;
-    author_university = newV.author_university;
-    like_num.value = newV.like_num;
-    collection_num.value = newV.collection_num;
-    share_num.value = newV.share_num;
-    comment_num = newV.comment_num;
-    article_num = newV.article_num;
+    article_id = newV.article_id
+    article_status = newV.article_status
+    article_title = newV.article_title
+    article_major = newV.article_major
+    article_labels = newV.article_labels
+    article_introduce = newV.article_introduce
+    article_updatedate = formatDate(newV.article_updatedate)
+    author_head = newV.author_headphoto
+    author_name = newV.author_name
+    author_signature = newV.author_signature
+    author_university = newV.author_university
+    like_num.value = newV.like_num
+    collection_num.value = newV.collection_num
+    share_num.value = newV.share_num
+    comment_num = newV.comment_num
+    author_article_num = newV.author_article_num
   },
-  { immediate: true, deep: true }
-);
+  { immediate: true }
+)
 
 const present_date = computed(() => {
-  const date = new Date();
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-  const monthStr = month > 9 ? month : "0" + month;
-  const dayStr = day < 10 ? "0" + day : day;
-  return year + "-" + monthStr + "-" + dayStr;
-});
+  const date = new Date()
+  const year = date.getFullYear()
+  const month = date.getMonth() + 1
+  const day = date.getDate()
+  const monthStr = month > 9 ? month : '0' + month
+  const dayStr = day < 10 ? '0' + day : day
+  return year + '-' + monthStr + '-' + dayStr
+})
 const cover_status = computed(() => {
   if (cover_image) {
-    return "80%";
+    return '80%'
   } else {
-    return "100%";
+    return '100%'
   }
-});
+})
 const major = computed(() => {
-  return article_major.join("-");
-});
+  return article_major.join('-')
+})
 
-const articlechoices = (num: number) => {
-  if (num === 1) {
-  }
-};
 const push = (num: number) => {
   if (num === 1) {
     const routeUrl = router.resolve({
-      path: "/articleHome/" + id,
-    });
-    window.open(routeUrl.href, "_blank");
+      path: '/articleHome/' + article_id
+    })
+    window.open(routeUrl.href, '_blank')
   }
   if (num === 2) {
     router.push({
-      path: "/personalCenter/" + author_id,
-    });
+      path: '/personalCenter/' + author_id
+    })
   }
-};
+}
 const addlike = async () => {
   if (likemark.value !== 1) {
-    likemark.value = 1;
-    like_num.value++;
-    const paramsList = {
-      article_id: id,
+    likemark.value = 1
+    like_num.value++
+    await addLike({
+      article_id: article_id,
       user_id: userStore.userInfo.user_id,
       update_date: present_date.value,
-      action_type: 0,
-    };
-    await addLike(paramsList);
+      action_type: 0
+    })
     ElMessage({
-      message: "点赞成功",
-    });
+      message: '点赞成功'
+    })
   } else {
-    likemark.value = 0;
-    like_num.value--;
-    const paramsList = {
-      article_id: id,
+    likemark.value = 0
+    like_num.value--
+    await addLike({
+      article_id: article_id,
       action_type: 1,
-      user_id: userStore.userInfo.user_id,
-    };
-    await addLike(paramsList);
+      user_id: userStore.userInfo.user_id
+    })
     ElMessage({
-      message: "取消点赞",
-    });
+      message: '取消点赞'
+    })
   }
-};
+}
 const addcollection = async () => {
   if (collectionmark.value !== 1) {
-    collectionmark.value = 1;
-    collection_num.value++;
-    const paramsList = {
-      article_id: id,
+    collectionmark.value = 1
+    collection_num.value++
+    await addCollection({
+      article_id: article_id,
       user_id: userStore.userInfo.user_id,
       update_date: present_date.value,
-      action_type: 0,
-    };
-    await addCollection(paramsList);
+      action_type: 0
+    })
     ElMessage({
-      message: "收藏成功",
-    });
+      message: '收藏成功'
+    })
   } else {
-    collectionmark.value = 0;
-    collection_num.value--;
-    const paramsList = {
-      article_id: id,
+    collectionmark.value = 0
+    collection_num.value--
+    await addCollection({
+      article_id: article_id,
       action_type: 1,
-      user_id: userStore.userInfo.user_id,
-    };
-    await addCollection(paramsList);
+      user_id: userStore.userInfo.user_id
+    })
     ElMessage({
-      message: "取消收藏",
-    });
+      message: '取消收藏'
+    })
   }
-};
+}
 const addshare = () => {
   ElMessageBox.alert(
-    window.location.origin + "/articleHome/" + id,
-    "点击确定复制链接",
+    window.location.origin + '/articleHome/' + article_id,
+    '点击确定复制链接',
     {
-      confirmButtonText: "确定",
+      confirmButtonText: '确定',
       callback: () => {
-        share_num.value++;
+        share_num.value++
         // 复制url到用户的剪切板
         navigator.clipboard
-          .writeText(window.location.origin + "/articleHome/" + id)
+          .writeText(window.location.origin + '/articleHome/' + article_id)
           .then(() => {
             ElMessage({
-              type: "info",
-              message: "复制成功！请尽快转发哦~",
-            });
-          });
-      },
+              type: 'info',
+              message: '复制成功！请尽快转发哦~'
+            })
+          })
+      }
     }
-  );
-};
+  )
+}
 
 onMounted(async () => {
-  const likeListRes = await getUserLikeList();
-  if (likeListRes.data.result_code === 0) {
-    likemark.value = likeListRes.data.result.includes(id) ? 1 : 0;
+  const likeListRes = await getUserLikeList()
+  if (likeListRes.result_code === 0) {
+    likemark.value = likeListRes.result.includes(article_id) ? 1 : 0
   }
 
-  const collectListRes = await getUserCollectList();
-  if (collectListRes.data.result_code === 0) {
-    collectionmark.value = collectListRes.data.result.includes(id) ? 1 : 0;
+  const collectListRes = await getUserCollectList()
+  if (collectListRes.result_code === 0) {
+    collectionmark.value = collectListRes.result.includes(article_id) ? 1 : 0
   }
-});
+})
 </script>
 
 <style scoped lang="less">
-.articleHomeItem-wrap {
+.articlehomeitem-wrap {
   position: relative;
-  width: 975px;
-  border-radius: 20px;
-  background: #ffffff;
-  padding: 9px 14px;
-  margin-bottom: 30px;
-  transition: all 0.3s;
   display: flex;
   align-items: center;
+  padding: 9px 14px;
+  margin-bottom: 30px;
+  width: 975px;
+  background: #fff;
+  border-radius: 20px;
+  transition: all 0.3s;
 
   .title {
     height: 26px;
-    font-family: SourceHanSansCN-Bold;
     font-size: 18px;
-    font-weight: bold;
+    font-family: SourceHanSansCN-Bold, sans-serif;
     color: #3d3d3d;
+    font-weight: bold;
     cursor: pointer;
   }
 
   .copied {
-    width: max-content;
-    padding: 0 10px;
-    height: 26px;
-    border-radius: 13px;
-    background: #ff6c6c;
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-
-  .copied span {
-    font-family: SourceHanSansCN-Regular;
+    padding: 0 10px;
+    width: max-content;
+    height: 26px;
     font-size: 14px;
-    font-weight: normal;
-    color: #ffffff;
+    font-family: SourceHanSansCN-Regular, sans-serif;
+    color: #fff;
+    background: #ff6c6c;
+    border-radius: 13px;
   }
 
   .original {
-    width: max-content;
-    padding: 0 10px;
-    height: 26px;
-    border-radius: 13px;
-    background: #ff8200;
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-
-  .original span {
-    font-family: SourceHanSansCN-Regular;
+    padding: 0 10px;
+    width: max-content;
+    height: 26px;
     font-size: 14px;
-    font-weight: normal;
-    color: #ffffff;
+    font-family: SourceHanSansCN-Regular, sans-serif;
+    color: #fff;
+    background: #ff8200;
+    border-radius: 13px;
   }
 
-  .article_introduce span {
-    word-break: break-all;
-    font-family: SourceHanSansCN-Regular;
-    font-size: 12px;
-    line-height: 36px;
-    font-weight: normal;
-    color: #9e9e9e;
-    cursor: pointer;
-    /* 以下是显示固定行数的文字的css，多余文字用省略号表示 */
-    text-overflow: ellipsis;
-    overflow: hidden;
+  .article-introduce span {
     display: -webkit-box;
+    overflow: hidden;
+    font-size: 12px;
+    font-family: SourceHanSansCN-Regular, sans-serif;
+    text-overflow: ellipsis;
+    color: #9e9e9e;
+    line-height: 36px;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     word-wrap: break-word;
     word-break: break-all;
     cursor: pointer;
+
+    font:hover {
+      color: #00ead8;
+    }
   }
 
-  .article_introduce font:hover {
-    color: #00ead8;
-  }
-
-  .author_head {
+  .author-head {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
     width: 48px;
     height: 48px;
-    border-radius: 24px;
     background-color: #76fff5;
-    overflow: hidden;
+    border-radius: 24px;
+    cursor: pointer;
+
+    img {
+      width: 48px;
+    }
+  }
+
+  .author-name {
+    height: 20px;
+    font-size: 14px;
+    font-family: SourceHanSansCN-Regular, sans-serif;
+    color: #3d3d3d;
+  }
+
+  .author-signature {
+    height: 20px;
+    font-size: 14px;
+    font-family: SourceHanSansCN-Regular, sans-serif;
+    color: #3d3d3d;
+  }
+
+  .article-num {
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor: pointer;
-  }
-
-  .author_head img {
-    width: 48px;
-  }
-
-  .author_name {
-    height: 20px;
-    font-family: SourceHanSansCN-Regular;
-    font-size: 14px;
-    font-weight: normal;
-    color: #3d3d3d;
-  }
-
-  .author_signature {
-    height: 20px;
-    font-family: SourceHanSansCN-Regular;
-    font-size: 14px;
-    font-weight: normal;
-    color: #3d3d3d;
-  }
-
-  .article_num {
-    width: max-content;
     padding: 0 10px;
+    width: max-content;
     height: 20px;
-    border-radius: 10px;
+    font-size: 12px;
+    font-family: SourceHanSansCN-Regular, sans-serif;
+    color: #fff;
     background: #76fff5;
+    border-radius: 10px;
+  }
+
+  .action-list {
     display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .article_num span {
-    font-family: SourceHanSansCN-Regular;
-    font-size: 12px;
-    font-weight: normal;
-    color: #ffffff;
-  }
-
-  .action_list {
     height: 16px;
-    display: flex;
-  }
-
-  .action_list > div {
-    display: flex;
-  }
-
-  .action_list > * span {
-    font-family: SourceHanSansCN-Regular;
     font-size: 16px;
-    font-weight: normal;
+    font-family: SourceHanSansCN-Regular, sans-serif;
     color: #3d3d3d;
-    margin: 0 10px;
+
+    & > div {
+      display: flex;
+    }
+
+    & > * span {
+      margin: 0 10px;
+    }
+
+    > * svg {
+      cursor: pointer;
+
+      path {
+        transition: all 0.2s;
+      }
+
+      &:hover path {
+        fill: #76fff5;
+      }
+    }
   }
 
-  .action_list > * svg {
-    cursor: pointer;
-  }
-
-  .action_list > * svg path {
-    transition: all 0.2s;
-  }
-
-  .action_list > * svg:hover path {
-    fill: #76fff5;
-  }
-
-  .article_major {
-    width: max-content;
-    margin: 0 5px;
+  .article-major {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding: 0 10px;
+    margin: 0 5px;
+    width: max-content;
     height: 20px;
-    border-radius: 10px;
+    font-size: 12px;
+    font-family: SourceHanSansCN-Regular, sans-serif;
+    color: #3d3d3d;
     background: #4aff98;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .article_major span {
-    font-family: SourceHanSansCN-Regular;
-    font-size: 12px;
-    font-weight: normal;
-    color: #3d3d3d;
-  }
-
-  .article_labels {
-    width: max-content;
-    margin: 0 5px;
-    padding: 0 10px;
-    height: 20px;
     border-radius: 10px;
-    background: #d9fe32;
+  }
+
+  .article-labels {
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-
-  .article_labels span {
-    font-family: SourceHanSansCN-Regular;
+    padding: 0 10px;
+    margin: 0 5px;
+    width: max-content;
+    height: 20px;
     font-size: 12px;
-    font-weight: normal;
+    font-family: SourceHanSansCN-Regular, sans-serif;
     color: #3d3d3d;
+    background: #d9fe32;
+    border-radius: 10px;
   }
 
   .more {
@@ -552,33 +516,28 @@ onMounted(async () => {
     cursor: pointer;
   }
 
-  .author_university {
-    width: max-content;
-    padding: 0 10px;
-    height: 20px;
-    border-radius: 10px;
-    background: #bb76ff;
+  .author-university {
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 0 10px;
+    width: max-content;
+    height: 20px;
+    font-size: 12px;
+    font-family: SourceHanSansCN-Regular, sans-serif;
+    color: #fff;
+    background: #bb76ff;
+    border-radius: 10px;
   }
 
-  .author_university span {
-    font-family: SourceHanSansCN-Regular;
+  .article-uploaddate {
     font-size: 12px;
-    font-weight: normal;
-    color: #ffffff;
-  }
-
-  .article_uploaddate {
-    font-family: SourceHanSansCN-Regular;
-    font-size: 12px;
-    font-weight: normal;
+    font-family: SourceHanSansCN-Regular, sans-serif;
     color: #9e9e9e;
   }
 }
 
-.articleHomeItem-wrap:hover {
-  box-shadow: 4px 4px 10px 0px rgba(0, 0, 0, 0.3);
+.articlehomeitem-wrap:hover {
+  box-shadow: 4px 4px 10px 0 rgb(0 0 0 / 30%);
 }
 </style>

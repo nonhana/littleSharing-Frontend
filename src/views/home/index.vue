@@ -18,12 +18,13 @@
           <ul
             v-infinite-scroll="load"
             v-if="articleListShow"
-            class="HomeArticleList-warp"
+            class="homearticlelist-warp"
           >
             <li
               v-for="index in articleNum > article_list.length
                 ? article_list.length
                 : articleNum"
+              :key="index"
             >
               <ArticleHomeItem :article-list="article_list[index - 1]" />
             </li>
@@ -41,60 +42,62 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, nextTick } from "vue";
-import { ArticleInfo } from "@/utils/types";
-import { getArticleList } from "@/api/article";
-import FilterBar from "@/components/Little/Tool/FilterBar.vue";
-import HomeNewsList from "@/components/ModelHome/HomeNewsList.vue";
-import HomeTrend from "@/components/ModelHome/HomeTrend.vue";
-import ArticleHomeItem from "@/components/Little/Item/ArticleHomeItem.vue";
+import { onMounted, ref, nextTick } from 'vue'
+import type { Article } from '@/api/article/types'
+import { getArticleList } from '@/api/article'
+import FilterBar from '@/components/Little/Tool/FilterBar.vue'
+import HomeNewsList from '@/components/ModelHome/HomeNewsList.vue'
+import HomeTrend from '@/components/ModelHome/HomeTrend.vue'
+import ArticleHomeItem from '@/components/Little/Item/ArticleHomeItem.vue'
 
-const article_list = ref<ArticleInfo[]>([]);
-const article_list_all = ref<ArticleInfo[]>([]);
-const articleListShow = ref<boolean>(true);
-const articleListLoading = ref<boolean>(false);
-const articleNum = ref<number>(5);
+const article_list = ref<Article[]>([])
+const article_list_all = ref<Article[]>([])
+const articleListShow = ref<boolean>(true)
+const articleListLoading = ref<boolean>(false)
+const articleNum = ref<number>(5)
 
-const sendArticleList = async (arr: ArticleInfo[]) => {
-  articleListLoading.value = true;
-  articleListShow.value = false;
-  article_list.value = arr;
-  await nextTick();
-  articleListLoading.value = false;
-  articleListShow.value = true;
-};
+const sendArticleList = async (arr: Article[]) => {
+  articleListLoading.value = true
+  articleListShow.value = false
+  article_list.value = arr
+  await nextTick()
+  articleListLoading.value = false
+  articleListShow.value = true
+}
 const load = () => {
   if (articleNum.value < article_list.value.length) {
-    articleNum.value += 5;
+    articleNum.value += 5
   }
-};
+}
 
 onMounted(async () => {
-  articleListLoading.value = true;
-  const res = await getArticleList();
-  if (res.data.result_code === 0) {
-    article_list_all.value = res.data.result;
-    article_list.value = article_list_all.value;
+  articleListLoading.value = true
+  const res = await getArticleList()
+  if (res.result_code === 0) {
+    article_list_all.value = res.result
+    article_list.value = article_list_all.value
   }
-  await nextTick();
-  articleListLoading.value = false;
-});
+  await nextTick()
+  articleListLoading.value = false
+})
 </script>
 
 <style scoped lang="less">
 .index {
   width: 100%;
-  .HomeArticleList-warp {
-    width: 100%;
-    margin: 0;
+
+  .homearticlelist-warp {
     padding: 0;
+    margin: 0;
+    width: 100%;
     list-style: none;
   }
+
   .loading-mask {
     position: relative;
+    overflow: hidden;
     margin-top: 20px;
     border-radius: 20px;
-    overflow: hidden;
   }
 }
 </style>

@@ -1,61 +1,62 @@
 <template>
-  <div class="HomeNewsList-wrap">
+  <div class="homenewslist-wrap">
     <el-row>
       <span class="title">最新发布</span>
     </el-row>
     <el-row style="min-height: 100px" v-loading="loadingStatus">
-      <el-col :span="0.5">
+      <div>
         <NewHomeItem
           v-for="(_, index) in news_list"
           :newsItem="news_list[index]"
           :key="index"
         />
-      </el-col>
+      </div>
     </el-row>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
-import { ArticleInfo } from "@/utils/types";
-import { getArticleList } from "@/api/article";
-import NewHomeItem from "@/components/Little/Item/NewHomeItem.vue";
+import { ref, onMounted } from 'vue'
+import { getArticleList } from '@/api/article'
+import type { Article } from '@/api/article/types'
+import NewHomeItem from '@/components/Little/Item/NewHomeItem.vue'
 
-const loadingStatus = ref<boolean>(false);
-const news_all_list = ref<ArticleInfo[]>([]);
-const news_list = ref<ArticleInfo[]>([]);
+const loadingStatus = ref<boolean>(false)
+const news_all_list = ref<Article[]>([])
+const news_list = ref<Article[]>([])
 
 onMounted(async () => {
-  loadingStatus.value = true;
-  const res = await getArticleList();
-  if (res.data.result_code === 0) {
-    res.data.result.forEach((item: ArticleInfo) => {
-      news_all_list.value.push(item);
-    });
+  loadingStatus.value = true
+  const res = await getArticleList()
+  if (res.result_code === 0) {
+    res.result.forEach((item) => {
+      news_all_list.value.push(item)
+    })
     //确保返回的文章按发布先后顺序进行排序
     news_all_list.value.sort((a, b) => {
-      return a.article_id - b.article_id;
-    });
-    news_list.value = news_all_list.value.reverse().slice(0, 5);
+      return a.article_id - b.article_id
+    })
+    news_list.value = news_all_list.value.reverse().slice(0, 5)
   }
-  loadingStatus.value = false;
-});
+  loadingStatus.value = false
+})
 </script>
 
 <style scoped lang="less">
-.HomeNewsList-wrap {
-  margin-top: 20px;
+.homenewslist-wrap {
   padding: 10px;
+  margin-top: 20px;
   width: 300px;
+  background: #fff;
   border-radius: 20px;
-  background: #ffffff;
 
   .title {
     height: 35px;
-    font-family: SourceHanSansCN-Bold;
     font-size: 24px;
-    font-weight: bold;
+    font-family: SourceHanSansCN-Bold, sans-serif;
     color: #3d3d3d;
+    font-weight: bold;
   }
 }
 </style>
+@/api/article/article

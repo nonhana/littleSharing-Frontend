@@ -160,7 +160,6 @@ const showmore = (num: number) => {
 }
 //子传父——打开评论
 const openComment = (index?: number, indexNext?: number) => {
-  console.log(index, indexNext)
   showInput.value = initShowInput.value.slice(0) // 重置“评论”不打开状态
   let cnt = 0 // 用于遍历二维数组
 

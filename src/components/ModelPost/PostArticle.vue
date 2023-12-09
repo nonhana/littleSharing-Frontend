@@ -147,7 +147,6 @@
               default-first-option
               placeholder="请输入文章标签(自定义)"
               style="width: 400px; height: 50px"
-              @input="filterData"
               @change="bindChange"
             >
               <el-option
@@ -302,15 +301,6 @@ const bindChange = (e: CascaderValue[]) => {
   if (e.length > 5) {
     ElMessage.warning('最多只能添加五个文章标签哦~')
     ruleForm.value.article_labels.splice(-1)
-  }
-}
-const filterData = (str: string) => {
-  console.log(str)
-  if (labelSelect.value) {
-    // var str = labelSelect.value.$data.selectedLabel // 此属性得到输入的文字
-    // if (str.length > 20) {
-    //   labelSelect.value.$data.selectedLabel = str.substr(0, 21)
-    // }
   }
 }
 // 在编辑器里面上传图片时，会自动传给后端进行保存，然后返回url地址。

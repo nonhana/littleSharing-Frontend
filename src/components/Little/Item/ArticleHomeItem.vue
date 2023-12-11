@@ -161,6 +161,7 @@ import {
   addCollection,
   getUserCollectList
 } from '@/api/user'
+import { postMessage } from '@/api/message'
 import { formatDate } from '@/utils'
 import LikeBtn from '@/components/Little/Button/LikeBtn.vue'
 import CollectionBtn from '@/components/Little/Button/CollectionBtn.vue'
@@ -267,6 +268,16 @@ const addlike = async () => {
     ElMessage({
       message: '点赞成功'
     })
+    await postMessage({
+      receiver_id: author_id,
+      type: 1,
+      content:
+        '<span> 您的文章' +
+        `<a href="${
+          import.meta.env.VITE_SITE_URL
+        }/articleHome/${article_id}" target="_blank"> ${article_title} </a>` +
+        '被点赞了 </span>'
+    })
   } else {
     likemark.value = 0
     like_num.value--
@@ -292,6 +303,16 @@ const addcollection = async () => {
     })
     ElMessage({
       message: '收藏成功'
+    })
+    await postMessage({
+      receiver_id: author_id,
+      type: 1,
+      content:
+        '<span> 您的文章' +
+        `<a href="${
+          import.meta.env.VITE_SITE_URL
+        }/articleHome/${article_id}" target="_blank"> ${article_title} </a>` +
+        '被收藏了 </span>'
     })
   } else {
     collectionmark.value = 0

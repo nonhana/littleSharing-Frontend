@@ -55,6 +55,7 @@ const article_data = ref({
   comment_num: 0
 })
 const offset = ref<number>(0) // 用于控制侧边栏到顶部的距离
+const comment_id = ref<string>('') // 评论id
 
 const updatePosition = () => {
   offset.value = window.scrollY
@@ -66,6 +67,19 @@ onMounted(async () => {
   await increaseArticleViews({
     article_id: articleId
   })
+  // 把路由的#后面的数字拿到，赋给comment_id
+  comment_id.value = route.hash.slice(1)
+  console.log(comment_id.value)
+  // 滚动到评论id为comment_id的位置
+  if (comment_id.value) {
+    setTimeout(() => {
+      const commentElement = document.getElementById(comment_id.value)
+      console.log(commentElement)
+      if (commentElement) {
+        commentElement.scrollIntoView()
+      }
+    }, 3000)
+  }
 })
 
 onUnmounted(() => {

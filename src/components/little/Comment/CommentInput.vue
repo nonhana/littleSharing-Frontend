@@ -22,6 +22,8 @@ import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStore } from '@/store'
 import { commentAction } from '@/api/comment'
+import { postMessage } from '@/api/message'
+import { IPostMessageParams } from '@/api/message/types'
 import type { ICommentActionParams, Level1Comment } from '@/api/comment/types'
 import { ElNotification } from 'element-plus'
 
@@ -57,6 +59,7 @@ const inputComment = async () => {
     return
   }
   if (commentContent.value) {
+    let comment_type = 0
     // 发送评论
     let paramsList: ICommentActionParams = {
       action_type: 0,
@@ -68,12 +71,14 @@ const inputComment = async () => {
     if (props.commentId) {
       paramsList.response_to_comment_id = props.commentId
       paramsList.comment_level = 1
+      comment_type = 1
     }
     // 如果是给二级评论评论，给paramslist添加评论对象id、评论id属性
     if (props.responseTo) {
       paramsList.response_to_user_id = props.responseTo.respondent!.user_id
       paramsList.response_to_comment_id = props.commentId
       paramsList.comment_level = 1
+      comment_type = 2
     }
     const res = await commentAction(paramsList)
 
@@ -82,6 +87,68 @@ const inputComment = async () => {
         title: '评论成功',
         type: 'success'
       })
+
+      // 发送消息
+      let messageBody: IPostMessageParams = {
+        receiver_id: 0,
+        type: 1,
+        content: '',
+        abstract: ''
+      }
+
+      // 给一级评论评论
+      if (comment_type === 1) {
+        messageBody.receiver_id = props.commentatorId!
+        messageBody.content =
+          '<span> 您的评论有了新的回复：' +
+          `<a href="${import.meta.env.VITE_SITE_URL}/articleHome/${
+            paramsList.article_id
+          }/#${res.result}" target="_blank"> ${
+            paramsList.comment_content
+          } </a>` +
+          ' </span>'
+        messageBody.abstract = `<a href="${
+          import.meta.env.VITE_SITE_URL
+        }/articleHome/${paramsList.article_id}/#${
+          props.commentId
+        }" target="_blank"> ${props.origincontent} </a>`
+      }
+      // 给二级评论评论
+      else if (comment_type === 2) {
+        messageBody.receiver_id = props.responserId!
+        messageBody.content =
+          '<span> 您的评论有了新的回复：' +
+          `<a href="${import.meta.env.VITE_SITE_URL}/articleHome/${
+            paramsList.article_id
+          }/#${res.result}" target="_blank"> ${
+            paramsList.comment_content
+          } </a>` +
+          ' </span>'
+        messageBody.abstract = `<a href="${
+          import.meta.env.VITE_SITE_URL
+        }/articleHome/${paramsList.article_id}/#${
+          props.commentId
+        }" target="_blank"> ${props.responsecontent} </a>`
+      }
+      // 给文章评论
+      else {
+        messageBody.receiver_id = props.posterId!
+        messageBody.content =
+          '<span> 您的文章有了新的评论：' +
+          `<a href="${import.meta.env.VITE_SITE_URL}/articleHome/${
+            paramsList.article_id
+          }/#${res.result}" target="_blank"> ${
+            paramsList.comment_content
+          } </a>` +
+          ' </span>'
+        messageBody.abstract = `<a href="${
+          import.meta.env.VITE_SITE_URL
+        }/articleHome/${paramsList.article_id}" target="_blank"> ${
+          props.objectName
+        } </a>`
+      }
+
+      await postMessage(messageBody)
 
       //如果添加成功，通知父组件加入评论
       emits('refreshComment')

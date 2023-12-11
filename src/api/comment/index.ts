@@ -18,7 +18,7 @@ export const getCommentList = (params: IArticleId) => {
 
 // 评论操作
 export const commentAction = (data: ICommentActionParams) => {
-  return request<ICommentActionParams, undefined>({
+  return request<ICommentActionParams, number>({
     url: '/comment/comment-action',
     method: 'POST',
     data

@@ -83,33 +83,25 @@ const routes: RouteRecordRaw[] = [
     ]
   },
   {
-    path: '/message/:id',
+    path: '/message',
     name: 'message',
-    redirect: (to) => {
-      return `/messageReplies/${to.params.id}`
-    },
+    redirect: '/message/common',
     component: () => import('@/views/messages/index.vue'),
     children: [
       {
-        path: '/messageReplies/:id',
-        name: 'messageReplies',
-        component: () => import('@/components/ModelMessages/MessageReplies.vue')
+        path: '/message/common',
+        name: 'messageCommon',
+        component: () => import('@/components/ModelMessages/MessageCommon.vue')
       },
       {
-        path: '/messageCollections/:id',
-        name: 'messageCollections',
-        component: () =>
-          import('@/components/ModelMessages/MessageCollections.vue')
-      },
-      {
-        path: '/messageLikes/:id',
-        name: 'messageLikes',
-        component: () => import('@/components/ModelMessages/MessageLikes.vue')
-      },
-      {
-        path: '/messageUsers/:id',
+        path: '/message/users',
         name: 'messageUsers',
         component: () => import('@/components/ModelMessages/MessageUsers.vue')
+      },
+      {
+        path: '/message/system',
+        name: 'messageSystem',
+        component: () => import('@/components/ModelMessages/MessageSystem.vue')
       }
     ]
   }

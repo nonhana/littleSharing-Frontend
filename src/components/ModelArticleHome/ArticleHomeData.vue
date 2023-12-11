@@ -37,6 +37,7 @@ import {
   getUserCollectList
 } from '@/api/user'
 import { getArticleMain } from '@/api/article'
+import { postMessage } from '@/api/message'
 import LikeBtn from '@/components/Little/Button/LikeBtn.vue'
 import CollectionBtn from '@/components/Little/Button/CollectionBtn.vue'
 import ShareBtn from '@/components/Little/Button/ShareBtn.vue'
@@ -48,6 +49,9 @@ const { userStore } = useStore()
 
 const currentArticleId: number = Number(route.params.id)
 
+const author_id = ref<number>(0)
+const article_id = ref<number>(0)
+const article_title = ref<string>('')
 const article_data = ref<{
   like_num: number
   collection_num: number
@@ -66,58 +70,71 @@ const addlike = async () => {
   if (likemark.value != 1) {
     likemark.value = 1
     article_data.value.like_num++
-    const res = await addLike({
+    await addLike({
       article_id: currentArticleId,
       action_type: 0,
       user_id: userStore.userInfo.user_id
     })
-    if (res.result_code === 0) {
-      ElMessage({
-        message: '点赞成功'
-      })
-    }
+    ElMessage({
+      message: '点赞成功'
+    })
+    await postMessage({
+      receiver_id: author_id.value,
+      type: 1,
+      content:
+        '<span> 您的文章' +
+        `<a href="${import.meta.env.VITE_SITE_URL}/articleHome/${
+          article_id.value
+        }" target="_blank"> ${article_title.value} </a>` +
+        '被点赞了 </span>'
+    })
   } else {
     likemark.value = 0
     article_data.value.like_num--
-    const res = await addLike({
+    await addLike({
       article_id: currentArticleId,
       action_type: 1,
       user_id: userStore.userInfo.user_id
     })
-    if (res.result_code === 0) {
-      ElMessage({
-        message: '取消点赞'
-      })
-    }
+    ElMessage({
+      message: '取消点赞'
+    })
   }
 }
 const addcollection = async () => {
   if (collectionmark.value != 1) {
     collectionmark.value = 1
     article_data.value.collection_num++
-    const res = await addCollection({
+    await addCollection({
       article_id: currentArticleId,
       action_type: 0,
       user_id: userStore.userInfo.user_id
     })
-    if (res.result_code === 0) {
-      ElMessage({
-        message: '收藏成功'
-      })
-    }
+    ElMessage({
+      message: '收藏成功'
+    })
+    await postMessage({
+      receiver_id: author_id.value,
+      type: 1,
+      content:
+        '<span> 您的文章' +
+        `<a href="${import.meta.env.VITE_SITE_URL}/articleHome/${
+          article_id.value
+        }" target="_blank"> ${article_title.value} </a>` +
+        '被收藏了 </span>'
+    })
   } else {
     collectionmark.value = 0
     article_data.value.collection_num--
-    const res = await addCollection({
+    await addCollection({
       article_id: currentArticleId,
       action_type: 1,
       user_id: userStore.userInfo.user_id
     })
-    if (res.result_code === 0) {
-      ElMessage({
-        message: '取消收藏'
-      })
-    }
+
+    ElMessage({
+      message: '取消收藏'
+    })
   }
 }
 const addshare = () => {
@@ -147,6 +164,8 @@ onMounted(async () => {
     article_id: Number(route.params.id)
   })
   const article_main = articleDataRes.result
+  author_id.value = article_main.author_id
+  article_title.value = article_main.article_title
   article_data.value = {
     like_num: article_main.like_num,
     collection_num: article_main.collection_num,
@@ -154,15 +173,15 @@ onMounted(async () => {
     comment_num: article_main.comment_num
   }
 
-  const articleId = Number(route.params.id)
+  article_id.value = Number(route.params.id)
 
   const likeListRes = await getUserLikeList()
   // 检查当前文章是否已经被点赞
-  const hasLiked = likeListRes.result.includes(articleId)
+  const hasLiked = likeListRes.result.includes(article_id.value)
   likemark.value = hasLiked ? 1 : 0
 
   const collectListRes = await getUserCollectList()
-  const hasCollected = collectListRes.result.includes(articleId)
+  const hasCollected = collectListRes.result.includes(article_id.value)
   collectionmark.value = hasCollected ? 1 : 0
 })
 </script>

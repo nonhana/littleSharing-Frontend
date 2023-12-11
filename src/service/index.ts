@@ -2,7 +2,8 @@ import Request from './request'
 import type { RequestConfig } from './request/types'
 
 /**
- * 后端返回数据类型
+ * @description: 后端返回数据类型
+ * @template T 返回数据体的类型
  */
 export interface DEVResponse<T> {
   /**
@@ -26,7 +27,7 @@ interface DEVRequestConfig<T, R> extends RequestConfig<DEVResponse<R>> {
 
 // 创建axios的实例
 const request = new Request({
-  baseURL: import.meta.env.VITE_BASE_URL as string,
+  baseURL: import.meta.env.VITE_BASE_URL as string, // 从环境变量文件中获取baseURL
   timeout: 1000 * 60 * 5, // 超时时间5分钟
   interceptors: {
     // 请求拦截器

@@ -74,8 +74,8 @@
               "
               v-model="ruleForm.article_status"
             >
-              <el-radio style="width: 100px" label="1" border>是</el-radio>
-              <el-radio style="width: 100px" label="2" border>否</el-radio>
+              <el-radio style="width: 100px" :label="1" border>是</el-radio>
+              <el-radio style="width: 100px" :label="2" border>否</el-radio>
             </el-radio-group>
           </el-row>
 
@@ -205,6 +205,7 @@
 import { ref, watch, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from '@/store'
+import { getUserFansList } from '@/api/user'
 import {
   postArticle,
   addArticleLabel,
@@ -212,6 +213,8 @@ import {
   editArticle,
   uploadArticleImg
 } from '@/api/article'
+import { postMessage } from '@/api/message'
+import type { IPostMessageParams } from '@/api/message/types'
 import { optionChoices } from '@/utils/constants'
 import type { IPostArticleParams } from '@/api/article/types'
 import { ElMessageBox, ElMessage, ElNotification } from 'element-plus'
@@ -336,7 +339,29 @@ const submitArticle = async () => {
 
     // 发布文章
     if (!editStatus.value) {
-      await postArticle(ruleForm.value)
+      const { result: article_id } = await postArticle(ruleForm.value)
+      // 文章发布之后，给所有关注了当前用户的用户发送消息
+      const { result: fansList } = await getUserFansList({
+        user_id: userStore.userInfo.user_id
+      })
+      fansList.forEach((item) => {
+        const params: IPostMessageParams = {
+          type: 2,
+          content:
+            '<span> 您关注的用户' +
+            `<a href="${import.meta.env.VITE_SITE_URL}/personalCenter/${
+              userStore.userInfo.user_id
+            }" target="_blank"> ${userStore.userInfo.name} </a>` +
+            '发布了一篇新文章，快去看看吧！</span>',
+          abstract: `<a href="${
+            import.meta.env.VITE_SITE_URL
+          }/articleHome/${article_id}" target="_blank"> ${
+            ruleForm.value.article_title
+          } </a>`,
+          receiver_id: item.first_user_id
+        }
+        postMessage(params)
+      })
     } else {
       await editArticle({
         article_id: Number(route.query.article_id),

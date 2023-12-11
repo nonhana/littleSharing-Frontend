@@ -198,21 +198,19 @@ const articlechoices = (num: string) => {
       confirmButtonText: '确认',
       cancelButtonText: '取消'
     }).then(async () => {
-      const res = await addCollection({
+      await addCollection({
         article_id: id.value,
         action_type: 1,
         user_id: userStore.userInfo.user_id
       })
-      if (res.result_code === 0) {
-        ElNotification({
-          title: '取消收藏成功！',
-          message: '2s后刷新页面...',
-          type: 'success'
-        })
-        setTimeout(() => {
-          window.location.reload()
-        }, 2000)
-      }
+      ElNotification({
+        title: '取消收藏成功！',
+        message: '2s后刷新页面...',
+        type: 'success'
+      })
+      setTimeout(() => {
+        window.location.reload()
+      }, 2000)
     })
   }
 }

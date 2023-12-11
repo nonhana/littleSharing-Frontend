@@ -18,7 +18,11 @@
     </el-row>
 
     <ul v-loading="loading" class="comments">
-      <li v-for="(_, index) in comment_list" :key="index" style="width: 100%">
+      <li
+        v-for="(_, index) in comment_list"
+        :id="String(comment_list[index].comment_id)"
+        :key="index"
+      >
         <CommentContent
           @refreshComment="refreshComment"
           @openComment="openComment"
@@ -41,7 +45,11 @@
             <span class="more-click" @click="showmore(index)">点击查看</span>
           </li>
           <div v-if="!isShow[index]">
-            <li v-for="(_, indexNext) in response_list[index]" :key="indexNext">
+            <li
+              v-for="(_, indexNext) in response_list[index]"
+              :id="String(response_list[index][indexNext].comment_id)"
+              :key="indexNext"
+            >
               <CommentContent
                 @refreshComment="refreshComment"
                 @openComment="openComment"
@@ -199,6 +207,13 @@ onMounted(async () => {
   object_name.value = res.result.article_title
   poster_id.value = res.result.author_id
   now_object_id.value = Number(route.params.id)
+
+  // 如果路由中带有哈希(#)，那么把所有折叠的评论都展开
+  if (route.hash) {
+    for (let i = 0; i < comment_list.value.length; i++) {
+      showmore(i)
+    }
+  }
   loading.value = false
 })
 </script>

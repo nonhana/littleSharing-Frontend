@@ -76,6 +76,7 @@ import {
   getCommentLikeList
 } from '@/api/comment'
 import { getArticleMain } from '@/api/article'
+import { postMessage } from '@/api/message'
 import { formatDate } from '@/utils'
 import type { Level0Comment, Level1Comment } from '@/api/comment/types'
 import { ElNotification, ElMessage } from 'element-plus'
@@ -200,6 +201,16 @@ const addlike = async (id: number) => {
     ElMessage({
       message: '点赞成功'
     })
+    await postMessage({
+      receiver_id: userId.value,
+      type: 1,
+      content:
+        '<span> 您的评论' +
+        `<a href="${import.meta.env.VITE_SITE_URL}/articleHome/${
+          route.params.id
+        }/#${comment_id.value}" target="_blank"> ${details.value} </a>` +
+        '被点赞了 </span>'
+    })
   } else {
     likemark.value = 0
     likenum.value--
@@ -245,8 +256,8 @@ onMounted(async () => {
   // 获取一级评论的点赞列表
   const res = await getCommentLikeList()
   if (res.result.length > 0) {
-    res.result.forEach((item: any) => {
-      if (item == comment_id.value) {
+    res.result.forEach((item) => {
+      if (item.comment_id === comment_id.value) {
         likemark.value = 1
       }
     })

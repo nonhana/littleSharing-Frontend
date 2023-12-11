@@ -134,7 +134,7 @@ const push = (num: number) => {
       route_path = '/login'
       break
     case 4:
-      route_path = `/message/${user_id.value}`
+      route_path = '/message'
       break
   }
   router.push({

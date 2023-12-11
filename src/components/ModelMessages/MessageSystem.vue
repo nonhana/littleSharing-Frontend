@@ -1,9 +1,9 @@
 <template>
-  <div class="messageusers-wrap">
+  <div class="messagesystem-wrap">
     <div class="head">
       <div>
-        <img :src="MessageUsersHead" />
-        <span>关注动态</span>
+        <img :src="MessageSystem" />
+        <span>系统消息</span>
       </div>
       <el-button
         @click="router.push({ name: 'home' })"
@@ -20,7 +20,7 @@
             : messageNum"
           :key="index"
         >
-          <MessageCommonItem
+          <MessageSystemItem
             :message="messageList[index - 1]"
             @delete-message="deleteMessage"
           />
@@ -40,8 +40,8 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { getMessage } from '@/api/message'
 import type { Message } from '@/api/message/types'
-import MessageCommonItem from '@/components/Little/Item/MessageCommonItem.vue'
-import MessageUsersHead from '@/assets/svgs/MessageUsersHead.svg'
+import MessageSystemItem from '@/components/Little/Item/MessageSystemItem.vue'
+import MessageSystem from '@/assets/svgs/MessageSystem.svg'
 import MessageEmpty from '@/assets/svgs/MessageEmpty.svg'
 
 const router = useRouter()
@@ -66,14 +66,14 @@ const deleteMessage = (message_id: number) => {
 
 onMounted(async () => {
   loading.value = true
-  const res = await getMessage({ type: 2 })
+  const res = await getMessage({ type: 3 })
   messageList.value = res.result.reverse()
   loading.value = false
 })
 </script>
 
 <style scoped lang="less">
-.messageusers-wrap {
+.messagesystem-wrap {
   position: relative;
   width: 960px;
 

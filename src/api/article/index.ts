@@ -37,7 +37,7 @@ export const getArticleList = () => {
 
 // 上传文章
 export const postArticle = (data: IPostArticleParams) => {
-  return request<IPostArticleParams, undefined>({
+  return request<IPostArticleParams, number>({
     url: '/article/post-article',
     method: 'POST',
     data

@@ -41,10 +41,9 @@ watch(
       case 'login':
         curClass.value = 'login'
         break
-      case 'messageReplies':
-      case 'messageCollections':
-      case 'messageLikes':
+      case 'messageCommon':
       case 'messageUsers':
+      case 'messageSystem':
         curClass.value = 'messages'
         break
       default:
@@ -104,9 +103,9 @@ onMounted(() => {
   top: 50px;
   left: 105px;
   transition: all 1s;
-}
 
-.logo img {
-  width: 500px;
+  img {
+    width: 500px;
+  }
 }
 </style>

@@ -61,30 +61,25 @@ import { useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
 const router = useRouter()
-const routeList: string[] = [
-  'messageReplies',
-  'messageCollections',
-  'messageLikes',
-  'messageUsers'
-]
-const menuList: string[] = ['回复我的', '收藏我的', '赞我的', '用户私信']
+const routeList: string[] = ['messageCommon', 'messageUsers', 'messageSystem']
+const menuList: string[] = ['互动消息', '关注动态', '系统消息']
 
 let animeStyle = ref<{
   background: string[]
   color: string[]
   svg_left_pos: number[]
 }>({
-  background: ['#fff', '#fff', '#fff', '#fff'],
-  color: ['#3d3d3d', '#3d3d3d', '#3d3d3d', '#3d3d3d'],
-  svg_left_pos: [10, 10, 10, 10]
+  background: ['#fff', '#fff', '#fff'],
+  color: ['#3d3d3d', '#3d3d3d', '#3d3d3d'],
+  svg_left_pos: [10, 10, 10]
 })
 
 const changeClass = (index: number) => {
   if (index < 4) {
     animeStyle.value = {
-      background: ['#fff', '#fff', '#fff', '#fff'],
-      color: ['#3d3d3d', '#3d3d3d', '#3d3d3d', '#3d3d3d'],
-      svg_left_pos: [10, 10, 10, 10]
+      background: ['#fff', '#fff', '#fff'],
+      color: ['#3d3d3d', '#3d3d3d', '#3d3d3d'],
+      svg_left_pos: [10, 10, 10]
     }
     animeStyle.value.background[index] = '#76fff5'
     animeStyle.value.color[index] = '#fff'
@@ -92,9 +87,9 @@ const changeClass = (index: number) => {
   } else {
     const index = routeList.findIndex((item) => item === route.name)
     animeStyle.value = {
-      background: ['#fff', '#fff', '#fff', '#fff'],
-      color: ['#3d3d3d', '#3d3d3d', '#3d3d3d', '#3d3d3d'],
-      svg_left_pos: [10, 10, 10, 10]
+      background: ['#fff', '#fff', '#fff'],
+      color: ['#3d3d3d', '#3d3d3d', '#3d3d3d'],
+      svg_left_pos: [10, 10, 10]
     }
     animeStyle.value.background[index] = '#76fff5'
     animeStyle.value.color[index] = '#fff'

@@ -5,6 +5,7 @@ import type {
   Bookmark,
   ArticleTrend,
   ArticleSimple,
+  IGetArticleListParams,
   IIploadArticleImgParams,
   IPostArticleParams,
   IAddArticleLabelParams,
@@ -28,10 +29,11 @@ export const uploadArticleImg = (data: IIploadArticleImgParams) => {
 }
 
 // 获取文章列表
-export const getArticleList = () => {
-  return request<undefined, Article[]>({
+export const getArticleList = (params: IGetArticleListParams) => {
+  return request<IGetArticleListParams, Article[]>({
     url: '/article/article-list',
-    method: 'GET'
+    method: 'GET',
+    params
   })
 }
 

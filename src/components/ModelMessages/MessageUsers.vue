@@ -12,8 +12,15 @@
       >
     </div>
 
+    <div
+      v-if="loading"
+      v-loading="loading"
+      element-loading-background="rgba(255, 255, 255, 0.7)"
+      class="loading"
+    />
+
     <div v-if="messageList.length > 0 || loading" class="message-list">
-      <ul v-loading="loading" v-infinite-scroll="load">
+      <ul v-infinite-scroll="load">
         <li
           v-for="index in messageNum > messageList.length
             ? messageList.length
@@ -121,24 +128,32 @@ onMounted(async () => {
     }
   }
 
+  .loading {
+    overflow: hidden;
+    margin-top: 20px;
+    width: 950px;
+    height: 360px;
+    border-radius: 10px;
+  }
+
   .message-list {
     overflow-y: scroll;
     margin-top: 20px;
-    height: 600px;
+    max-height: 600px;
   }
 
   .empty {
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 30px 0;
     margin-top: 20px;
     width: 950px;
+    height: 360px;
     background: #fff;
     border-radius: 10px;
     opacity: 0.7;
     transition: all 0.5s ease;
+    flex-direction: column;
 
     &:hover {
       opacity: 1;

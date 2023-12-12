@@ -17,36 +17,40 @@
     </div>
 
     <div class="part2">
-      <el-badge v-if="unreadCount !== 0" :value="unreadCount" :max="99">
-        <div
-          class="button"
-          @click="push(4)"
-          @mouseenter="moveMessageSvg(1)"
-          @mouseleave="moveMessageSvg(2)"
-        >
-          <div>
-            <div
-              style="position: relative; transition: all 0.3s"
-              :style="{
-                top: `${MessageSvgTop1}px`
-              }"
-            >
-              <img src="@/assets/svgs/Message_1.svg" />
-            </div>
-            <div
-              style="position: relative; transition: all 0.3s"
-              :style="{
-                top: `${MessageSvgTop2}px`,
-                transform: svgChange
-              }"
-            >
-              <img src="@/assets/svgs/Message_2.svg" />
-            </div>
+      <div
+        class="button"
+        @click="push(4)"
+        @mouseenter="moveMessageSvg(1)"
+        @mouseleave="moveMessageSvg(2)"
+      >
+        <div>
+          <div
+            style="position: relative; transition: all 0.3s"
+            :style="{
+              top: `${MessageSvgTop1}px`
+            }"
+          >
+            <img src="@/assets/svgs/Message_1.svg" />
           </div>
-
-          <span>消息中心</span>
+          <div
+            style="position: relative; transition: all 0.3s"
+            :style="{
+              top: `${MessageSvgTop2}px`,
+              transform: svgChange
+            }"
+          >
+            <img src="@/assets/svgs/Message_2.svg" />
+          </div>
         </div>
-      </el-badge>
+
+        <span>消息中心</span>
+      </div>
+      <el-badge
+        class="badge"
+        v-if="unreadCount !== 0"
+        :value="unreadCount"
+        :max="99"
+      />
       <div
         class="button"
         @click="push(1)"
@@ -274,6 +278,11 @@ onMounted(async () => {
         font-family: YouYuan, sans-serif;
         color: #3d3d3d;
       }
+    }
+
+    .badge {
+      right: 25px;
+      bottom: 6px;
     }
 
     .login {

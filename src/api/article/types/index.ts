@@ -3,6 +3,20 @@
 /* ----------请求体类型---------- */
 
 /**
+ * 获取文章列表的请求体
+ */
+export interface IGetArticleListParams {
+  /**
+   * 当前页数，从1开始
+   */
+  page?: number
+  /**
+   * 每页的文章数量，最大为10，最小为1
+   */
+  size?: number
+}
+
+/**
  * 上传文章图片请求体
  */
 export interface IIploadArticleImgParams {

@@ -44,14 +44,19 @@
             </g>
           </g>
         </svg>
-        <el-badge class="badge" :value="unreadCountList[index]" :max="99">
-          <span
-            :style="{
-              color: animeStyle.color[index]
-            }"
-            >{{ item }}</span
-          >
-        </el-badge>
+
+        <span
+          :style="{
+            color: animeStyle.color[index]
+          }"
+          >{{ item }}</span
+        >
+        <el-badge
+          v-if="unreadCountList[index] !== 0"
+          class="badge"
+          :value="unreadCountList[index]"
+          :max="99"
+        />
       </div>
     </div>
   </div>
@@ -163,6 +168,7 @@ router.beforeEach(async (_, from, next) => {
   }
 
   .choice-item {
+    position: relative;
     display: flex;
     align-items: center;
     width: 200px;
@@ -180,6 +186,13 @@ router.beforeEach(async (_, from, next) => {
     }
 
     .badge {
+      position: absolute;
+      top: 50%;
+      right: 20%;
+      transform: translateY(-50%);
+    }
+
+    span {
       margin: 0 auto;
     }
   }

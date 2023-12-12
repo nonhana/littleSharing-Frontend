@@ -13,7 +13,7 @@
           <HomeNewsList />
         </el-row>
       </div>
-      <div class="loading-mask" v-loading="articleListLoading">
+      <div class="loading-mask" v-loading="loading">
         <div v-if="article_list.length !== 0">
           <ul
             v-infinite-scroll="load"
@@ -49,36 +49,52 @@ import FilterBar from '@/components/Little/Tool/FilterBar.vue'
 import HomeNewsList from '@/components/ModelHome/HomeNewsList.vue'
 import HomeTrend from '@/components/ModelHome/HomeTrend.vue'
 import ArticleHomeItem from '@/components/Little/Item/ArticleHomeItem.vue'
+import { ElMessage } from 'element-plus'
 
 const article_list = ref<Article[]>([])
 const article_list_all = ref<Article[]>([])
 const articleListShow = ref<boolean>(true)
-const articleListLoading = ref<boolean>(false)
+const loading = ref<boolean>(false) // 初次加载时的loading
 const articleNum = ref<number>(5)
+const page = ref<number>(1) // 当前页数
+const isEnd = ref<boolean>(false) // 是否到底了
 
 const sendArticleList = async (arr: Article[]) => {
-  articleListLoading.value = true
+  loading.value = true
   articleListShow.value = false
   article_list.value = arr
   await nextTick()
-  articleListLoading.value = false
+  loading.value = false
   articleListShow.value = true
 }
-const load = () => {
-  if (articleNum.value < article_list.value.length) {
-    articleNum.value += 5
+const load = async () => {
+  if (isEnd.value) return
+  loading.value = true
+  page.value += 1
+  const res = await getArticleList({ page: page.value })
+  if (res.result_code === 0) {
+    if (res.result.length === 0) {
+      ElMessage.info('没有更多文章了哦~')
+      loading.value = false
+      isEnd.value = true
+      return
+    }
+    article_list.value = article_list.value.concat(res.result)
+    articleNum.value = article_list.value.length
   }
+  await nextTick()
+  loading.value = false
 }
 
 onMounted(async () => {
-  articleListLoading.value = true
-  const res = await getArticleList()
+  loading.value = true
+  const res = await getArticleList({})
   if (res.result_code === 0) {
     article_list_all.value = res.result
     article_list.value = article_list_all.value
   }
   await nextTick()
-  articleListLoading.value = false
+  loading.value = false
 })
 </script>
 

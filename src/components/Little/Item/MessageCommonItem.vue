@@ -178,7 +178,7 @@ const enterspace = () => {
       overflow: hidden;
       margin-right: 10px;
       width: 120px;
-      font-size: 12px;
+      font-size: 14px;
       font-family: 'Microsoft YaHei', sans-serif;
       text-overflow: ellipsis;
       color: #9e9e9e;

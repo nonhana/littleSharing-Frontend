@@ -3,7 +3,7 @@
     <el-row>
       <span class="title">最新发布</span>
     </el-row>
-    <el-row style="min-height: 100px" v-loading="loadingStatus">
+    <el-row style="min-height: 100px" v-loading="loading">
       <div>
         <NewHomeItem
           v-for="(_, index) in news_list"
@@ -21,13 +21,13 @@ import { getArticleList } from '@/api/article'
 import type { Article } from '@/api/article/types'
 import NewHomeItem from '@/components/Little/Item/NewHomeItem.vue'
 
-const loadingStatus = ref<boolean>(false)
+const loading = ref<boolean>(false)
 const news_all_list = ref<Article[]>([])
 const news_list = ref<Article[]>([])
 
 onMounted(async () => {
-  loadingStatus.value = true
-  const res = await getArticleList()
+  loading.value = true
+  const res = await getArticleList({})
   if (res.result_code === 0) {
     res.result.forEach((item) => {
       news_all_list.value.push(item)
@@ -36,9 +36,9 @@ onMounted(async () => {
     news_all_list.value.sort((a, b) => {
       return a.article_id - b.article_id
     })
-    news_list.value = news_all_list.value.reverse().slice(0, 5)
+    news_list.value = news_all_list.value.reverse()
   }
-  loadingStatus.value = false
+  loading.value = false
 })
 </script>
 

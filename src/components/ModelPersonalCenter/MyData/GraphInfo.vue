@@ -77,7 +77,7 @@ const compareDate = (d1: string, d2: string) => {
 }
 const doHandleMonth = (month: number) => {
   let m = String(month)
-  if (month.toString().length == 1) {
+  if (month.toString().length === 1) {
     m = '0' + String(month)
   }
   return m

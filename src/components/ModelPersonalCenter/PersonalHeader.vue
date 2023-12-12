@@ -281,7 +281,7 @@ const focusAction = async (num: 0 | 1) => {
       second_user_id: user_id.value,
       action_type: num
     })
-    if (res.result_code == 0) {
+    if (res.result_code === 0) {
       isMyFocus.value = !isMyFocus.value
       ElMessage({
         type: 'success',

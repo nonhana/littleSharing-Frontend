@@ -63,13 +63,13 @@ const article_uploaddate = computed(() => {
 })
 
 const push = (num: number) => {
-  if (num == 1) {
+  if (num === 1) {
     const routeUrl = router.resolve({
       path: '/articleHome/' + id.value
     })
     window.open(routeUrl.href, '_blank')
   }
-  if (num == 2) {
+  if (num === 2) {
     router.push({
       path: '/personalCenter/' + author_id.value
     })

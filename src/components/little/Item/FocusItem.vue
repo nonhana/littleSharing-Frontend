@@ -70,7 +70,7 @@ const follow = async (num: number) => {
         action_type: num
       })
       execFollow.value = false
-      if (res.result_code == 0) {
+      if (res.result_code === 0) {
         isMyFocus.value = !isMyFocus.value
         ElMessage({
           type: 'success',
@@ -87,7 +87,7 @@ const follow = async (num: number) => {
         action_type: num
       })
       execFollow.value = false
-      if (res.result_code == 0) {
+      if (res.result_code === 0) {
         isMyFocus.value = !isMyFocus.value
         ElMessage({
           type: 'success',
@@ -118,7 +118,7 @@ watch(
 onMounted(async () => {
   loading.value = true
   const res = await getUserInfo({ user_id: props.user_id })
-  if (res.result_code == 0) {
+  if (res.result_code === 0) {
     username.value = res.result.name
     details.value = res.result.signature
     headphoto.value = res.result.headphoto

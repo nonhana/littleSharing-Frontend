@@ -10,7 +10,7 @@
           backgroundColor: animeStyle.background[index]
         }"
         @mouseenter="changeClass(index)"
-        @mouseleave="changeClass(4)"
+        @mouseleave="changeClass(3)"
         @click="toPage(index)"
         class="choice-item"
         v-for="(item, index) in menuList"
@@ -44,12 +44,14 @@
             </g>
           </g>
         </svg>
-        <span
-          :style="{
-            color: animeStyle.color[index]
-          }"
-          >{{ item }}</span
-        >
+        <el-badge class="badge" :value="unreadCountList[index]" :max="99">
+          <span
+            :style="{
+              color: animeStyle.color[index]
+            }"
+            >{{ item }}</span
+          >
+        </el-badge>
       </div>
     </div>
   </div>
@@ -58,13 +60,22 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useStore } from '@/store'
+import { readMessage } from '@/api/message'
 
 const route = useRoute()
 const router = useRouter()
+const { unreadCountStore } = useStore()
+
 const routeList: string[] = ['messageCommon', 'messageUsers', 'messageSystem']
 const menuList: string[] = ['互动消息', '关注动态', '系统消息']
 
-let animeStyle = ref<{
+const unreadCountList = ref<number[]>([
+  unreadCountStore.unreadCount.type_1,
+  unreadCountStore.unreadCount.type_2,
+  unreadCountStore.unreadCount.type_3
+])
+const animeStyle = ref<{
   background: string[]
   color: string[]
   svg_left_pos: number[]
@@ -75,7 +86,7 @@ let animeStyle = ref<{
 })
 
 const changeClass = (index: number) => {
-  if (index < 4) {
+  if (index < 3) {
     animeStyle.value = {
       background: ['#fff', '#fff', '#fff'],
       color: ['#3d3d3d', '#3d3d3d', '#3d3d3d'],
@@ -104,7 +115,7 @@ const toPage = (index: number) => {
 
 watch(
   route,
-  (newV, _) => {
+  async (newV, _) => {
     const index: number = routeList.findIndex((item) => item === newV.name)
     animeStyle.value.background[index] = '#76fff5'
     animeStyle.value.color[index] = '#fff'
@@ -112,6 +123,15 @@ watch(
   },
   { immediate: true }
 )
+
+router.beforeEach(async (_, from, next) => {
+  const index: number = routeList.findIndex((item) => item === from.name)
+  // 根据上个路由所查看的消息类型，更新未读消息数
+  unreadCountList.value[index] = 0
+  unreadCountStore.clearUnreadCount(<1 | 2 | 3>(index + 1))
+  await readMessage({ type: <1 | 2 | 3>(index + 1) })
+  next()
+})
 </script>
 
 <style scoped lang="less">
@@ -141,27 +161,27 @@ watch(
       color: #3d3d3d;
     }
   }
-}
 
-.choice-item {
-  display: flex;
-  align-items: center;
-  width: 200px;
-  height: 50px;
-  transition: all 0.3s ease;
-  cursor: pointer;
-
-  .svg {
-    position: absolute;
-    width: 16px;
-    height: 16px;
-    transition: all 0.3s ease;
-  }
-
-  span {
-    margin: 0 auto;
+  .choice-item {
+    display: flex;
+    align-items: center;
+    width: 200px;
+    height: 50px;
     font-size: 14px;
     font-family: 'Microsoft YaHei', sans-serif;
+    transition: all 0.3s ease;
+    cursor: pointer;
+
+    .svg {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .badge {
+      margin: 0 auto;
+    }
   }
 }
 </style>

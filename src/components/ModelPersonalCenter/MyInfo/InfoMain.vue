@@ -257,7 +257,7 @@ const submit = async () => {
 }
 
 onBeforeRouteLeave((_, __, next) => {
-  if (JSON.stringify(ruleForm.value) == JSON.stringify(originUserInfo.value)) {
+  if (JSON.stringify(ruleForm.value) === JSON.stringify(originUserInfo.value)) {
     next(true)
   } else {
     ElMessageBox.confirm(

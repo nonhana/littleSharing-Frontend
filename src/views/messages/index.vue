@@ -1,11 +1,7 @@
 <template>
   <div class="index">
     <MessageSideBar style="margin-right: 30px" />
-    <router-view #default="{ Component }">
-      <transition enter-active-class="animate__animated animate__fadeInUp">
-        <component :is="Component" />
-      </transition>
-    </router-view>
+    <router-view />
   </div>
 </template>
 

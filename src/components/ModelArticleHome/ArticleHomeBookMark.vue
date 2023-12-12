@@ -4,10 +4,10 @@
       <span class="title">书签操作栏</span>
     </el-row>
     <el-row style="margin: 10px 0 0">
-      <span class="bookmarknote" v-if="bookmark_exist == 0"
+      <span class="bookmarknote" v-if="bookmark_exist === 0"
         >你还没有在该页面添加过书签哦</span
       >
-      <span class="bookmarknote" v-if="bookmark_exist != 0"
+      <span class="bookmarknote" v-if="bookmark_exist !== 0"
         >·&nbsp;当前书签所在位置：{{ presentBookMarkPosition }}</span
       >
     </el-row>
@@ -19,14 +19,14 @@
 
       <el-button
         class="button"
-        v-if="bookmark_exist != 0"
+        v-if="bookmark_exist !== 0"
         @click="bookmarkScroll()"
         >跳转书签</el-button
       >
 
       <el-button
         class="button"
-        v-if="bookmark_exist != 0"
+        v-if="bookmark_exist !== 0"
         @click="deletebookmark()"
         >移除书签</el-button
       >
@@ -55,14 +55,14 @@ const scroll = () => {
   topHeight.value = window.scrollY.toFixed(2) + 'px'
 }
 const addbookmark = async () => {
-  if (topHeight.value != '0px') {
+  if (topHeight.value !== '0px') {
     const res = await addBookMark({
       article_id: Number(router.currentRoute.value.params.id),
       topHeight: topHeight.value,
       user_id: userStore.userInfo.user_id
     })
     if (res.result_code === 0) {
-      if (bookmark_exist.value == 1) {
+      if (bookmark_exist.value === 1) {
         ElNotification({
           title: '更新书签成功！',
           message: `当前位置：${topHeight.value}`,

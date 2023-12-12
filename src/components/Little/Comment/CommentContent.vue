@@ -15,7 +15,7 @@
           <div class="username">
             <span
               >{{ username }}
-              <span v-if="userId == authorId">（作者）</span>
+              <span v-if="userId === authorId">（作者）</span>
             </span>
             <span v-if="responseList">
               => {{ response_to }}
@@ -177,7 +177,7 @@ const openComment = () => {
     emits('openComment', props.index, props.indexNext)
     //记录上一次传值
   } else {
-    //这里传值undefined，所以comment对应的v-if参数是不存在的（如：showInput[undefined] == true）
+    //这里传值undefined，所以comment对应的v-if参数是不存在的（如：showInput[undefined] === true）
     emits('openComment', undefined, undefined)
   }
 }
@@ -201,16 +201,18 @@ const addlike = async (id: number) => {
     ElMessage({
       message: '点赞成功'
     })
-    await postMessage({
-      receiver_id: userId.value,
-      type: 1,
-      content:
-        '<span> 您的评论' +
-        `<a href="${import.meta.env.VITE_SITE_URL}/articleHome/${
-          route.params.id
-        }/#${comment_id.value}" target="_blank"> ${details.value} </a>` +
-        '被点赞了 </span>'
-    })
+    if (userId.value !== userStore.userInfo.user_id) {
+      await postMessage({
+        receiver_id: userId.value,
+        type: 1,
+        content:
+          '<span> 您的评论' +
+          `<a href="${import.meta.env.VITE_SITE_URL}/articleHome/${
+            route.params.id
+          }/#${comment_id.value}" target="_blank"> ${details.value} </a>` +
+          '被点赞了 </span>'
+      })
+    }
   } else {
     likemark.value = 0
     likenum.value--

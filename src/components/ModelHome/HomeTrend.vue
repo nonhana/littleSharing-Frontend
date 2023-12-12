@@ -29,7 +29,7 @@ let trend_series: {
 
 const fetchArticleTrend = async () => {
   const res = await getArticleTrend()
-  if (res.result_code == 0) {
+  if (res.result_code === 0) {
     trend_name = res.result.map((item) => item.trend_name)
     trend_value = res.result.map((item) => item.value_list)
     trend_name.forEach((item, index) => {

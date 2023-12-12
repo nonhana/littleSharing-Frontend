@@ -69,12 +69,10 @@ onMounted(async () => {
   })
   // 把路由的#后面的数字拿到，赋给comment_id
   comment_id.value = route.hash.slice(1)
-  console.log(comment_id.value)
   // 滚动到评论id为comment_id的位置
   if (comment_id.value) {
     setTimeout(() => {
       const commentElement = document.getElementById(comment_id.value)
-      console.log(commentElement)
       if (commentElement) {
         commentElement.scrollIntoView()
       }

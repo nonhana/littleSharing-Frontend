@@ -52,6 +52,19 @@ export interface IPostMessageParams {
   type: number
 }
 
+/**
+ * 更改指定类型的所有未读消息为已读的请求体
+ */
+export interface IReadMessageParams {
+  /**
+   * 消息类型。
+   * 1. 基本消息（点赞、收藏消息+评论消息+被其他用户关注消息）
+   * 2. 关注的用户发布新文章消息
+   * 3. 系统消息
+   */
+  type: 1 | 2 | 3
+}
+
 /* ----------响应体类型---------- */
 
 /**
@@ -78,6 +91,10 @@ export interface Message {
    * 发送该消息的用户基本信息，如果是系统消息，这个可以不用传
    */
   user_info?: UserInfo
+  /**
+   * 消息的已读状态，0-未读，1-已读
+   */
+  status: 0 | 1
 }
 
 /**
@@ -96,4 +113,26 @@ export interface UserInfo {
    * 用户名
    */
   user_name: string
+}
+
+/**
+ * 所有类型消息的未读数量+全部的未读数量
+ */
+export interface UnreadMessageCount {
+  /**
+   * 全部消息的未读数量
+   */
+  total: number
+  /**
+   * 普通消息的未读数量
+   */
+  type_1: number
+  /**
+   * 关注消息的未读数量
+   */
+  type_2: number
+  /**
+   * 系统消息的未读数量
+   */
+  type_3: number
 }

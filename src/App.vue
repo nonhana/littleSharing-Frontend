@@ -1,6 +1,6 @@
 <template>
   <div :class="curClass">
-    <el-row v-if="curClass !== 'login' && curClass !== 'message'">
+    <el-row v-if="curClass !== 'login' && curClass !== 'messages'">
       <CommonHeader />
     </el-row>
     <div

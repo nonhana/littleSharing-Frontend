@@ -268,16 +268,18 @@ const addlike = async () => {
     ElMessage({
       message: '点赞成功'
     })
-    await postMessage({
-      receiver_id: author_id,
-      type: 1,
-      content:
-        '<span> 您的文章' +
-        `<a href="${
-          import.meta.env.VITE_SITE_URL
-        }/articleHome/${article_id}" target="_blank"> ${article_title} </a>` +
-        '被点赞了 </span>'
-    })
+    if (author_id !== userStore.userInfo.user_id) {
+      await postMessage({
+        receiver_id: author_id,
+        type: 1,
+        content:
+          '<span> 您的文章' +
+          `<a href="${
+            import.meta.env.VITE_SITE_URL
+          }/articleHome/${article_id}" target="_blank"> ${article_title} </a>` +
+          '被点赞了 </span>'
+      })
+    }
   } else {
     likemark.value = 0
     like_num.value--
@@ -304,16 +306,18 @@ const addcollection = async () => {
     ElMessage({
       message: '收藏成功'
     })
-    await postMessage({
-      receiver_id: author_id,
-      type: 1,
-      content:
-        '<span> 您的文章' +
-        `<a href="${
-          import.meta.env.VITE_SITE_URL
-        }/articleHome/${article_id}" target="_blank"> ${article_title} </a>` +
-        '被收藏了 </span>'
-    })
+    if (author_id !== userStore.userInfo.user_id) {
+      await postMessage({
+        receiver_id: author_id,
+        type: 1,
+        content:
+          '<span> 您的文章' +
+          `<a href="${
+            import.meta.env.VITE_SITE_URL
+          }/articleHome/${article_id}" target="_blank"> ${article_title} </a>` +
+          '被收藏了 </span>'
+      })
+    }
   } else {
     collectionmark.value = 0
     collection_num.value--

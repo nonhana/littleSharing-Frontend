@@ -23,6 +23,7 @@ declare module 'vue' {
     CommentInput: typeof import('./src/components/Little/Comment/CommentInput.vue')['default']
     CommonHeader: typeof import('./src/components/Global/CommonHeader.vue')['default']
     copy: typeof import('./src/components/Little/Item/MessageCommonItem copy.vue')['default']
+    ElBadge: typeof import('element-plus/es')['ElBadge']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCascader: typeof import('element-plus/es')['ElCascader']
     ElDialog: typeof import('element-plus/es')['ElDialog']

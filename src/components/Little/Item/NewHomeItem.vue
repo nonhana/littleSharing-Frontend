@@ -47,7 +47,7 @@
           <div v-for="(_, index) in article_labels" :key="index">
             <span class="label-font">{{ article_labels[index] }}</span>
           </div>
-          <span v-if="article_labels.length == 0">暂无相关标签</span>
+          <span v-if="article_labels.length === 0">暂无相关标签</span>
         </el-row>
       </div>
     </el-row>

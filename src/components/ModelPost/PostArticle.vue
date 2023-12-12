@@ -13,7 +13,7 @@
       >
       <el-button
         @click="changeStep()"
-        v-if="present_step == 0"
+        v-if="present_step === 0"
         style="
           margin: 0 0 0 400px;
           width: 150px;
@@ -277,7 +277,7 @@ const rules = ref<FormRules<RuleForm>>({
 })
 
 const changeStep = () => {
-  if (present_step.value == 0) {
+  if (present_step.value === 0) {
     part1_top.value = '-1000px'
     part2_top.value = '120px'
     present_step.value = 1

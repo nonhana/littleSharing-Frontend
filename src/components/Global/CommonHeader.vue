@@ -17,35 +17,36 @@
     </div>
 
     <div class="part2">
-      <div
-        class="button"
-        @click="push(4)"
-        @mouseenter="moveMessageSvg(1)"
-        @mouseleave="moveMessageSvg(2)"
-      >
-        <div>
-          <div
-            style="position: relative; transition: all 0.3s"
-            :style="{
-              top: `${MessageSvgTop1}px`
-            }"
-          >
-            <img src="@/assets/svgs/Message_1.svg" />
+      <el-badge v-if="" :value="unreadCount" :max="99">
+        <div
+          class="button"
+          @click="push(4)"
+          @mouseenter="moveMessageSvg(1)"
+          @mouseleave="moveMessageSvg(2)"
+        >
+          <div>
+            <div
+              style="position: relative; transition: all 0.3s"
+              :style="{
+                top: `${MessageSvgTop1}px`
+              }"
+            >
+              <img src="@/assets/svgs/Message_1.svg" />
+            </div>
+            <div
+              style="position: relative; transition: all 0.3s"
+              :style="{
+                top: `${MessageSvgTop2}px`,
+                transform: svgChange
+              }"
+            >
+              <img src="@/assets/svgs/Message_2.svg" />
+            </div>
           </div>
-          <div
-            style="position: relative; transition: all 0.3s"
-            :style="{
-              top: `${MessageSvgTop2}px`,
-              transform: svgChange
-            }"
-          >
-            <img src="@/assets/svgs/Message_2.svg" />
-          </div>
+
+          <span>消息中心</span>
         </div>
-
-        <span>消息中心</span>
-      </div>
-
+      </el-badge>
       <div
         class="button"
         @click="push(1)"
@@ -104,10 +105,11 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from '@/store'
+import { getUnreadMessageCount } from '@/api/message'
 
 const router = useRouter()
 
-const { userStore } = useStore()
+const { userStore, unreadCountStore } = useStore()
 
 const PostSvgTop1 = ref(15)
 const PostSvgTop2 = ref(65)
@@ -117,6 +119,7 @@ const svgChange = ref('scale(1,1)')
 const keyvalue = ref('')
 const user_head = ref('')
 const user_id = ref<number>(0)
+const unreadCount = ref<number>(0)
 
 const push = (num: number) => {
   let route_path = ''
@@ -185,11 +188,14 @@ const moveMessageSvg = (num: number) => {
   }
 }
 
-onMounted(() => {
+onMounted(async () => {
   if (userStore.userInfo) {
     user_head.value = userStore.userInfo.headphoto
     user_id.value = userStore.userInfo.user_id
   }
+  const { result } = await getUnreadMessageCount()
+  unreadCountStore.setUnreadCount(result)
+  unreadCount.value = result.total
 })
 </script>
 
@@ -243,13 +249,14 @@ onMounted(() => {
 
   .part2 {
     display: flex;
+    justify-content: space-between;
+    width: 320px;
 
     .button {
       display: flex;
       justify-content: center;
       align-items: center;
       overflow: hidden;
-      margin-right: 30px;
       width: 110px;
       height: 40px;
       background: #76fff5;

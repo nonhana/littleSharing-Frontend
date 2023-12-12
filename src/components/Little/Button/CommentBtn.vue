@@ -37,7 +37,7 @@ const comment = ref<HTMLDivElement>()
 let burst: object
 
 const thumbsUp = (num: number) => {
-  if (num == 0) {
+  if (num === 0) {
     new mojs.Timeline().add(burst).play()
   }
 }

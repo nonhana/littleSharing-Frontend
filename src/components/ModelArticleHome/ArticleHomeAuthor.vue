@@ -41,7 +41,7 @@
     </el-row>
 
     <el-row
-      v-if="author_article_list.length == 0"
+      v-if="author_article_list.length === 0"
       v-loading="loading"
       element-loading-text="少女祈祷中..."
     >

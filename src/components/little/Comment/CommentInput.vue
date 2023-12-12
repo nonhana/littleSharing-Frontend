@@ -148,7 +148,9 @@ const inputComment = async () => {
         } </a>`
       }
 
-      await postMessage(messageBody)
+      if (messageBody.receiver_id !== userStore.userInfo.user_id) {
+        await postMessage(messageBody)
+      }
 
       //如果添加成功，通知父组件加入评论
       emits('refreshComment')

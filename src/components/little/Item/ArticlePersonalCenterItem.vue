@@ -6,14 +6,14 @@
           <span>{{ article_title }}</span>
         </div>
         <div
-          v-if="article_status == 1"
+          v-if="article_status === 1"
           class="copied"
           style="margin: 0 0 0 10px"
         >
           <span>转载</span>
         </div>
         <div
-          v-if="article_status == 2"
+          v-if="article_status === 2"
           class="original"
           style="margin: 0 0 0 10px"
         >
@@ -26,7 +26,7 @@
           <img src="@/assets/svgs/More.svg" />
         </div>
         <template #dropdown>
-          <el-dropdown-menu v-if="routeStatus == 0">
+          <el-dropdown-menu v-if="routeStatus === 0">
             <el-dropdown-item command="1" style="display: flex">
               <div style="margin: 6px 6px 0 0">
                 <img src="@/assets/svgs/ReEdit.svg" />
@@ -40,7 +40,7 @@
               <span>删除文章</span></el-dropdown-item
             >
           </el-dropdown-menu>
-          <el-dropdown-menu v-if="routeStatus == 1">
+          <el-dropdown-menu v-if="routeStatus === 1">
             <el-dropdown-item command="3" style="display: flex">
               <div style="margin: 6px 6px 0 0">
                 <img src="@/assets/svgs/CancelCollect.svg" />
@@ -218,7 +218,7 @@ const articlechoices = (num: string) => {
 watch(
   routeStatus,
   () => {
-    if (router.currentRoute.value.name == 'MyCollection') {
+    if (router.currentRoute.value.name === 'MyCollection') {
       routeStatus.value = 1
     }
   },

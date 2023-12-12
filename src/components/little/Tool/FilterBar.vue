@@ -26,9 +26,9 @@
         <el-menu-item index="6">农学</el-menu-item>
         <el-menu-item index="7">其他学科</el-menu-item>
 
-        <el-menu-item v-if="searchchoicenum != 0">
+        <el-menu-item v-if="searchchoicenum !== 0">
           <el-cascader
-            v-if="searchchoicenum == 1"
+            v-if="searchchoicenum === 1"
             v-model="searchchoice"
             placeholder="请选择具体类别"
             :options="options1"
@@ -39,7 +39,7 @@
           ></el-cascader>
 
           <el-cascader
-            v-if="searchchoicenum == 2"
+            v-if="searchchoicenum === 2"
             v-model="searchchoice"
             placeholder="请选择具体类别"
             :options="options2"
@@ -50,7 +50,7 @@
           ></el-cascader>
 
           <el-cascader
-            v-if="searchchoicenum == 3"
+            v-if="searchchoicenum === 3"
             v-model="searchchoice"
             placeholder="请选择具体类别"
             :options="options3"
@@ -61,7 +61,7 @@
           ></el-cascader>
 
           <el-cascader
-            v-if="searchchoicenum == 4"
+            v-if="searchchoicenum === 4"
             v-model="searchchoice"
             placeholder="请选择具体类别"
             :options="options4"
@@ -72,7 +72,7 @@
           ></el-cascader>
 
           <el-cascader
-            v-if="searchchoicenum == 5"
+            v-if="searchchoicenum === 5"
             v-model="searchchoice"
             placeholder="请选择具体类别"
             :options="options5"
@@ -148,7 +148,7 @@ const searchItem = (value: string[]) => {
   const resultStr = value.join('/')
   article_list = []
   article_list_all.forEach((item: Article) => {
-    if (item.article_major.indexOf(resultStr) != -1) {
+    if (item.article_major.indexOf(resultStr) !== -1) {
       article_list.push(item)
     }
   })
@@ -205,7 +205,7 @@ const search = async (keywords: string) => {
 
       emit('sendArticleList', article_list) // 发送文章列表给父组件
 
-      if (article_list.length == 0) {
+      if (article_list.length === 0) {
         // 提示总共搜索到几篇文章
         ElNotification({
           title: '未找到相关文章',

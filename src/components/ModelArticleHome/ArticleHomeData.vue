@@ -67,7 +67,7 @@ const likemark = ref<number>(0)
 const collectionmark = ref<number>(0)
 
 const addlike = async () => {
-  if (likemark.value != 1) {
+  if (likemark.value !== 1) {
     likemark.value = 1
     article_data.value.like_num++
     await addLike({
@@ -78,16 +78,18 @@ const addlike = async () => {
     ElMessage({
       message: '点赞成功'
     })
-    await postMessage({
-      receiver_id: author_id.value,
-      type: 1,
-      content:
-        '<span> 您的文章' +
-        `<a href="${import.meta.env.VITE_SITE_URL}/articleHome/${
-          article_id.value
-        }" target="_blank"> ${article_title.value} </a>` +
-        '被点赞了 </span>'
-    })
+    if (author_id.value !== userStore.userInfo.user_id) {
+      await postMessage({
+        receiver_id: author_id.value,
+        type: 1,
+        content:
+          '<span> 您的文章' +
+          `<a href="${import.meta.env.VITE_SITE_URL}/articleHome/${
+            article_id.value
+          }" target="_blank"> ${article_title.value} </a>` +
+          '被点赞了 </span>'
+      })
+    }
   } else {
     likemark.value = 0
     article_data.value.like_num--
@@ -102,7 +104,7 @@ const addlike = async () => {
   }
 }
 const addcollection = async () => {
-  if (collectionmark.value != 1) {
+  if (collectionmark.value !== 1) {
     collectionmark.value = 1
     article_data.value.collection_num++
     await addCollection({
@@ -113,16 +115,18 @@ const addcollection = async () => {
     ElMessage({
       message: '收藏成功'
     })
-    await postMessage({
-      receiver_id: author_id.value,
-      type: 1,
-      content:
-        '<span> 您的文章' +
-        `<a href="${import.meta.env.VITE_SITE_URL}/articleHome/${
-          article_id.value
-        }" target="_blank"> ${article_title.value} </a>` +
-        '被收藏了 </span>'
-    })
+    if (author_id.value !== userStore.userInfo.user_id) {
+      await postMessage({
+        receiver_id: author_id.value,
+        type: 1,
+        content:
+          '<span> 您的文章' +
+          `<a href="${import.meta.env.VITE_SITE_URL}/articleHome/${
+            article_id.value
+          }" target="_blank"> ${article_title.value} </a>` +
+          '被收藏了 </span>'
+      })
+    }
   } else {
     collectionmark.value = 0
     article_data.value.collection_num--

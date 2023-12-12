@@ -61,7 +61,7 @@ const user_id = ref<number>(0)
 const user_list = ref<any[]>([])
 
 const emptyList = computed(() => {
-  if (user_list.value.length == 0) {
+  if (user_list.value.length === 0) {
     return true
   } else {
     return false
@@ -70,10 +70,10 @@ const emptyList = computed(() => {
 
 const push = (num: number) => {
   let route_name
-  if (num == 1) {
+  if (num === 1) {
     route_name = 'MyFocusList'
   }
-  if (num == 2) {
+  if (num === 2) {
     route_name = 'MyFansList'
   }
   router.push({

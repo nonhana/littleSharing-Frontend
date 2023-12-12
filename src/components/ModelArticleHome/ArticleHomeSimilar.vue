@@ -9,7 +9,7 @@
     <el-row>
       <span class="title">相似推荐</span>
     </el-row>
-    <el-row v-if="similar_article_list.length != 0">
+    <el-row v-if="similar_article_list.length !== 0">
       <div
         style="position: relative; transition: all 0.5s"
         :style="{ top: listTopHeight }"
@@ -34,7 +34,7 @@
       </el-row>
     </el-row>
     <el-row
-      v-if="similar_article_list.length == 0"
+      v-if="similar_article_list.length === 0"
       type="flex"
       justify="center"
       v-loading="loadingStatus"

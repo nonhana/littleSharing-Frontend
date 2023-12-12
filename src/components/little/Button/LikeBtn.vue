@@ -43,7 +43,7 @@ let fillcolor = '#3d3d3d'
 let burst: object
 
 const thumbsUp = (num: number) => {
-  if (num == 0) {
+  if (num === 0) {
     new mojs.Timeline().add(burst).play()
   }
 }
@@ -51,7 +51,7 @@ const thumbsUp = (num: number) => {
 watch(
   () => props.likemark,
   (newV, _) => {
-    if (newV == 1) {
+    if (newV === 1) {
       fillcolor = '#00d5cc'
     } else {
       fillcolor = '#3d3d3d'

@@ -17,7 +17,7 @@
     </div>
 
     <div class="part2">
-      <el-badge v-if="" :value="unreadCount" :max="99">
+      <el-badge v-if="unreadCount !== 0" :value="unreadCount" :max="99">
         <div
           class="button"
           @click="push(4)"

@@ -162,6 +162,7 @@ const useLogin = async () => {
       const userInfoRes = await getUserInfo({})
       if (userInfoRes.result_code === 0) {
         userStore.setUserInfo(userInfoRes.result)
+        userStore.setLogin(true)
       }
 
       // 获取用户关键词

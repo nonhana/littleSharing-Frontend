@@ -193,13 +193,13 @@ const moveMessageSvg = (num: number) => {
 }
 
 onMounted(async () => {
-  if (userStore.userInfo) {
+  if (userStore.isLogin) {
     user_head.value = userStore.userInfo.headphoto
     user_id.value = userStore.userInfo.user_id
+    const { result } = await getUnreadMessageCount()
+    unreadCountStore.setUnreadCount(result)
+    unreadCount.value = result.total
   }
-  const { result } = await getUnreadMessageCount()
-  unreadCountStore.setUnreadCount(result)
-  unreadCount.value = result.total
 })
 </script>
 

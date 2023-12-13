@@ -154,7 +154,7 @@ const loginchoices = (num: string) => {
       push(2)
       break
     case '2':
-      window.localStorage.clear()
+      localStorage.clear()
       push(3)
       break
   }

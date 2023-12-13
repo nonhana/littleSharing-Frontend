@@ -15,12 +15,14 @@ export const createApp = ViteSSG(
   // 路由选项
   { routes },
   // 可选的回调函数，进行更多的应用配置
-  ({ app, router }) => {
+  ({ app, router, initialState, isClient, onSSRAppRendered }) => {
     const whilelist = ['/login']
-
     // 配置路由守卫
     router.beforeEach((to, _, next) => {
-      if (whilelist.includes(to.path) || localStorage.getItem('token')) {
+      if (
+        whilelist.includes(to.path) ||
+        (!import.meta.env.SSR && localStorage.getItem('token'))
+      ) {
         next()
       } else {
         next('/login')
@@ -36,5 +38,14 @@ export const createApp = ViteSSG(
 
     // 注册全局组件
     app.component('NoList', NoList).component('CommonHeader', CommonHeader)
+
+    // 服务端渲染时，将状态同步到客户端
+    if (isClient) {
+      store.state.value = initialState.pinia || {}
+    } else {
+      onSSRAppRendered(() => {
+        initialState.pinia = store.state.value
+      })
+    }
   }
 )

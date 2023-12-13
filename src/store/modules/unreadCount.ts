@@ -28,5 +28,8 @@ export const useUnreadCountStore = defineStore('unreadCount', {
       }
     }
   },
-  persist: true
+  // 如果是在浏览器端渲染，开启localStorage持久化
+  persist: import.meta.env.SSR === false && {
+    storage: localStorage
+  }
 })

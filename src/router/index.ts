@@ -1,6 +1,6 @@
 import { RouteRecordRaw } from 'vue-router'
 
-const routes: RouteRecordRaw[] = [
+export const routes: RouteRecordRaw[] = [
   {
     path: '/',
     redirect: '/home'
@@ -106,5 +106,3 @@ const routes: RouteRecordRaw[] = [
     ]
   }
 ]
-
-export { routes }

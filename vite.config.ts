@@ -28,6 +28,9 @@ export default defineConfig(({ mode }) => {
     server: {
       port: env.VITE_PORT as unknown as number, // 端口号
       open: false // 是否自动打开浏览器
+    },
+    ssr: {
+      noExternal: ['element-plus']
     }
   }
 })

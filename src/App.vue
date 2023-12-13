@@ -21,9 +21,19 @@
 </template>
 
 <script setup lang="ts">
+import { useHead } from '@unhead/vue'
 import { ref, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 
+useHead({
+  title: 'littleSharing~☆',
+  meta: [
+    {
+      name: 'description',
+      content: '兴趣使然的学术资源分享小站'
+    }
+  ]
+})
 const route = useRoute()
 const curClass = ref<string>('app')
 const logo_opacity = ref<string>('0%')
@@ -103,9 +113,9 @@ onMounted(() => {
   top: 50px;
   left: 105px;
   transition: all 1s;
+}
 
-  img {
-    width: 500px;
-  }
+.logo img {
+  width: 500px;
 }
 </style>

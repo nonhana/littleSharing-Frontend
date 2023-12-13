@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host",
-    "build": "vue-tsc --noEmit && vite build",
+    "build": "vue-tsc --noEmit && vite-ssg build",
     "preview": "vite preview",
     "lint": "eslint . --ext .vue,.js,.ts,.jsx,.tsx --fix",
     "format": "prettier --write \"./**/*.{html,vue,ts,js,json,md}\"",
@@ -16,7 +16,6 @@
     "@mojs/core": "^1.5.1",
     "@vavt/cm-extension": "^1.1.0",
     "@vavt/v3-extension": "^1.0.2",
-    "animate.css": "^4.1.1",
     "axios": "^1.4.0",
     "echarts": "^5.4.2",
     "element-plus": "^2.3.7",
@@ -34,6 +33,7 @@
     "@types/node": "^20.3.3",
     "@typescript-eslint/eslint-plugin": "^6.13.1",
     "@typescript-eslint/parser": "^6.13.1",
+    "@unhead/vue": "^1.8.9",
     "@vitejs/plugin-vue": "^4.1.0",
     "babel-runtime": "^6.26.0",
     "core-js": "^3.31.1",
@@ -56,6 +56,7 @@
     "unplugin-auto-import": "^0.17.1",
     "unplugin-vue-components": "^0.25.2",
     "vite": "^4.3.9",
+    "vite-ssg": "^0.23.5",
     "vue-tsc": "^1.4.2"
   }
 }

@@ -2,7 +2,7 @@
   <div class="messagecommonitem-wrap">
     <el-row type="flex" justify="space-between">
       <div class="part1">
-        <div class="img" @click="enterspace">
+        <div class="headphoto" @click="enterspace">
           <img :src="message.user_info!.user_headphoto" />
         </div>
         <div class="details">
@@ -112,7 +112,7 @@ const enterspace = () => {
     justify-content: start;
     align-items: center;
 
-    .img {
+    .headphoto {
       display: flex;
       justify-content: center;
       align-items: center;

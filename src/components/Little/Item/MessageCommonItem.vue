@@ -152,12 +152,14 @@ const enterspace = () => {
       }
 
       &-inner {
+        display: -webkit-box;
         overflow: hidden;
-        width: 100%;
+        width: 710px;
         font-size: 14px;
         font-family: 'Microsoft YaHei', sans-serif;
         text-overflow: ellipsis;
-        white-space: nowrap;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
         color: #3d3d3d;
       }
 

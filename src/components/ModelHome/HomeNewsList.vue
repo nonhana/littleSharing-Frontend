@@ -17,26 +17,18 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { getArticleList } from '@/api/article'
+import { getLatestArticleList } from '@/api/article'
 import type { Article } from '@/api/article/types'
 import NewHomeItem from '@/components/Little/Item/NewHomeItem.vue'
 
 const loading = ref<boolean>(false)
-const news_all_list = ref<Article[]>([])
 const news_list = ref<Article[]>([])
 
 onMounted(async () => {
   loading.value = true
-  const res = await getArticleList({})
+  const res = await getLatestArticleList()
   if (res.result_code === 0) {
-    res.result.forEach((item) => {
-      news_all_list.value.push(item)
-    })
-    //确保返回的文章按发布先后顺序进行排序
-    news_all_list.value.sort((a, b) => {
-      return a.article_id - b.article_id
-    })
-    news_list.value = news_all_list.value.reverse()
+    news_list.value = res.result
   }
   loading.value = false
 })

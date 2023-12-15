@@ -37,6 +37,14 @@ export const getArticleList = (params: IGetArticleListParams) => {
   })
 }
 
+// 获取最新发布的五篇文章
+export const getLatestArticleList = () => {
+  return request<undefined, Article[]>({
+    url: '/article/latest-articles',
+    method: 'GET'
+  })
+}
+
 // 上传文章
 export const postArticle = (data: IPostArticleParams) => {
   return request<IPostArticleParams, number>({

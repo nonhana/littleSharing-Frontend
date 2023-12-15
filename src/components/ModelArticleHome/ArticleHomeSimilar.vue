@@ -27,7 +27,7 @@
         <div
           style="position: relative; cursor: pointer; transition: all 0.5s"
           :style="{ transform: rorate, top: topHeight }"
-          @click="foldList()"
+          @click="foldList"
         >
           <img src="@/assets/svgs/FoldList.svg" />
         </div>
@@ -69,9 +69,11 @@ const foldList = () => {
     presentHeight.value = '100px'
     rorate.value = 'rotate(0)'
     topHeight.value = 125 - totalHeight.value + 'px'
-    listTopHeight.value = '1023px'
+    listTopHeight.value =
+      1023 + (3 - similar_article_list.value.length) * 134 + 'px'
   } else {
-    presentHeight.value = '1023px'
+    presentHeight.value =
+      1023 + (3 - similar_article_list.value.length) * 134 + 'px'
     rorate.value = 'rotate(180deg)'
     topHeight.value = '0px'
     listTopHeight.value = '0px'
@@ -105,7 +107,7 @@ onMounted(async () => {
 
 <style scoped lang="less">
 .articlehomesimilar-wrap {
-  overflow: hidden;
+  // overflow: hidden;
   padding: 10px;
   width: 250px;
   background: #fff;

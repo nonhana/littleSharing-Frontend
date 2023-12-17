@@ -107,7 +107,7 @@ onMounted(async () => {
 
 <style scoped lang="less">
 .articlehomesimilar-wrap {
-  // overflow: hidden;
+  overflow: hidden;
   padding: 10px;
   width: 250px;
   background: #fff;

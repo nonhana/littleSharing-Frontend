@@ -82,7 +82,9 @@
         @click="push(1)"
       >
         <img src="@/assets/svgs/MyArticles.svg" />
-        <span :class="className[0]">我的文章</span>
+        <span :class="className[0]"
+          >{{ isMyCenter ? '我的' : 'ta的' }}文章</span
+        >
       </div>
       <div
         @mouseenter="moveline(2)"
@@ -90,31 +92,38 @@
         @click="push(2)"
       >
         <img src="@/assets/svgs/MyCollections.svg" />
-        <span :class="className[1]">我的收藏</span>
+        <span :class="className[1]"
+          >{{ isMyCenter ? '我的' : 'ta的' }}收藏</span
+        >
       </div>
       <div
         @mouseenter="moveline(3)"
         @mouseleave="moveline(lineCnt)"
         @click="push(3)"
       >
-        <img src="@/assets/svgs/MyInfo.svg" />
-        <span :class="className[2]">个人资料</span>
+        <img src="@/assets/svgs/MyFocus.svg" />
+        <span :class="className[2]"
+          >{{ isMyCenter ? '我的' : 'ta的' }}关注</span
+        >
       </div>
       <div
         @mouseenter="moveline(4)"
         @mouseleave="moveline(lineCnt)"
         @click="push(4)"
       >
-        <img src="@/assets/svgs/MyFocus.svg" />
-        <span :class="className[3]">我的关注</span>
+        <img src="@/assets/svgs/MyData.svg" />
+        <span :class="className[3]"
+          >{{ isMyCenter ? '我的' : 'ta的' }}数据</span
+        >
       </div>
       <div
+        v-if="isMyCenter"
         @mouseenter="moveline(5)"
         @mouseleave="moveline(lineCnt)"
         @click="push(5)"
       >
-        <img src="@/assets/svgs/MyData.svg" />
-        <span :class="className[4]">我的数据</span>
+        <img src="@/assets/svgs/MyInfo.svg" />
+        <span :class="className[4]">个人资料</span>
       </div>
       <div class="line" :style="{ left: `${linePosition}px` }"></div>
     </el-row>
@@ -155,14 +164,14 @@ const user = ref({
 })
 const user_id = ref<number>(0)
 const linePosition = ref<number>(0)
-const positionArray = ref<number[]>([14, 144, 274, 404, 544])
+const positionArray = ref<number[]>([14, 144, 274, 414, 544])
 const lineCnt = ref<number>(1)
 const routeMenu = ref<string[]>([
   'MyArticles',
   'MyCollection',
-  'MyInfo',
   'MyFocusList',
-  'MyData'
+  'MyData',
+  'MyInfo'
 ])
 const className = ref<string[]>([
   'behovered',
@@ -191,10 +200,10 @@ watch(
   () => route.name,
   async (newV, _) => {
     className.value = initClassName.value.slice(0)
-    // 当name=MyFocusList或name=MyFansList时，cnt=3
+    // 当name=MyFocusList或name=MyFansList时，cnt=2
     let cnt: number
     if (newV === 'MyFocusList' || newV === 'MyFansList') {
-      cnt = 3
+      cnt = 2
     } else {
       cnt = routeMenu.value.indexOf(String(newV))
     }

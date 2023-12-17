@@ -2,19 +2,13 @@
   <div class="focusmain-wrap">
     <el-row class="title" type="flex" justify="space-between">
       <div>
-        <span v-if="isMyCenter" @click="push(1)" class="behovered"
-          >我的关注</span
-        >
-        <span v-if="!isMyCenter" @click="push(1)" class="behovered"
-          >ta的关注</span
+        <span @click="push(1)" class="behovered"
+          >{{ isMyCenter ? '我的' : 'ta的' }}关注</span
         >
       </div>
       <div>
-        <span v-if="isMyCenter" @click="push(2)" class="behovered beclicked"
-          >我的粉丝</span
-        >
-        <span v-if="!isMyCenter" @click="push(2)" class="behovered beclicked"
-          >ta的粉丝</span
+        <span @click="push(2)" class="behovered beclicked"
+          >{{ isMyCenter ? '我的' : 'ta的' }}粉丝</span
         >
       </div>
     </el-row>

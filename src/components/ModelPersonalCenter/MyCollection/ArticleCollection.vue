@@ -7,7 +7,7 @@
     <el-row v-loading="loading" style="margin-top: 30px">
       <el-row>
         <div style="margin: 0 0 0 20px">
-          <span class="title">我收藏的文章({{ collect_article_num }})</span>
+          <span class="title">收藏文章({{ collect_article_num }})</span>
         </div>
       </el-row>
       <el-row type="flex" justify="center">

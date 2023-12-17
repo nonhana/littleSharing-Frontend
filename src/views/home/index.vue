@@ -15,11 +15,7 @@
       </div>
       <div class="loading-mask" v-loading="loading">
         <div v-if="article_list.length !== 0">
-          <ul
-            v-infinite-scroll="load"
-            v-if="articleListShow"
-            class="homearticlelist-warp"
-          >
+          <ul v-if="articleListShow" class="homearticlelist-warp">
             <li
               v-for="index in articleNum > article_list.length
                 ? article_list.length
@@ -42,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, nextTick } from 'vue'
+import { ref, nextTick, onMounted, onUnmounted } from 'vue'
 import type { Article } from '@/api/article/types'
 import { getArticleList } from '@/api/article'
 import FilterBar from '@/components/Little/Tool/FilterBar.vue'
@@ -69,24 +65,34 @@ const sendArticleList = async (arr: Article[]) => {
 }
 const load = async () => {
   if (isEnd.value) return
-  loading.value = true
-  page.value += 1
-  const res = await getArticleList({ page: page.value })
-  if (res.result_code === 0) {
-    if (res.result.length === 0) {
-      ElMessage.info('没有更多文章了哦~')
-      loading.value = false
-      isEnd.value = true
-      return
+
+  // 检测是否到底，距离底部为10px时加载
+  const nearBottom =
+    document.documentElement.scrollTop + // 滚动条距离顶部的距离，表示你已经滚动多少px了
+      document.documentElement.clientHeight >= // 当前窗口的高度，也就是你浏览器的高度
+    document.documentElement.scrollHeight - 10 // 整个网页的高度，这个高度是会变的，因为网页是可以拖长的
+
+  if (nearBottom && !loading.value) {
+    loading.value = true
+    page.value += 1
+    const res = await getArticleList({ page: page.value })
+    if (res.result_code === 0) {
+      if (res.result.length === 0) {
+        ElMessage.info('没有更多文章了哦~')
+        loading.value = false
+        isEnd.value = true
+        return
+      }
+      article_list.value = article_list.value.concat(res.result)
+      articleNum.value = article_list.value.length
     }
-    article_list.value = article_list.value.concat(res.result)
-    articleNum.value = article_list.value.length
+    await nextTick()
+    loading.value = false
   }
-  await nextTick()
-  loading.value = false
 }
 
 onMounted(async () => {
+  window.addEventListener('scroll', load)
   loading.value = true
   const res = await getArticleList({})
   if (res.result_code === 0) {
@@ -96,6 +102,10 @@ onMounted(async () => {
   await nextTick()
   loading.value = false
 })
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', load)
+})
 </script>
 
 <style scoped lang="less">
@@ -103,10 +113,12 @@ onMounted(async () => {
   width: 100%;
 
   .homearticlelist-warp {
+    overflow: auto;
     padding: 0;
     margin: 0;
     width: 100%;
-    list-style: none;
+    // height: 800px;
+    // list-style: none;
   }
 
   .loading-mask {

@@ -7,7 +7,7 @@
     <el-row v-loading="loading" style="margin-top: 30px">
       <el-row>
         <div style="margin-left: 20px">
-          <span class="title">我发布的文章({{ post_article_num }})</span>
+          <span class="title">发布文章({{ post_article_num }})</span>
         </div>
       </el-row>
       <el-row

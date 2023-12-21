@@ -340,6 +340,7 @@ const submitArticle = async () => {
     // 发布文章
     if (!editStatus.value) {
       const { result: article_id } = await postArticle(ruleForm.value)
+      localStorage.removeItem('not_saved_article_info') // 发布成功后，清除本地存储的文章信息
       // 文章发布之后，给所有关注了当前用户的用户发送消息
       const { result: fansList } = await getUserFansList({
         user_id: userStore.userInfo.user_id
@@ -380,7 +381,6 @@ const submitArticle = async () => {
       article_md: '',
       author_id: userStore.userInfo.user_id
     }
-    localStorage.removeItem('not_saved_article_info')
     ElNotification({
       title: '发布成功！',
       message: '快快前往首页看看吧！',

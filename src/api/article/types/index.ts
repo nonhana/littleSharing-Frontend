@@ -266,6 +266,14 @@ export interface Article {
    * 作者高校
    */
   author_university: string
+  /**
+   * 文章MD链接
+   */
+  article_md_link: string
+  /**
+   * 文章封面图片url
+   */
+  article_cover: string
 }
 /**
  * 文章信息（简略）

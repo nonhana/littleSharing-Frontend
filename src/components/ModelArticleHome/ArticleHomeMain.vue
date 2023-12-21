@@ -46,13 +46,7 @@
     <el-divider><span style="color: #9e9e9e">正文</span></el-divider>
 
     <el-row>
-      <el-image
-        style="display: none"
-        ref="previewImg"
-        :src="activeImg"
-        :preview-src-list="[activeImg]"
-      ></el-image>
-      <div class="markdown-body">
+      <div v-if="!loading" class="markdown-body">
         <MdPreview
           style="width: 710px"
           editorId="md-preview"
@@ -60,6 +54,13 @@
           show-code-row-number
         />
       </div>
+      <div
+        style="width: 100%; height: 100px"
+        class="loading"
+        v-else
+        v-loading="loading"
+        element-loading-text="少女折寿中..."
+      />
     </el-row>
   </div>
 </template>
@@ -79,9 +80,10 @@ const article_link = ref<string>('')
 const article_labels = ref<string[]>([])
 const article_title = ref<string>('')
 const article_md = ref<string>('')
-const activeImg = ref<string>('')
+const loading = ref<boolean>(false)
 
 onMounted(async () => {
+  loading.value = true
   const res = await getArticleMain({
     article_id: Number(route.params.id)
   })
@@ -90,7 +92,11 @@ onMounted(async () => {
   article_link.value = article_main.article_link || ''
   article_labels.value.push(...article_main.article_labels)
   article_title.value = article_main.article_title
-  article_md.value = article_main.article_md
+  // 使用fetch来获取article_md_link的内容
+  article_md.value =
+    article_main.article_md_link !== ''
+      ? await fetch(article_main.article_md_link).then((res) => res.text())
+      : article_main.article_md
 
   await nextTick()
 
@@ -100,6 +106,7 @@ onMounted(async () => {
   }
 
   await postArticleTrend(trend_params)
+  loading.value = false
 })
 </script>
 

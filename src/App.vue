@@ -10,9 +10,7 @@
         opacity: logo_opacity
       }"
     >
-      <img
-        src="https://raw.githubusercontent.com/nonhana/Typora-Pictures-Store/master/images/littleSharingLogo.png"
-      />
+      <img :src="Logo" />
     </div>
     <el-row style="margin: 25px 0 0">
       <router-view />
@@ -24,6 +22,7 @@
 import { useHead } from '@unhead/vue'
 import { ref, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import Logo from '@/assets/imgs/Logo.png'
 
 useHead({
   title: 'littleSharing~☆',
@@ -110,15 +109,15 @@ onMounted(() => {
 }
 
 .article-home {
-  background-image: url('https://raw.githubusercontent.com/nonhana/Typora-Pictures-Store/master/images/articleBack.png');
+  background-image: url('assets/imgs/articleBack.png');
 }
 
 .login {
-  background-image: url('https://raw.githubusercontent.com/nonhana/Typora-Pictures-Store/master/images/loginBack.jpg');
+  background-image: url('assets/imgs/loginBack.jpg');
 }
 
 .messages {
-  background-image: url('https://raw.githubusercontent.com/nonhana/Typora-Pictures-Store/master/images/messageBack.png');
+  background-image: url('assets/imgs/messageBack.png');
 }
 
 .logo {

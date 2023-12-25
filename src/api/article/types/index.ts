@@ -51,6 +51,10 @@ export interface IPostArticleParams {
    */
   article_md: string
   /**
+   * 文章MD文件链接
+   */
+  article_md_link: string
+  /**
    * 文章状态，1-原创文章，2-转载文章
    */
   article_status: 1 | 2

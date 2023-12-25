@@ -1,5 +1,7 @@
 <template>
   <div class="postarticle-wrap">
+    <div v-loading.fullscreen.lock="loading" />
+
     <el-row
       style="margin: 10px 0 50px 50px"
       type="flex"
@@ -245,8 +247,10 @@ const ruleForm = ref<IPostArticleParams>({
   article_labels: [],
   article_introduce: '',
   article_md: '',
+  article_md_link: '',
   author_id: userStore.userInfo.user_id
 })
+const loading = ref<boolean>(false)
 interface RuleForm {
   article_title: string
   article_md: string
@@ -311,6 +315,7 @@ const onUploadImg = async (
   files: Array<File>,
   callback: (res: Array<string>) => void
 ) => {
+  loading.value = true
   const res = await Promise.all(
     files.map((file) => {
       return uploadArticleImg({
@@ -319,7 +324,9 @@ const onUploadImg = async (
     })
   )
   callback(res.map((item) => item.result))
+  loading.value = false
 }
+// 上传文章
 const submitArticle = async () => {
   if (
     (ruleForm.value.article_status === 1 &&
@@ -334,13 +341,13 @@ const submitArticle = async () => {
       ruleForm.value.article_introduce &&
       ruleForm.value.article_md)
   ) {
+    loading.value = true
     // 将所有的标签一并提交给后端数据库
     await addArticleLabel({ label_list: ruleForm.value.article_labels })
 
     // 发布文章
     if (!editStatus.value) {
       const { result: article_id } = await postArticle(ruleForm.value)
-      localStorage.removeItem('not_saved_article_info') // 发布成功后，清除本地存储的文章信息
       // 文章发布之后，给所有关注了当前用户的用户发送消息
       const { result: fansList } = await getUserFansList({
         user_id: userStore.userInfo.user_id
@@ -379,13 +386,16 @@ const submitArticle = async () => {
       article_labels: [],
       article_introduce: '',
       article_md: '',
+      article_md_link: '',
       author_id: userStore.userInfo.user_id
     }
+    localStorage.removeItem('not_saved_article_info') // 发布成功后，清除本地存储的文章信息
     ElNotification({
       title: '发布成功！',
       message: '快快前往首页看看吧！',
       type: 'success'
     })
+    loading.value = false
   } else {
     ElNotification({
       title: '发布文章失败！',
@@ -442,7 +452,11 @@ onMounted(async () => {
     if (res.result_code === 0) {
       const sourceArticle = res.result
 
-      ruleForm.value.article_md = sourceArticle.article_md
+      ruleForm.value.article_md =
+        sourceArticle.article_md_link !== ''
+          ? await fetch(sourceArticle.article_md_link).then((res) => res.text())
+          : sourceArticle.article_md
+      ruleForm.value.article_md_link = sourceArticle.article_md_link
       ruleForm.value.article_introduce = sourceArticle.article_introduce
       ruleForm.value.article_labels = sourceArticle.article_labels
       ruleForm.value.article_link = sourceArticle.article_link

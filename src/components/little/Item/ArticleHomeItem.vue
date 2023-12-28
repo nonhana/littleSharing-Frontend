@@ -359,7 +359,7 @@ onMounted(async () => {
     likemark.value = likeListRes.result.includes(article_id) ? 1 : 0
   }
 
-  const collectListRes = await getUserCollectList()
+  const collectListRes = await getUserCollectList({})
   if (collectListRes.result_code === 0) {
     collectionmark.value = collectListRes.result.includes(article_id) ? 1 : 0
   }

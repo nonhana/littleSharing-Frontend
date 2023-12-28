@@ -204,7 +204,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from '@/store'
 import { getUserFansList } from '@/api/user'
@@ -389,7 +389,6 @@ const submitArticle = async () => {
       article_md_link: '',
       author_id: userStore.userInfo.user_id
     }
-    localStorage.removeItem('not_saved_article_info') // 发布成功后，清除本地存储的文章信息
     ElNotification({
       title: '发布成功！',
       message: '快快前往首页看看吧！',
@@ -405,40 +404,7 @@ const submitArticle = async () => {
   }
 }
 
-watch(
-  ruleForm,
-  (newV, _) => {
-    if (!editStatus.value) {
-      localStorage.setItem('not_saved_article_info', JSON.stringify(newV))
-    }
-  },
-  { deep: true }
-)
-
 onMounted(async () => {
-  if (localStorage.getItem('not_saved_article_info')) {
-    ElMessageBox.confirm('是否继续上次编辑？', '上次编辑内容未发布', {
-      distinguishCancelAndClose: true,
-      confirmButtonText: '确认',
-      cancelButtonText: '取消'
-    })
-      .then(() => {
-        const localData = JSON.parse(
-          localStorage.getItem('not_saved_article_info') as string
-        )
-        ruleForm.value.article_md = localData.article_md
-        ruleForm.value.article_introduce = localData.article_introduce
-        ruleForm.value.article_labels = localData.article_labels
-        ruleForm.value.article_link = localData.article_link
-        ruleForm.value.article_major = localData.article_major
-        ruleForm.value.article_status = localData.article_status
-        ruleForm.value.article_title = localData.article_title
-        ruleForm.value.author_id = localData.author_id
-      })
-      .catch(() => {
-        localStorage.removeItem('not_saved_article_info')
-      })
-  }
   if (articleLabelStore.articleLabelInfo) {
     for (var i = 0; i < articleLabelStore.articleLabelInfo.length; i++) {
       optionsSubject.value.push(articleLabelStore.articleLabelInfo[i])

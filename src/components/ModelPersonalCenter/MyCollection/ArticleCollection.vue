@@ -41,11 +41,14 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, nextTick } from 'vue'
+import { useRoute } from 'vue-router'
 import { getUserCollectList } from '@/api/user'
 import { getArticleMain } from '@/api/article'
 import type { Article } from '@/api/article/types'
 import FilterBar from '@/components/Little/Tool/FilterBar.vue'
 import ArticlePersonalcenterItem from '@/components/Little/Item/ArticlePersonalCenterItem.vue'
+
+const route = useRoute()
 
 const loading = ref<boolean>(false)
 const article_list = ref<Article[]>([])
@@ -63,7 +66,9 @@ const getArticleList = async (arr: Article[]) => {
 
 onMounted(async () => {
   loading.value = true
-  const UserCollectListRes = await getUserCollectList()
+  const UserCollectListRes = await getUserCollectList({
+    user_id: Number(route.params.id)
+  })
   const articlePromises = UserCollectListRes.result.map(async (item) => {
     const res = await getArticleMain({ article_id: item })
     if (res.result_code === 0) {

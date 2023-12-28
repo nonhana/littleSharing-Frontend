@@ -193,10 +193,11 @@ export const addCollection = (data: IAddCollectParams) => {
 }
 
 // 获取用户的收藏列表
-export const getUserCollectList = () => {
-  return request<undefined, number[]>({
+export const getUserCollectList = (params: IUserIdOptional) => {
+  return request<IUserIdOptional, number[]>({
     url: '/user/user-collect-list',
-    method: 'GET'
+    method: 'GET',
+    params
   })
 }
 

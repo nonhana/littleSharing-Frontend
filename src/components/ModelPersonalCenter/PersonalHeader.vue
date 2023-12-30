@@ -226,7 +226,7 @@ watch(
         isMyCenter.value = false
       }
       const focusListRes = await getUserFocusList({
-        user_id: userStore.userInfo.user_id
+        user_id: user_id.value
       })
       if (focusListRes.result_code === 0) {
         if (focusListRes.result.length > 0) {

@@ -115,18 +115,20 @@ export const getUserCollectionNum = (params: IUserIdRequired) => {
 }
 
 // 获取用户的被点赞文章数据
-export const getLikedArticles = () => {
-  return request<undefined, Like[]>({
+export const getLikedArticles = (params: IUserIdRequired) => {
+  return request<IUserIdRequired, Like[]>({
     url: '/user/get-liked-articles',
-    method: 'GET'
+    method: 'GET',
+    params
   })
 }
 
 // 获取用户的被收藏文章数据
-export const getCollectedArticles = () => {
-  return request<undefined, Collect[]>({
+export const getCollectedArticles = (params: IUserIdRequired) => {
+  return request<IUserIdRequired, Collect[]>({
     url: '/user/get-liked-articles',
-    method: 'GET'
+    method: 'GET',
+    params
   })
 }
 

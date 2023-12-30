@@ -80,9 +80,13 @@
         <span>上传文章</span>
       </div>
 
-      <el-dropdown class="login" @command="loginchoices">
+      <el-dropdown
+        v-if="userStore.isLogin"
+        class="login"
+        @command="loginchoices"
+      >
         <div>
-          <img :src="user_head" alt="" />
+          <img :src="user_head" alt="user_head" />
         </div>
         <template #dropdown>
           <el-dropdown-menu>
@@ -101,6 +105,12 @@
           </el-dropdown-menu>
         </template>
       </el-dropdown>
+
+      <el-tooltip v-else content="点击前往登录页" placement="right">
+        <div class="login" @click="push(3)">
+          <span>登录</span>
+        </div>
+      </el-tooltip>
     </div>
   </div>
 </template>
@@ -110,6 +120,7 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from '@/store'
 import { getUnreadMessageCount } from '@/api/message'
+import { ElNotification } from 'element-plus'
 
 const router = useRouter()
 
@@ -132,7 +143,15 @@ const push = (num: number) => {
       route_path = '/home'
       break
     case 1:
-      route_path = '/postArticle'
+      if (userStore.isLogin) {
+        route_path = '/postArticle'
+      } else {
+        ElNotification({
+          title: '提示',
+          message: '进入该页面需要登录！',
+          type: 'warning'
+        })
+      }
       break
     case 2:
       route_path = `/personalCenter/${user_id.value}`
@@ -141,7 +160,15 @@ const push = (num: number) => {
       route_path = '/login'
       break
     case 4:
-      route_path = '/message'
+      if (userStore.isLogin) {
+        route_path = '/message'
+      } else {
+        ElNotification({
+          title: '提示',
+          message: '进入该页面需要登录！',
+          type: 'warning'
+        })
+      }
       break
   }
   router.push({
@@ -292,25 +319,12 @@ onMounted(async () => {
       overflow: hidden;
       width: 40px;
       height: 40px;
-      background: #fa5d34;
+      font-size: 12px;
+      font-family: SourceHanSansCN-Medium, sans-serif;
+      color: #3d3d3d;
+      background: #eee;
       border-radius: 50%;
-      transition: all 0.5s;
       cursor: pointer;
-
-      &:hover {
-        background: #c4492a;
-      }
-
-      span {
-        position: absolute;
-        top: 6px;
-        left: 3px;
-        width: 40px;
-        height: 40px;
-        font-size: 12px;
-        font-family: SourceHanSansCN-Medium, sans-serif;
-        color: #fff;
-      }
 
       img {
         width: 40px;

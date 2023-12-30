@@ -376,7 +376,7 @@ onMounted(async () => {
     date_list.value.push(date)
   }
 
-  const likedRes = await getLikedArticles()
+  const likedRes = await getLikedArticles({ user_id: user_id.value })
   likedRes.result.forEach((item: any) => {
     liked_articles.value.push(item)
   })
@@ -391,7 +391,7 @@ onMounted(async () => {
     like_num_list.value.push(total_num)
   })
 
-  const collectedRes = await getCollectedArticles()
+  const collectedRes = await getCollectedArticles({ user_id: user_id.value })
   collectedRes.result.forEach((item: any) => {
     collected_articles.value.push(item)
   })

@@ -6,7 +6,7 @@
           class="headphoto"
           @click="enterSpace(userId)"
           :src="pictureurl"
-          alt=""
+          alt="headphoto"
         />
       </div>
 
@@ -79,7 +79,7 @@ import { getArticleMain } from '@/api/article'
 import { postMessage } from '@/api/message'
 import { formatDate } from '@/utils'
 import type { Level0Comment, Level1Comment } from '@/api/comment/types'
-import { ElNotification, ElMessage } from 'element-plus'
+import { ElMessage } from 'element-plus'
 import LikeBtn from '@/components/Little/Button/LikeBtn.vue'
 import CommentBtn from '@/components/Little/Button/CommentBtn.vue'
 
@@ -173,55 +173,58 @@ const enterSpace = (user_id: number) => {
   })
 }
 const openComment = () => {
-  if (!props.isShow) {
-    emits('openComment', props.index, props.indexNext)
-    //记录上一次传值
+  if (userStore.isLogin) {
+    if (!props.isShow) {
+      emits('openComment', props.index, props.indexNext)
+      //记录上一次传值
+    } else {
+      //这里传值undefined，所以comment对应的v-if参数是不存在的（如：showInput[undefined] === true）
+      emits('openComment', undefined, undefined)
+    }
   } else {
-    //这里传值undefined，所以comment对应的v-if参数是不存在的（如：showInput[undefined] === true）
-    emits('openComment', undefined, undefined)
+    ElMessage({
+      message: '请先进行登录哦~'
+    })
   }
 }
 const addlike = async (id: number) => {
-  //判断是否登录
-  if (!userStore.userInfo) {
-    ElNotification({
-      title: '操作失败',
-      message: '您还未登录，无法进行此操作',
-      type: 'error'
-    })
-    return
-  }
-  if (likemark.value !== 1) {
-    likemark.value = 1
-    likenum.value++
-    await commentLikeAction({
-      comment_id: id,
-      action_type: 0
-    })
-    ElMessage({
-      message: '点赞成功'
-    })
-    if (userId.value !== userStore.userInfo.user_id) {
-      await postMessage({
-        receiver_id: userId.value,
-        type: 1,
-        content:
-          '<span> 您的评论' +
-          `<a href="${import.meta.env.VITE_SITE_URL}/articleHome/${
-            route.params.id
-          }/#${comment_id.value}" target="_blank"> ${details.value} </a>` +
-          '被点赞了 </span>'
+  if (userStore.isLogin) {
+    if (likemark.value !== 1) {
+      likemark.value = 1
+      likenum.value++
+      await commentLikeAction({
+        comment_id: id,
+        action_type: 0
+      })
+      ElMessage({
+        message: '点赞成功'
+      })
+      if (userId.value !== userStore.userInfo.user_id) {
+        await postMessage({
+          receiver_id: userId.value,
+          type: 1,
+          content:
+            '<span> 您的评论' +
+            `<a href="${import.meta.env.VITE_SITE_URL}/articleHome/${
+              route.params.id
+            }/#${comment_id.value}" target="_blank"> ${details.value} </a>` +
+            '被点赞了 </span>'
+        })
+      }
+    } else {
+      likemark.value = 0
+      likenum.value--
+      await commentLikeAction({
+        comment_id: id,
+        action_type: 1
+      })
+      ElMessage({
+        message: '取消点赞'
       })
     }
   } else {
-    likemark.value = 0
-    likenum.value--
-    await commentLikeAction({
-      comment_id: id,
-      action_type: 1
-    })
     ElMessage({
-      message: '取消点赞'
+      message: '请先进行登录哦~'
     })
   }
 }
@@ -255,9 +258,8 @@ watch(
 )
 
 onMounted(async () => {
-  // 获取一级评论的点赞列表
-  const res = await getCommentLikeList()
-  if (res.result.length > 0) {
+  if (userStore.isLogin) {
+    const res = await getCommentLikeList()
     res.result.forEach((item) => {
       if (item.comment_id === comment_id.value) {
         likemark.value = 1

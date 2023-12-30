@@ -31,8 +31,6 @@ onMounted(() => {
   width: 100%;
 
   .window {
-    position: absolute;
-    right: 100px;
     transition: all 0.5s;
   }
 }

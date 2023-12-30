@@ -60,13 +60,9 @@ class Request {
             })
           } else if (status === 401) {
             ElNotification({
-              title: '登录过期',
-              message: data.result_msg || '未知错误',
+              title: '请先进行登录哦~',
               type: 'error'
             })
-            setTimeout(() => {
-              location.href = '/login'
-            }, 2000)
           } else if (status === 400) {
             ElNotification({
               title: '参数错误',

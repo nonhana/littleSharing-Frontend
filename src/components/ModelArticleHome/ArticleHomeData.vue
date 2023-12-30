@@ -67,77 +67,89 @@ const likemark = ref<number>(0)
 const collectionmark = ref<number>(0)
 
 const addlike = async () => {
-  if (likemark.value !== 1) {
-    likemark.value = 1
-    article_data.value.like_num++
-    await addLike({
-      article_id: currentArticleId,
-      action_type: 0,
-      user_id: userStore.userInfo.user_id
-    })
-    ElMessage({
-      message: '点赞成功'
-    })
-    if (author_id.value !== userStore.userInfo.user_id) {
-      await postMessage({
-        receiver_id: author_id.value,
-        type: 1,
-        content:
-          '<span> 您的文章' +
-          `<a href="${import.meta.env.VITE_SITE_URL}/articleHome/${
-            article_id.value
-          }" target="_blank"> ${article_title.value} </a>` +
-          '被点赞了 </span>'
+  if (userStore.isLogin) {
+    if (likemark.value !== 1) {
+      likemark.value = 1
+      article_data.value.like_num++
+      await addLike({
+        article_id: currentArticleId,
+        action_type: 0,
+        user_id: userStore.userInfo.user_id
+      })
+      ElMessage({
+        message: '点赞成功'
+      })
+      if (author_id.value !== userStore.userInfo.user_id) {
+        await postMessage({
+          receiver_id: author_id.value,
+          type: 1,
+          content:
+            '<span> 您的文章' +
+            `<a href="${import.meta.env.VITE_SITE_URL}/articleHome/${
+              article_id.value
+            }" target="_blank"> ${article_title.value} </a>` +
+            '被点赞了 </span>'
+        })
+      }
+    } else {
+      likemark.value = 0
+      article_data.value.like_num--
+      await addLike({
+        article_id: currentArticleId,
+        action_type: 1,
+        user_id: userStore.userInfo.user_id
+      })
+      ElMessage({
+        message: '取消点赞'
       })
     }
   } else {
-    likemark.value = 0
-    article_data.value.like_num--
-    await addLike({
-      article_id: currentArticleId,
-      action_type: 1,
-      user_id: userStore.userInfo.user_id
-    })
     ElMessage({
-      message: '取消点赞'
+      message: '请先进行登录哦~'
     })
   }
 }
 const addcollection = async () => {
-  if (collectionmark.value !== 1) {
-    collectionmark.value = 1
-    article_data.value.collection_num++
-    await addCollection({
-      article_id: currentArticleId,
-      action_type: 0,
-      user_id: userStore.userInfo.user_id
-    })
-    ElMessage({
-      message: '收藏成功'
-    })
-    if (author_id.value !== userStore.userInfo.user_id) {
-      await postMessage({
-        receiver_id: author_id.value,
-        type: 1,
-        content:
-          '<span> 您的文章' +
-          `<a href="${import.meta.env.VITE_SITE_URL}/articleHome/${
-            article_id.value
-          }" target="_blank"> ${article_title.value} </a>` +
-          '被收藏了 </span>'
+  if (userStore.isLogin) {
+    if (collectionmark.value !== 1) {
+      collectionmark.value = 1
+      article_data.value.collection_num++
+      await addCollection({
+        article_id: currentArticleId,
+        action_type: 0,
+        user_id: userStore.userInfo.user_id
+      })
+      ElMessage({
+        message: '收藏成功'
+      })
+      if (author_id.value !== userStore.userInfo.user_id) {
+        await postMessage({
+          receiver_id: author_id.value,
+          type: 1,
+          content:
+            '<span> 您的文章' +
+            `<a href="${import.meta.env.VITE_SITE_URL}/articleHome/${
+              article_id.value
+            }" target="_blank"> ${article_title.value} </a>` +
+            '被收藏了 </span>'
+        })
+      }
+    } else {
+      collectionmark.value = 0
+      article_data.value.collection_num--
+      await addCollection({
+        article_id: currentArticleId,
+        action_type: 1,
+        user_id: userStore.userInfo.user_id
+      })
+
+      ElMessage({
+        message: '取消收藏'
       })
     }
   } else {
-    collectionmark.value = 0
-    article_data.value.collection_num--
-    await addCollection({
-      article_id: currentArticleId,
-      action_type: 1,
-      user_id: userStore.userInfo.user_id
-    })
-
     ElMessage({
-      message: '取消收藏'
+      message: '请先进行登录哦~'
     })
   }
 }
@@ -179,14 +191,15 @@ onMounted(async () => {
 
   article_id.value = Number(route.params.id)
 
-  const likeListRes = await getUserLikeList()
-  // 检查当前文章是否已经被点赞
-  const hasLiked = likeListRes.result.includes(article_id.value)
-  likemark.value = hasLiked ? 1 : 0
+  if (userStore.isLogin) {
+    const likeListRes = await getUserLikeList()
+    const hasLiked = likeListRes.result.includes(article_id.value)
+    likemark.value = hasLiked ? 1 : 0
 
-  const collectListRes = await getUserCollectList({})
-  const hasCollected = collectListRes.result.includes(article_id.value)
-  collectionmark.value = hasCollected ? 1 : 0
+    const collectListRes = await getUserCollectList({})
+    const hasCollected = collectListRes.result.includes(article_id.value)
+    collectionmark.value = hasCollected ? 1 : 0
+  }
 })
 </script>
 

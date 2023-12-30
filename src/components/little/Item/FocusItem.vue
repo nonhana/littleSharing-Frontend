@@ -16,7 +16,7 @@
           </el-row>
         </div>
       </div>
-      <div v-loading="execFollow">
+      <div v-if="userStore.isLogin" v-loading="execFollow">
         <div
           v-if="isMyFocus && isMyCenter"
           class="is-my-focus"
@@ -122,15 +122,17 @@ onMounted(async () => {
     username.value = res.result.name
     details.value = res.result.signature
     headphoto.value = res.result.headphoto
-    const userFocusListRes = await getUserFocusList({
-      user_id: userStore.userInfo.user_id
-    })
-    if (userFocusListRes.result_code === 0) {
-      userFocusListRes.result.forEach((item) => {
-        if (item.second_user_id === props.user_id) {
-          isMyFocus.value = true
-        }
+    if (userStore.isLogin) {
+      const userFocusListRes = await getUserFocusList({
+        user_id: userStore.userInfo.user_id
       })
+      if (userFocusListRes.result_code === 0) {
+        userFocusListRes.result.forEach((item) => {
+          if (item.second_user_id === props.user_id) {
+            isMyFocus.value = true
+          }
+        })
+      }
     }
   }
   loading.value = false

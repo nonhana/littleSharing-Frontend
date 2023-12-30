@@ -72,7 +72,7 @@
               placement="left"
             >
               <div class="author-head" @click="push(2)">
-                <img :src="author_head" alt="" />
+                <img :src="author_head" alt="author_head" />
               </div>
             </el-tooltip>
           </div>
@@ -256,78 +256,90 @@ const push = (num: number) => {
   }
 }
 const addlike = async () => {
-  if (likemark.value !== 1) {
-    likemark.value = 1
-    like_num.value++
-    await addLike({
-      article_id: article_id,
-      user_id: userStore.userInfo.user_id,
-      update_date: present_date.value,
-      action_type: 0
-    })
-    ElMessage({
-      message: '点赞成功'
-    })
-    if (author_id !== userStore.userInfo.user_id) {
-      await postMessage({
-        receiver_id: author_id,
-        type: 1,
-        content:
-          '<span> 您的文章' +
-          `<a href="${
-            import.meta.env.VITE_SITE_URL
-          }/articleHome/${article_id}" target="_blank"> ${article_title} </a>` +
-          '被点赞了 </span>'
+  if (userStore.isLogin) {
+    if (likemark.value !== 1) {
+      likemark.value = 1
+      like_num.value++
+      await addLike({
+        article_id: article_id,
+        user_id: userStore.userInfo.user_id,
+        update_date: present_date.value,
+        action_type: 0
+      })
+      ElMessage({
+        message: '点赞成功'
+      })
+      if (author_id !== userStore.userInfo.user_id) {
+        await postMessage({
+          receiver_id: author_id,
+          type: 1,
+          content:
+            '<span> 您的文章' +
+            `<a href="${
+              import.meta.env.VITE_SITE_URL
+            }/articleHome/${article_id}" target="_blank"> ${article_title} </a>` +
+            '被点赞了 </span>'
+        })
+      }
+    } else {
+      likemark.value = 0
+      like_num.value--
+      await addLike({
+        article_id: article_id,
+        action_type: 1,
+        user_id: userStore.userInfo.user_id
+      })
+      ElMessage({
+        message: '取消点赞'
       })
     }
   } else {
-    likemark.value = 0
-    like_num.value--
-    await addLike({
-      article_id: article_id,
-      action_type: 1,
-      user_id: userStore.userInfo.user_id
-    })
     ElMessage({
-      message: '取消点赞'
+      message: '请先进行登录哦~'
     })
   }
 }
 const addcollection = async () => {
-  if (collectionmark.value !== 1) {
-    collectionmark.value = 1
-    collection_num.value++
-    await addCollection({
-      article_id: article_id,
-      user_id: userStore.userInfo.user_id,
-      update_date: present_date.value,
-      action_type: 0
-    })
-    ElMessage({
-      message: '收藏成功'
-    })
-    if (author_id !== userStore.userInfo.user_id) {
-      await postMessage({
-        receiver_id: author_id,
-        type: 1,
-        content:
-          '<span> 您的文章' +
-          `<a href="${
-            import.meta.env.VITE_SITE_URL
-          }/articleHome/${article_id}" target="_blank"> ${article_title} </a>` +
-          '被收藏了 </span>'
+  if (userStore.isLogin) {
+    if (collectionmark.value !== 1) {
+      collectionmark.value = 1
+      collection_num.value++
+      await addCollection({
+        article_id: article_id,
+        user_id: userStore.userInfo.user_id,
+        update_date: present_date.value,
+        action_type: 0
+      })
+      ElMessage({
+        message: '收藏成功'
+      })
+      if (author_id !== userStore.userInfo.user_id) {
+        await postMessage({
+          receiver_id: author_id,
+          type: 1,
+          content:
+            '<span> 您的文章' +
+            `<a href="${
+              import.meta.env.VITE_SITE_URL
+            }/articleHome/${article_id}" target="_blank"> ${article_title} </a>` +
+            '被收藏了 </span>'
+        })
+      }
+    } else {
+      collectionmark.value = 0
+      collection_num.value--
+      await addCollection({
+        article_id: article_id,
+        action_type: 1,
+        user_id: userStore.userInfo.user_id
+      })
+      ElMessage({
+        message: '取消收藏'
       })
     }
   } else {
-    collectionmark.value = 0
-    collection_num.value--
-    await addCollection({
-      article_id: article_id,
-      action_type: 1,
-      user_id: userStore.userInfo.user_id
-    })
     ElMessage({
-      message: '取消收藏'
+      message: '请先进行登录哦~'
     })
   }
 }
@@ -354,14 +366,16 @@ const addshare = () => {
 }
 
 onMounted(async () => {
-  const likeListRes = await getUserLikeList()
-  if (likeListRes.result_code === 0) {
-    likemark.value = likeListRes.result.includes(article_id) ? 1 : 0
-  }
+  if (userStore.isLogin) {
+    const likeListRes = await getUserLikeList()
+    if (likeListRes.result_code === 0) {
+      likemark.value = likeListRes.result.includes(article_id) ? 1 : 0
+    }
 
-  const collectListRes = await getUserCollectList({})
-  if (collectListRes.result_code === 0) {
-    collectionmark.value = collectListRes.result.includes(article_id) ? 1 : 0
+    const collectListRes = await getUserCollectList({})
+    if (collectListRes.result_code === 0) {
+      collectionmark.value = collectListRes.result.includes(article_id) ? 1 : 0
+    }
   }
 })
 </script>

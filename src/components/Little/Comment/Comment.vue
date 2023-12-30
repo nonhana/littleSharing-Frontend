@@ -3,12 +3,18 @@
     <el-row>
       <div class="comment-tag">
         <div class="line" />
-        <span>评论：</span>
+        <span>评论列表：</span>
+        <span v-if="comment_list.length === 0">暂无评论</span>
       </div>
     </el-row>
 
-    <el-row type="flex" justify="space-between" style="padding: 20px 0 0">
-      <img :src="user_head_photo" alt="" />
+    <el-row
+      v-if="userStore.isLogin"
+      type="flex"
+      justify="space-between"
+      style="padding: 20px 0 0"
+    >
+      <img :src="user_head_photo" alt="user_head_photo" />
       <CommentInput
         @refreshComment="refreshComment"
         :objectName="object_name"
@@ -242,11 +248,9 @@ onMounted(async () => {
     }
 
     span {
-      width: 60px;
       font-size: 18px;
       font-family: SourceHanSansCN-Medium, sans-serif;
       color: #000;
-      line-height: 17px;
     }
   }
 

@@ -11,7 +11,7 @@
         <el-row>
           <ArticleHomeSimilar />
         </el-row>
-        <el-row style="margin: 30px 0 0">
+        <el-row v-if="isLogin" style="margin: 30px 0 0">
           <ArticleHomeBookMark />
         </el-row>
         <el-row style="margin: 30px 0 0">
@@ -38,6 +38,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
+import { useStore } from '@/store'
 import { increaseArticleViews } from '@/api/article'
 import ArticleHomeMain from '@/components/ModelArticleHome/ArticleHomeMain.vue'
 import ArticleHomeSimilar from '@/components/ModelArticleHome/ArticleHomeSimilar.vue'
@@ -47,6 +48,9 @@ import ArticleHomeData from '@/components/ModelArticleHome/ArticleHomeData.vue'
 import Comment from '@/components/Little/Comment/Comment.vue'
 
 const route = useRoute()
+const {
+  userStore: { isLogin }
+} = useStore()
 
 const article_data = ref({
   like_num: 0,

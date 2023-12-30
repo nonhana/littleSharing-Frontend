@@ -10,7 +10,10 @@
         opacity: logo_opacity
       }"
     >
-      <img :src="Logo" />
+      <img
+        src="https://littlesharing-1319721118.cos.ap-shanghai.myqcloud.com/images/Logo.png"
+        alt="Logo"
+      />
     </div>
     <el-row style="margin: 25px 0 0">
       <router-view />
@@ -22,7 +25,6 @@
 import { useHead } from '@unhead/vue'
 import { ref, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import Logo from '@/assets/imgs/Logo.png'
 
 useHead({
   title: 'littleSharing~☆',
@@ -30,11 +32,6 @@ useHead({
     {
       name: 'description',
       content: '兴趣使然的学术资源分享小站'
-    },
-    {
-      name: 'keywords',
-      content:
-        '学术资源,资源分享,学术交流,学术论文,学术论坛,学术资源分享,学术资源共享,学术资源下载,学术资源网站,学术资源网,学术资源分享网站,学术资源共享网站,学术资源下载网站,学术资源网站大全,学术资源网站推荐,学术资源网站分享,学术资源网站导航,学术资源网站收藏,学术资源网站推荐,学术资源网站大全,学术资源网站分享,学术资源网站导航,学术资源网站收藏,学术资源网站推荐,学术资源网站大全,学术资源网站分享,学术资源网站导航,学术资源网站收藏,学术资源网站推荐,学术资源网站大全,学术资源网站分享,学术资源网站导航,学术资源网站收藏,学术资源网站推荐,学术资源网站大全,学术资源网站分享,学术资源网站导航,学术资源网站收藏,学术资源网站推荐,学术资源网站大全,学术资源网站分享,学术资源网站导航,学术资源网站收藏,学术资源网站推荐,学术资源网站大全,学术资源网站分享,学术资源网站导航,学术资源网站收藏'
     },
     {
       name: 'author',
@@ -109,15 +106,15 @@ onMounted(() => {
 }
 
 .article-home {
-  background-image: url('assets/imgs/articleBack.png');
+  background-image: url('https://littlesharing-1319721118.cos.ap-shanghai.myqcloud.com/images/articleBack.png');
 }
 
 .login {
-  background-image: url('assets/imgs/loginBack.jpg');
+  background-image: url('https://littlesharing-1319721118.cos.ap-shanghai.myqcloud.com/images/loginBack.jpg');
 }
 
 .messages {
-  background-image: url('assets/imgs/messageBack.png');
+  background-image: url('https://littlesharing-1319721118.cos.ap-shanghai.myqcloud.com/images/messageBack.png');
 }
 
 .logo {

@@ -3,7 +3,7 @@
     <el-row>
       <div style="display: flex; justify-content: center; width: 100%">
         <div class="author-head" @click="enterSpace(author_id)">
-          <img :src="author_head" alt="" />
+          <img :src="author_head" alt="author_head" />
         </div>
       </div>
     </el-row>

@@ -9,7 +9,7 @@
           placement="left"
         >
           <div class="author-head" @click="push(2)">
-            <img :src="author_head" alt="" />
+            <img :src="author_head" alt="author_head" />
           </div>
         </el-tooltip>
       </div>

@@ -230,10 +230,11 @@ const turnToLogin = () => {
 
 <style scoped lang="less">
 .loginwindow-wrap {
-  position: relative;
+  position: absolute;
+  top: 20vh;
+  right: 100px;
   overflow: hidden;
   padding: 30px;
-  margin: 200px auto;
   width: 320px;
   background-color: #fff;
   border-radius: 50px;

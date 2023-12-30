@@ -16,20 +16,7 @@ export const createApp = ViteSSG(
   { routes },
   // 可选的回调函数，进行更多的应用配置
   ({ app, router, initialState, isClient, onSSRAppRendered }) => {
-    const whilelist = ['/login']
-    // 配置路由守卫
-    router.beforeEach((to, _, next) => {
-      if (
-        whilelist.includes(to.path) ||
-        (!import.meta.env.SSR && localStorage.getItem('token'))
-      ) {
-        next()
-      } else {
-        next('/login')
-      }
-    })
-
-    // 配置状态管理
+    // 配置pinia
     const store = createPinia()
     store.use(piniaPluginPersistedstate)
 

@@ -157,6 +157,20 @@ export interface IAddCollectParams {
 /* ----------响应体类型---------- */
 
 /**
+ * 登录返回信息
+ */
+export interface Login {
+  /**
+   * 用户id
+   */
+  user_id: number
+  /**
+   * 用户token
+   */
+  token: string
+}
+
+/**
  * 用户信息
  */
 export interface User {

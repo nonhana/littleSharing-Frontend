@@ -1,5 +1,5 @@
 import request from '@/service'
-import type { IUserIdOptional, IUserIdRequired } from '@/api/types'
+import type { IUserIdRequired } from '@/api/types'
 import type {
   User,
   Like,
@@ -15,7 +15,8 @@ import type {
   IFocusUserActionsParams,
   IAddLikeParams,
   IAddCollectParams,
-  Keyword
+  Keyword,
+  Login
 } from './types'
 import type { Article, ArticleSimple } from '../article/types'
 
@@ -54,7 +55,7 @@ export const register = (data: IRegisterParams) => {
 
 // 用户登录
 export const login = (data: ILoginParams) => {
-  return request<ILoginParams, string>({
+  return request<ILoginParams, Login>({
     url: '/user/login',
     method: 'POST',
     data
@@ -62,8 +63,8 @@ export const login = (data: ILoginParams) => {
 }
 
 // 获取用户的keywords
-export const getUserKeywords = (params: IUserIdOptional) => {
-  return request<IUserIdOptional, Keyword[]>({
+export const getUserKeywords = (params: IUserIdRequired) => {
+  return request<IUserIdRequired, Keyword[]>({
     url: '/user/get-user-keywords',
     method: 'GET',
     params
@@ -79,8 +80,8 @@ export const getArticleLabels = () => {
 }
 
 // 获取用户信息
-export const getUserInfo = (params: IUserIdOptional) => {
-  return request<IUserIdOptional, User>({
+export const getUserInfo = (params: IUserIdRequired) => {
+  return request<IUserIdRequired, User>({
     url: '/user/get-user-info',
     method: 'GET',
     params
@@ -195,8 +196,8 @@ export const addCollection = (data: IAddCollectParams) => {
 }
 
 // 获取用户的收藏列表
-export const getUserCollectList = (params: IUserIdOptional) => {
-  return request<IUserIdOptional, number[]>({
+export const getUserCollectList = (params: IUserIdRequired) => {
+  return request<IUserIdRequired, number[]>({
     url: '/user/user-collect-list',
     method: 'GET',
     params

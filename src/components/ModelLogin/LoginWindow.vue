@@ -156,17 +156,19 @@ const useLogin = async () => {
   } else {
     const res = await login({ ...loginForm.value })
     if (res.result_code === 0) {
-      localStorage.setItem('token', res.result)
+      localStorage.setItem('token', res.result.token)
 
       // 获取用户信息
-      const userInfoRes = await getUserInfo({})
+      const userInfoRes = await getUserInfo({ user_id: res.result.user_id })
       if (userInfoRes.result_code === 0) {
         userStore.setUserInfo(userInfoRes.result)
         userStore.setLogin(true)
       }
 
       // 获取用户关键词
-      const userKeywordsRes = await getUserKeywords({})
+      const userKeywordsRes = await getUserKeywords({
+        user_id: res.result.user_id
+      })
       if (userKeywordsRes.result_code === 0) {
         keywordStore.setKeywordList(userKeywordsRes.result)
       }

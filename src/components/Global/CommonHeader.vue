@@ -182,7 +182,7 @@ const loginchoices = (num: string) => {
       break
     case '2':
       localStorage.clear()
-      push(3)
+      window.location.reload()
       break
   }
 }

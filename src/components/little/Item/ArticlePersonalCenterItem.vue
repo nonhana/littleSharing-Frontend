@@ -23,19 +23,19 @@
 
       <el-dropdown @command="articlechoices">
         <div class="more">
-          <img src="@/assets/svgs/More.svg" />
+          <img :src="More" alt="More" />
         </div>
         <template #dropdown>
           <el-dropdown-menu v-if="routeStatus === 0">
             <el-dropdown-item command="1" style="display: flex">
               <div style="margin: 6px 6px 0 0">
-                <img src="@/assets/svgs/ReEdit.svg" />
+                <img :src="ReEdit" alt="ReEdit" />
               </div>
               <span>重新编辑</span></el-dropdown-item
             >
             <el-dropdown-item command="2" style="display: flex">
               <div style="margin: 6px 6px 0 0">
-                <img src="@/assets/svgs/DeleteArticle.svg" />
+                <img :src="DeleteArticle" alt="DeleteArticle" />
               </div>
               <span>删除文章</span></el-dropdown-item
             >
@@ -43,7 +43,7 @@
           <el-dropdown-menu v-if="routeStatus === 1">
             <el-dropdown-item command="3" style="display: flex">
               <div style="margin: 6px 6px 0 0">
-                <img src="@/assets/svgs/CancelCollect.svg" />
+                <img :src="CancelCollect" alt="CancelCollect" />
               </div>
               <span>取消收藏</span></el-dropdown-item
             >
@@ -72,19 +72,19 @@
       <div>
         <el-row type="flex" class="action-list">
           <div>
-            <img src="@/assets/svgs/LittleLike.svg" />
+            <img :src="LittleLike" alt="LittleLike" />
             <span>{{ like_num }}</span>
           </div>
           <div>
-            <img src="@/assets/svgs/LittleCollection.svg" />
+            <img :src="LittleCollection" alt="LittleCollection" />
             <span>{{ collection_num }}</span>
           </div>
           <div>
-            <img src="@/assets/svgs/LittleShare.svg" />
+            <img :src="LittleShare" alt="LittleShare" />
             <span>{{ share_num }}</span>
           </div>
           <div>
-            <img src="@/assets/svgs/LittleComment.svg" />
+            <img :src="LittleComment" alt="LittleComment" />
             <span>{{ comment_num }}</span>
           </div>
         </el-row>
@@ -110,6 +110,14 @@ import { deleteArticle } from '@/api/article'
 import { addCollection } from '@/api/user'
 import { ElMessageBox, ElNotification } from 'element-plus'
 import { formatDate } from '@/utils'
+import More from '@/assets/svgs/More.svg'
+import ReEdit from '@/assets/svgs/ReEdit.svg'
+import DeleteArticle from '@/assets/svgs/DeleteArticle.svg'
+import CancelCollect from '@/assets/svgs/CancelCollect.svg'
+import LittleLike from '@/assets/svgs/LittleLike.svg'
+import LittleCollection from '@/assets/svgs/LittleCollection.svg'
+import LittleShare from '@/assets/svgs/LittleShare.svg'
+import LittleComment from '@/assets/svgs/LittleComment.svg'
 
 const props = defineProps<{
   articleList: Article

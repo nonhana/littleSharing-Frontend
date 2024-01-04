@@ -2,13 +2,13 @@
   <div class="commonheader-wrap">
     <div class="part1">
       <div class="logo" @click="push(0)">
-        <img src="@/assets/svgs/Logo.svg" />
+        <img :src="Logo" alt="Logo" />
       </div>
       <span>兴趣使然的学术资源分享小站</span>
     </div>
 
     <div class="search-box">
-      <img src="@/assets/svgs/Search.svg" />
+      <img :src="Search" alt="Search" />
       <el-input
         v-model="keyvalue"
         placeholder="输入关键字进行检索~"
@@ -30,7 +30,7 @@
               top: `${MessageSvgTop1}px`
             }"
           >
-            <img src="@/assets/svgs/Message_1.svg" />
+            <img :src="Message_1" alt="Message_1" />
           </div>
           <div
             style="position: relative; transition: all 0.3s"
@@ -39,7 +39,7 @@
               transform: svgChange
             }"
           >
-            <img src="@/assets/svgs/Message_2.svg" />
+            <img :src="Message_2" alt="Message_2" />
           </div>
         </div>
 
@@ -64,7 +64,7 @@
               top: `${PostSvgTop1}px`
             }"
           >
-            <img src="@/assets/svgs/PostArticle_1.svg" />
+            <img :src="PostArticle_1" alt="PostArticle_1" />
           </div>
           <div
             style="position: relative; transition: all 0.3s"
@@ -73,7 +73,7 @@
               transform: svgChange
             }"
           >
-            <img src="@/assets/svgs/PostArticle_2.svg" />
+            <img :src="PostArticle_2" alt="PostArticle_2" />
           </div>
         </div>
 
@@ -92,13 +92,13 @@
           <el-dropdown-menu>
             <el-dropdown-item command="1" style="display: flex">
               <div style="margin: 6px 6px 0 0">
-                <img src="@/assets/svgs/PersonalCenter.svg" />
+                <img :src="PersonalCenter" alt="PersonalCenter" />
               </div>
               <span>个人主页</span>
             </el-dropdown-item>
             <el-dropdown-item command="2" style="display: flex">
               <div style="margin: 6px 6px 0 0">
-                <img src="@/assets/svgs/ExitLogin.svg" />
+                <img :src="ExitLogin" alt="ExitLogin" />
               </div>
               <span>退出登录</span>
             </el-dropdown-item>
@@ -121,6 +121,14 @@ import { useRouter } from 'vue-router'
 import { useStore } from '@/store'
 import { getUnreadMessageCount } from '@/api/message'
 import { ElNotification } from 'element-plus'
+import Logo from '@/assets/svgs/Logo.svg'
+import Search from '@/assets/svgs/Search.svg'
+import Message_1 from '@/assets/svgs/Message_1.svg'
+import Message_2 from '@/assets/svgs/Message_2.svg'
+import PostArticle_1 from '@/assets/svgs/PostArticle_1.svg'
+import PostArticle_2 from '@/assets/svgs/PostArticle_2.svg'
+import PersonalCenter from '@/assets/svgs/PersonalCenter.svg'
+import ExitLogin from '@/assets/svgs/ExitLogin.svg'
 
 const router = useRouter()
 

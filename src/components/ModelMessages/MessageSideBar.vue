@@ -1,7 +1,7 @@
 <template>
   <div class="messagesidebar-wrap">
     <div class="title">
-      <img src="@/assets/svgs/MessageSideBar.svg" />
+      <img :src="MessageSideBar" alt="MessageSideBar" />
       <span>我的消息</span>
     </div>
     <div style="margin: 30px 0 0">
@@ -67,6 +67,7 @@ import { ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from '@/store'
 import { readMessage } from '@/api/message'
+import MessageSideBar from '@/assets/svgs/MessageSideBar.svg'
 
 const route = useRoute()
 const router = useRouter()

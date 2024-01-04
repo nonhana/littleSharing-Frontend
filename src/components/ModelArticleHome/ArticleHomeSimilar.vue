@@ -29,7 +29,7 @@
           :style="{ transform: rorate, top: topHeight }"
           @click="foldList"
         >
-          <img src="@/assets/svgs/FoldList.svg" />
+          <img :src="FoldList" alt="FoldList" />
         </div>
       </el-row>
     </el-row>
@@ -51,6 +51,7 @@ import { useRoute } from 'vue-router'
 import { getSimilarArticles, getArticleMain } from '@/api/article'
 import type { ArticleSimple } from '@/api/article/types'
 import LittleArticleItem from '@/components/Little/Item/LittleArticleItem.vue'
+import FoldList from '@/assets/svgs/FoldList.svg'
 
 const route = useRoute()
 

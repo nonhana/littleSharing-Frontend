@@ -81,7 +81,7 @@
         @mouseleave="moveline(lineCnt)"
         @click="push(1)"
       >
-        <img src="@/assets/svgs/MyArticles.svg" />
+        <img :src="MyArticles" alt="MyArticles" />
         <span :class="className[0]"
           >{{ isMyCenter ? '我的' : 'ta的' }}文章</span
         >
@@ -91,7 +91,7 @@
         @mouseleave="moveline(lineCnt)"
         @click="push(2)"
       >
-        <img src="@/assets/svgs/MyCollections.svg" />
+        <img :src="MyCollections" alt="MyCollections" />
         <span :class="className[1]"
           >{{ isMyCenter ? '我的' : 'ta的' }}收藏</span
         >
@@ -101,7 +101,7 @@
         @mouseleave="moveline(lineCnt)"
         @click="push(3)"
       >
-        <img src="@/assets/svgs/MyFocus.svg" />
+        <img :src="MyFocus" alt="MyFocus" />
         <span :class="className[2]"
           >{{ isMyCenter ? '我的' : 'ta的' }}关注</span
         >
@@ -111,7 +111,7 @@
         @mouseleave="moveline(lineCnt)"
         @click="push(4)"
       >
-        <img src="@/assets/svgs/MyData.svg" />
+        <img :src="MyData" alt="MyData" />
         <span :class="className[3]"
           >{{ isMyCenter ? '我的' : 'ta的' }}数据</span
         >
@@ -122,7 +122,7 @@
         @mouseleave="moveline(lineCnt)"
         @click="push(5)"
       >
-        <img src="@/assets/svgs/MyInfo.svg" />
+        <img :src="MyInfo" alt="MyInfo" />
         <span :class="className[4]">个人资料</span>
       </div>
       <div class="line" :style="{ left: `${linePosition}px` }"></div>
@@ -142,6 +142,11 @@ import {
   getUserFocusList
 } from '@/api/user'
 import { ElMessage } from 'element-plus'
+import MyArticles from '@/assets/svgs/MyArticles.svg'
+import MyCollections from '@/assets/svgs/MyCollections.svg'
+import MyFocus from '@/assets/svgs/MyFocus.svg'
+import MyData from '@/assets/svgs/MyData.svg'
+import MyInfo from '@/assets/svgs/MyInfo.svg'
 
 const router = useRouter()
 const route = useRoute()

@@ -28,13 +28,13 @@
 
         <el-dropdown>
           <div class="more">
-            <img src="@/assets/svgs/More.svg" />
+            <img :src="More" alt="More" />
           </div>
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item command="1" style="display: flex">
                 <div style="margin: 6px 6px 0 0">
-                  <img src="@/assets/svgs/Report.svg" />
+                  <img :src="Report" alt="Report" />
                 </div>
                 <span>举报</span>
               </el-dropdown-item>
@@ -168,6 +168,8 @@ import CollectionBtn from '@/components/Little/Button/CollectionBtn.vue'
 import ShareBtn from '@/components/Little/Button/ShareBtn.vue'
 import CommentBtn from '@/components/Little/Button/CommentBtn.vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import More from '@/assets/svgs/More.svg'
+import Report from '@/assets/svgs/Report.svg'
 
 const props = defineProps<{
   articleList: Article

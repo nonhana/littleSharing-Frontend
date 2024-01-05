@@ -1,5 +1,9 @@
 # `littleSharing~☆` `frontend-vue3.0`
 
+<div align="center">
+   <img src="https://common-1319721118.cos.ap-shanghai.myqcloud.com/picgo/littlesharing-logo.png" alt="littlesharing-logo" />
+</div>
+
 ## 项目简介
 
 此项目为先前使用`vue2.0`编写的相同前端项目的重构，采用最新的`vue3.0+TS+ElementPlus+Pinia+Vite`技术栈进行重写。主要原因有：

@@ -13,21 +13,7 @@ import { ElMessageBox } from 'element-plus'
 import { useHead } from '@unhead/vue'
 
 useHead({
-  title: 'littleSharing-兴趣使然的博客小站',
-  meta: [
-    {
-      name: 'description',
-      content: '一个以Markdown为主要沟通形式的资源分享社区。'
-    },
-    {
-      name: 'author',
-      content: 'nonhana'
-    },
-    {
-      name: 'viewport',
-      content: 'width=device-width, initial-scale=1.0'
-    }
-  ]
+  title: '发布文章'
 })
 
 onBeforeRouteLeave((_, __, next) => {

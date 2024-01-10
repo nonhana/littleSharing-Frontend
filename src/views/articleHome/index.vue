@@ -39,14 +39,13 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStore } from '@/store'
-import { getArticleMain, increaseArticleViews } from '@/api/article'
+import { increaseArticleViews } from '@/api/article'
 import ArticleHomeMain from '@/components/ModelArticleHome/ArticleHomeMain.vue'
 import ArticleHomeSimilar from '@/components/ModelArticleHome/ArticleHomeSimilar.vue'
 import ArticleHomeAuthor from '@/components/ModelArticleHome/ArticleHomeAuthor.vue'
 import ArticleHomeBookMark from '@/components/ModelArticleHome/ArticleHomeBookMark.vue'
 import ArticleHomeData from '@/components/ModelArticleHome/ArticleHomeData.vue'
 import Comment from '@/components/Little/Comment/Comment.vue'
-import { useHead } from '@unhead/vue'
 
 const route = useRoute()
 const {
@@ -72,28 +71,6 @@ onMounted(async () => {
   await increaseArticleViews({
     article_id: articleId
   })
-  const { result } = await getArticleMain({
-    article_id: articleId
-  })
-
-  useHead({
-    title: result.article_title,
-    meta: [
-      {
-        name: 'description',
-        content: result.article_introduce
-      },
-      {
-        name: 'author',
-        content: result.author_name
-      },
-      {
-        name: 'viewport',
-        content: 'width=device-width, initial-scale=1.0'
-      }
-    ]
-  })
-
   // 把路由的#后面的数字拿到，赋给comment_id
   comment_id.value = route.hash.slice(1)
   // 滚动到评论id为comment_id的位置

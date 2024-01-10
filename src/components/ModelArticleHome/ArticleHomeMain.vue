@@ -72,6 +72,7 @@ import { getArticleMain, postArticleTrend } from '@/api/article'
 import { formatDate } from '@/utils'
 import { MdPreview } from 'md-editor-v3'
 import 'md-editor-v3/lib/preview.css'
+import { useHead } from '@unhead/vue'
 
 const route = useRoute()
 
@@ -84,10 +85,28 @@ const loading = ref<boolean>(false)
 
 onMounted(async () => {
   loading.value = true
-  const res = await getArticleMain({
+  const { result: article_main } = await getArticleMain({
     article_id: Number(route.params.id)
   })
-  const article_main = res.result
+
+  useHead({
+    title: article_main.article_title,
+    meta: [
+      {
+        name: 'description',
+        content: article_main.article_introduce
+      },
+      {
+        name: 'author',
+        content: article_main.author_name
+      },
+      {
+        name: 'viewport',
+        content: 'width=device-width, initial-scale=1.0'
+      }
+    ]
+  })
+
   article_status.value = article_main.article_status
   article_link.value = article_main.article_link || ''
   article_labels.value.push(...article_main.article_labels)

@@ -46,25 +46,6 @@ import HomeNewsList from '@/components/ModelHome/HomeNewsList.vue'
 import HomeTrend from '@/components/ModelHome/HomeTrend.vue'
 import ArticleHomeItem from '@/components/Little/Item/ArticleHomeItem.vue'
 import { ElMessage } from 'element-plus'
-import { useHead } from '@unhead/vue'
-
-useHead({
-  title: 'littleSharing-兴趣使然的博客小站',
-  meta: [
-    {
-      name: 'description',
-      content: '一个以Markdown为主要沟通形式的资源分享社区。'
-    },
-    {
-      name: 'author',
-      content: 'nonhana'
-    },
-    {
-      name: 'viewport',
-      content: 'width=device-width, initial-scale=1.0'
-    }
-  ]
-})
 
 const article_list = ref<Article[]>([])
 const article_list_all = ref<Article[]>([])

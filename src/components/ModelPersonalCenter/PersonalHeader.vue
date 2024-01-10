@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="gettingData" class="personalheader-wrap">
+  <div v-loading="loading" class="personalheader-wrap">
     <div class="background">
       <img :src="background_photo" />
     </div>
@@ -147,13 +147,14 @@ import MyCollections from '@/assets/svgs/MyCollections.svg'
 import MyFocus from '@/assets/svgs/MyFocus.svg'
 import MyData from '@/assets/svgs/MyData.svg'
 import MyInfo from '@/assets/svgs/MyInfo.svg'
+import { useHead } from '@unhead/vue'
 
 const router = useRouter()
 const route = useRoute()
 
 const { userStore } = useStore()
 
-const gettingData = ref<boolean>(false)
+const loading = ref<boolean>(false)
 const isMyCenter = ref<boolean>(false)
 const isMyFocus = ref<boolean>(false)
 const user = ref({
@@ -223,7 +224,7 @@ watch(
   () => route.params.id,
   async (newV, oldV) => {
     if (newV !== oldV) {
-      gettingData.value = true
+      loading.value = true
       user_id.value = Number(newV)
       if (user_id.value === userStore.userInfo.user_id) {
         isMyCenter.value = true
@@ -242,12 +243,31 @@ watch(
           })
         }
       }
-      const userInfoRes = await getUserInfo({ user_id: user_id.value })
-      user.value.user_name = userInfoRes.result.name
-      user.value.sign = userInfoRes.result.signature
-      user.value.header_photo = userInfoRes.result.headphoto
-      user.value.background_photo = userInfoRes.result.backgroundphoto
-      user.value.total_artcile = userInfoRes.result.article_num
+      const { result: userInfoRes } = await getUserInfo({
+        user_id: user_id.value
+      })
+      useHead({
+        title: `${userInfoRes.name}的个人空间`,
+        meta: [
+          {
+            name: 'description',
+            content: `这是${userInfoRes.name}的个人空间，欢迎来到这里。看看有没有自己中意的文章吧~！`
+          },
+          {
+            name: 'author',
+            content: userInfoRes.name
+          },
+          {
+            name: 'viewport',
+            content: 'width=device-width, initial-scale=1.0'
+          }
+        ]
+      })
+      user.value.user_name = userInfoRes.name
+      user.value.sign = userInfoRes.signature
+      user.value.header_photo = userInfoRes.headphoto
+      user.value.background_photo = userInfoRes.backgroundphoto
+      user.value.total_artcile = userInfoRes.article_num
       const likeNumRes = await getUserLikeNum({ user_id: user_id.value })
       if (likeNumRes.result_code === 0) {
         user.value.total_like = likeNumRes.result
@@ -258,7 +278,7 @@ watch(
       if (collectionNumRes.result_code === 0) {
         user.value.total_collect = collectionNumRes.result
       }
-      gettingData.value = false
+      loading.value = false
     }
   },
   { immediate: true }

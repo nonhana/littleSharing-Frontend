@@ -18,8 +18,7 @@ export default defineConfig(({ mode }) => {
       rollupOptions: {
         output: {
           manualChunks: {
-            'element-plus': ['element-plus'],
-            '@mojs/core': ['@mojs/core']
+            'element-plus': ['element-plus']
           }
         }
       }
@@ -63,7 +62,7 @@ export default defineConfig(({ mode }) => {
       })
     ],
     resolve: {
-      // 配置路径别名@
+      // 配置路径别名@和CDN地址
       alias: {
         '@': path.resolve(__dirname, './src')
       }
@@ -73,7 +72,7 @@ export default defineConfig(({ mode }) => {
       open: false // 是否自动打开浏览器
     },
     ssr: {
-      noExternal: ['element-plus', '@mojs/core']
+      noExternal: ['element-plus']
     }
   }
 })

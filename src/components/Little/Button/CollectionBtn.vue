@@ -1,6 +1,6 @@
 <template>
-  <div class="collection-wrap" @click="thumbsUp(collectionmark)">
-    <div ref="collection">
+  <div class="collection-wrap">
+    <div>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -30,74 +30,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
-import mojs from '@mojs/core'
+import { toRefs, computed } from 'vue'
 
 const props = defineProps<{
   collectionmark: number
 }>()
 
-const collection = ref<HTMLDivElement>()
+const { collectionmark } = toRefs(props)
 
-let fillcolor = '#3d3d3d'
-let burst: object
-
-const thumbsUp = (num: number) => {
-  if (num === 0) {
-    new mojs.Timeline().add(burst).play()
+const fillcolor = computed(() => {
+  if (collectionmark.value === 1) {
+    return '#00d5cc'
+  } else {
+    return '#3d3d3d'
   }
-}
-
-watch(
-  () => props.collectionmark,
-  (newV, _) => {
-    if (newV === 1) {
-      fillcolor = '#00d5cc'
-    } else {
-      fillcolor = '#3d3d3d'
-    }
-  }
-)
-
-onMounted(() => {
-  burst = new mojs.Burst({
-    // 爆炸范围
-    radius: { 0: 50 },
-    // 动画挂载父元素，默认改在到body上
-    parent: collection.value,
-    // 动画延时函数
-    easing: mojs.easing.bezier(0.1, 1, 0.3, 1),
-    // 动画延时时间
-    duration: 1500,
-    // 动画等待时间
-    delay: 300,
-    // 扩散的粒子配置
-    children: {
-      duration: 750,
-      // 随机数范围爆炸
-      radius: { 0: 'rand(5,25)' },
-      shape: ['circle', 'rect', 'polygon'],
-      // 粒子可选色
-      fill: [
-        '#1abc9c',
-        '#2ecc71',
-        '#00cec9',
-        '#3498db',
-        '#9b59b6',
-        '#fdcb6e',
-        '#f1c40f',
-        '#e67e22',
-        '#e74c3c',
-        '#e84393'
-      ],
-      degreeShift: 'rand(-90, 90)',
-      delay: 'stagger(0, 20)'
-    },
-    // 透明度
-    opacity: 0.5,
-    // 生成粒子数量
-    count: 10
-  })
 })
 </script>
 

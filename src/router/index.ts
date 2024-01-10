@@ -104,5 +104,10 @@ export const routes: RouteRecordRaw[] = [
         component: () => import('@/components/ModelMessages/MessageSystem.vue')
       }
     ]
+  },
+  {
+    path: '/postFinished',
+    name: 'postFinished',
+    component: () => import('@/views/postFinished/index.vue')
   }
 ]

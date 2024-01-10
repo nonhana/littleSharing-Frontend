@@ -376,7 +376,6 @@ const submitArticle = async () => {
         ...ruleForm.value
       })
     }
-
     // 将表单初始化
     ruleForm.value = {
       article_status: 1,
@@ -389,12 +388,13 @@ const submitArticle = async () => {
       article_md_link: '',
       author_id: userStore.userInfo.user_id
     }
-    ElNotification({
+    /* ElNotification({
       title: '发布成功！',
       message: '快快前往首页看看吧！',
       type: 'success'
-    })
+    }) */
     loading.value = false
+    router.push('postFinished')
   } else {
     ElNotification({
       title: '发布文章失败！',

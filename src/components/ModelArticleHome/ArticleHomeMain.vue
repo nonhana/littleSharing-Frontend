@@ -133,7 +133,7 @@ onMounted(async () => {
 .articlehomemain-wrap {
   position: relative;
   padding: 20px;
-  margin-bottom: 25px;
+  margin-bottom: 30px;
   width: 710px;
   background: #fff;
   border-radius: 20px;
@@ -201,7 +201,7 @@ onMounted(async () => {
     margin-top: 20px;
     width: 680px;
     background-color: #eee;
-    border-radius: 10px;
+    border-radius: 20px;
 
     a {
       font-size: 14px;
@@ -211,6 +211,14 @@ onMounted(async () => {
       line-height: 20px;
       letter-spacing: 0;
     }
+  }
+}
+
+:deep(.md-editor-preview) {
+  img {
+    position: relative;
+    margin: 0 auto;
+    max-height: 600px;
   }
 }
 </style>

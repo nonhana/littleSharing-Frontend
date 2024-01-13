@@ -1,9 +1,9 @@
 <template>
   <div class="index">
-    <el-row type="flex" justify="center">
+    <el-row style="margin: 0 auto; width: 1350px">
       <PersonalHeader />
     </el-row>
-    <el-row type="flex" justify="center" style="margin: 40px 0 30px">
+    <el-row style="margin: 40px auto 30px; width: 1350px">
       <router-view />
     </el-row>
   </div>

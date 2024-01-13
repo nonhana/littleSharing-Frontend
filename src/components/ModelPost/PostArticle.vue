@@ -1,5 +1,6 @@
 <template>
   <div class="postarticle-wrap">
+    <!-- 上传图片、上传文章时的el全局加载 -->
     <div v-loading.fullscreen.lock="loading" />
 
     <el-row
@@ -183,7 +184,7 @@
           </el-row>
         </div>
         <div
-          style="position: absolute; left: 5px; transition: all, 0.5s"
+          style="position: absolute; left: 0; transition: all, 0.5s"
           :style="{
             top: part2_top
           }"
@@ -191,7 +192,7 @@
           <el-row type="flex" justify="space-between">
             <el-form-item prop="article_md">
               <MdEditor
-                style="width: 1340px; height: 630px"
+                style="width: 1350px; height: 630px"
                 @on-upload-img="onUploadImg"
                 v-model="ruleForm.article_md"
               />
@@ -439,10 +440,10 @@ onMounted(async () => {
 .postarticle-wrap {
   padding: 20px;
   margin-bottom: 30px;
-  width: 1300px;
+  width: 1310px;
   min-height: 710px;
   background: #fff;
-  border-radius: 5px;
+  border-radius: 20px;
 
   .title {
     font-size: 36px;

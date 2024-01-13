@@ -1,15 +1,21 @@
 <template>
   <div class="index">
-    <FilterBar
-      :article-list-all="article_list_all"
-      @sendArticleList="sendArticleList"
-    />
-    <el-row type="flex" justify="center" style="margin-top: 5px">
-      <div style="margin-right: 25px">
+    <el-row style="margin: 0 auto; width: 1350px">
+      <FilterBar
+        :article-list-all="article_list_all"
+        @sendArticleList="sendArticleList"
+      />
+    </el-row>
+    <el-row
+      style="margin: 30px auto 0; width: 1350px"
+      type="flex"
+      justify="center"
+    >
+      <div style="margin-right: 30px">
         <el-row>
           <HomeTrend />
         </el-row>
-        <el-row>
+        <el-row style="margin-top: 30px">
           <HomeNewsList />
         </el-row>
       </div>
@@ -28,7 +34,7 @@
         </div>
         <div v-if="article_list.length === 0">
           <el-empty
-            style="width: 1003px"
+            style="width: 998px"
             description="暂未搜索到该分类的文章哦......"
           ></el-empty>
         </div>
@@ -46,6 +52,11 @@ import HomeNewsList from '@/components/ModelHome/HomeNewsList.vue'
 import HomeTrend from '@/components/ModelHome/HomeTrend.vue'
 import ArticleHomeItem from '@/components/Little/Item/ArticleHomeItem.vue'
 import { ElMessage } from 'element-plus'
+import { useHead } from '@unhead/vue'
+
+useHead({
+  title: 'littleSharing-兴趣使然的博客小站'
+})
 
 const article_list = ref<Article[]>([])
 const article_list_all = ref<Article[]>([])
@@ -117,14 +128,11 @@ onUnmounted(() => {
     padding: 0;
     margin: 0;
     width: 100%;
-    // height: 800px;
-    // list-style: none;
   }
 
   .loading-mask {
     position: relative;
     overflow: hidden;
-    margin-top: 20px;
     border-radius: 20px;
   }
 }

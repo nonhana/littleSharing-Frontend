@@ -1,36 +1,32 @@
 <template>
   <div class="index">
     <el-row type="flex" justify="center">
-      <div
-        :style="{
-          top: offset + 'px'
-        }"
-        style="margin-right: 30px"
-        class="side-bar"
-      >
-        <el-row>
-          <ArticleHomeSimilar />
-        </el-row>
-        <el-row v-if="isLogin" style="margin: 30px 0 0">
-          <ArticleHomeBookMark />
-        </el-row>
-        <el-row style="margin: 30px 0 0">
-          <ArticleHomeData :article-data="article_data" />
-        </el-row>
-      </div>
+      <transition name="side-bar-left">
+        <div v-if="showSideBar" class="side-bar">
+          <el-row>
+            <ArticleHomeSimilar />
+          </el-row>
+          <el-row style="margin: 30px 0 0">
+            <ArticleHomeData :article-data="article_data" />
+          </el-row>
+        </div>
+      </transition>
+
       <div>
         <ArticleHomeMain />
         <Comment />
       </div>
-      <div
-        :style="{
-          top: offset + 'px'
-        }"
-        style="margin-left: 30px"
-        class="side-bar"
-      >
-        <ArticleHomeAuthor />
-      </div>
+
+      <transition name="side-bar-right">
+        <div v-if="showSideBar" class="side-bar">
+          <el-row>
+            <ArticleHomeAuthor />
+          </el-row>
+          <el-row style="margin: 30px 0 0">
+            <ArticleHomeMdCatalog />
+          </el-row>
+        </div>
+      </transition>
     </el-row>
   </div>
 </template>
@@ -38,19 +34,15 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { useStore } from '@/store'
 import { increaseArticleViews } from '@/api/article'
 import ArticleHomeMain from '@/components/ModelArticleHome/ArticleHomeMain.vue'
 import ArticleHomeSimilar from '@/components/ModelArticleHome/ArticleHomeSimilar.vue'
 import ArticleHomeAuthor from '@/components/ModelArticleHome/ArticleHomeAuthor.vue'
-import ArticleHomeBookMark from '@/components/ModelArticleHome/ArticleHomeBookMark.vue'
+import ArticleHomeMdCatalog from '@/components/ModelArticleHome/ArticleHomeMdCatalog.vue'
 import ArticleHomeData from '@/components/ModelArticleHome/ArticleHomeData.vue'
 import Comment from '@/components/Little/Comment/Comment.vue'
 
 const route = useRoute()
-const {
-  userStore: { isLogin }
-} = useStore()
 
 const article_data = ref({
   like_num: 0,
@@ -58,15 +50,21 @@ const article_data = ref({
   share_num: 0,
   comment_num: 0
 })
-const offset = ref<number>(0) // 用于控制侧边栏到顶部的距离
 const comment_id = ref<string>('') // 评论id
+const showSideBar = ref<boolean>(true)
 
-const updatePosition = () => {
-  offset.value = window.scrollY
+const windoWidthChanged = () => {
+  if (window.innerWidth < 1350) {
+    showSideBar.value = false
+  } else {
+    showSideBar.value = true
+  }
 }
 
 onMounted(async () => {
-  window.addEventListener('scroll', updatePosition) // 加上全局的滚动监听
+  // 加上全局对浏览器窗口宽度的监听
+  window.addEventListener('resize', windoWidthChanged)
+
   const articleId = Number(route.params.id)
   await increaseArticleViews({
     article_id: articleId
@@ -85,7 +83,7 @@ onMounted(async () => {
 })
 
 onUnmounted(() => {
-  window.removeEventListener('scroll', updatePosition) // 组件销毁时移除监听
+  window.removeEventListener('resize', windoWidthChanged)
 })
 </script>
 
@@ -94,48 +92,76 @@ onUnmounted(() => {
   width: 100%;
 
   .side-bar {
-    position: relative;
-    height: 0;
+    position: fixed;
+    top: 94px;
+    z-index: 100;
+
+    &:nth-child(1) {
+      left: calc(100vw / 2 - 680px);
+    }
+
+    &:nth-child(3) {
+      right: calc(100vw / 2 - 680px);
+    }
+  }
+}
+
+/* 当左侧栏消失时，动画为向左移出界面 */
+.side-bar-left-enter-active {
+  animation: side-bar-left-enter 0.3s;
+}
+
+.side-bar-left-leave-active {
+  animation: side-bar-left-leave 0.3s;
+}
+
+@keyframes side-bar-left-enter {
+  from {
+    transform: translateX(-100%);
   }
 
-  .actionbox {
-    padding: 10px;
-    width: 270px;
-    background: #fff;
-    border-radius: 20px;
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes side-bar-left-leave {
+  from {
+    transform: translateX(0);
   }
 
-  .datafont {
-    margin: 0 10px;
-    font-size: 16px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
-    color: #3d3d3d;
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+/* 当右侧栏消失时，动画为向右移出界面 */
+
+.side-bar-right-enter-active {
+  animation: side-bar-right-enter 0.3s;
+}
+
+.side-bar-right-leave-active {
+  animation: side-bar-right-leave 0.3s;
+}
+
+@keyframes side-bar-right-enter {
+  from {
+    transform: translateX(100%);
   }
 
-  .title {
-    height: 35px;
-    font-size: 24px;
-    font-family: SourceHanSansCN-Bold, sans-serif;
-    color: #3d3d3d;
-    font-weight: bold;
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes side-bar-right-leave {
+  from {
+    transform: translateX(0);
   }
 
-  .bookmarknote {
-    font-size: 14px;
-    font-family: SourceHanSansCN-Bold, sans-serif;
-    color: #9e9e9e;
-  }
-
-  .button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0;
-    width: 80px;
-    height: 30px;
-    font-size: 14px;
-    font-family: SourceHanSansCN-Bold, sans-serif;
-    color: #3d3d3d;
+  to {
+    transform: translateX(100%);
   }
 }
 </style>

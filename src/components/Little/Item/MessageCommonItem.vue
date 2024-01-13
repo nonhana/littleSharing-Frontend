@@ -98,7 +98,7 @@ const enterspace = () => {
   padding: 10px;
   width: 950px;
   background-color: #fff;
-  border-radius: 10px;
+  border-radius: 20px;
   opacity: 0.7;
   transition: all 0.5s ease;
   box-sizing: border-box;
@@ -120,7 +120,7 @@ const enterspace = () => {
       width: 40px;
       height: 40px;
       border: 0.5px solid #3d3d3d;
-      border-radius: 20px;
+      border-radius: 50%;
       cursor: pointer;
 
       img {

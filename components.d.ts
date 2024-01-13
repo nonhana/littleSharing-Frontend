@@ -13,6 +13,8 @@ declare module 'vue' {
     ArticleHomeData: typeof import('./src/components/ModelArticleHome/ArticleHomeData.vue')['default']
     ArticleHomeItem: typeof import('./src/components/Little/Item/ArticleHomeItem.vue')['default']
     ArticleHomeMain: typeof import('./src/components/ModelArticleHome/ArticleHomeMain.vue')['default']
+    ArticleHomeMdCatalog: typeof import('./src/components/ModelArticleHome/ArticleHomeMdCatalog.vue')['default']
+    ArticleHomeMdCatalogItem: typeof import('./src/components/Little/Item/ArticleHomeMdCatalogItem.vue')['default']
     ArticleHomeSimilar: typeof import('./src/components/ModelArticleHome/ArticleHomeSimilar.vue')['default']
     ArticlePersonalCenterItem: typeof import('./src/components/Little/Item/ArticlePersonalCenterItem.vue')['default']
     ArticlePost: typeof import('./src/components/ModelPersonalCenter/MyArticle/ArticlePost.vue')['default']

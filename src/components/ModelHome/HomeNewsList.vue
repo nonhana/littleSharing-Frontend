@@ -37,7 +37,6 @@ onMounted(async () => {
 <style scoped lang="less">
 .homenewslist-wrap {
   padding: 10px;
-  margin-top: 20px;
   width: 300px;
   background: #fff;
   border-radius: 20px;

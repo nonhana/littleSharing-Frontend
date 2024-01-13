@@ -1,6 +1,10 @@
 <template>
   <div :class="curClass">
-    <el-row v-if="curClass !== 'login' && curClass !== 'messages'">
+    <el-row
+      :class="curClass === 'article-home' ? 'article-home-header' : 'header'"
+      style="margin: 0 auto"
+      v-if="curClass !== 'login' && curClass !== 'messages'"
+    >
       <CommonHeader />
     </el-row>
     <div
@@ -15,7 +19,7 @@
         alt="Logo"
       />
     </div>
-    <el-row style="margin: 25px 0 0">
+    <el-row style="margin: 30px 0 0">
       <router-view />
     </el-row>
   </div>
@@ -24,27 +28,9 @@
 <script setup lang="ts">
 import { ref, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { useHead } from '@unhead/vue'
-
-useHead({
-  title: 'littleSharing-兴趣使然的博客小站',
-  meta: [
-    {
-      name: 'description',
-      content: '一个以Markdown为主要沟通形式的资源分享社区。'
-    },
-    {
-      name: 'author',
-      content: 'nonhana'
-    },
-    {
-      name: 'viewport',
-      content: 'width=device-width, initial-scale=1.0'
-    }
-  ]
-})
 
 const route = useRoute()
+
 const curClass = ref<string>('app')
 const logo_opacity = ref<string>('0%')
 
@@ -94,7 +80,7 @@ onMounted(() => {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
+  min-width: 100%;
   min-height: 100vh;
   background-position: center center;
   background-repeat: no-repeat;
@@ -127,5 +113,14 @@ onMounted(() => {
 
 .logo img {
   width: 500px;
+}
+
+.header {
+  width: 1350px;
+}
+
+.article-home-header {
+  min-width: 740px;
+  max-width: 1350px;
 }
 </style>

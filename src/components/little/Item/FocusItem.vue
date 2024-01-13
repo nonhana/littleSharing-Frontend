@@ -145,14 +145,14 @@ onMounted(async () => {
   width: 1024px;
   height: 71px;
   background-color: #fff;
-  border-radius: 10px;
+  border-radius: 20px;
 
   img {
     position: relative;
     margin: 20px 0 0 10px;
     width: 50px;
     height: 50px;
-    border-radius: 25px;
+    border-radius: 50%;
     cursor: pointer;
   }
 

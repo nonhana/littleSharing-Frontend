@@ -25,32 +25,6 @@
         <span class="author-info">所属高校：{{ author_university }}</span>
       </el-row>
     </div>
-
-    <el-divider
-      ><span style="font-size: 12px; color: #9e9e9e"
-        >ta的其他文章</span
-      ></el-divider
-    >
-
-    <el-row v-if="author_article_list.length !== 0">
-      <LittleArticleItem
-        v-for="(item, index) in author_article_list"
-        :similar-item="author_article_list[index]"
-        :key="item.article_id"
-      />
-    </el-row>
-
-    <el-row
-      v-if="author_article_list.length === 0"
-      v-loading="loading"
-      element-loading-text="少女祈祷中..."
-    >
-      <no-list
-        :width="220"
-        :height="60"
-        content="暂未找到ta发表的其他文章..."
-      ></no-list>
-    </el-row>
   </div>
 </template>
 
@@ -58,9 +32,7 @@
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { getArticleMain } from '@/api/article'
-import { getUserInfo, getUserArticlesBasic } from '@/api/user'
-import type { ArticleSimple } from '@/api/article/types'
-import LittleArticleItem from '@/components/Little/Item/LittleArticleItem.vue'
+import { getUserInfo } from '@/api/user'
 
 const route = useRoute()
 const router = useRouter()
@@ -72,7 +44,6 @@ const author_name = ref<string>('')
 const author_major = ref<string>('')
 const author_university = ref<string>('')
 const author_signature = ref<string>('')
-const author_article_list = ref<ArticleSimple[]>([])
 
 const enterSpace = (user_id: number) => {
   router.push({
@@ -102,13 +73,6 @@ onMounted(async () => {
       author_major.value = major.join(',')
       author_university.value = university
       author_signature.value = signature
-
-      const articleListData = (
-        await getUserArticlesBasic({ user_id: articleAuthorId })
-      ).result
-      author_article_list.value = articleListData
-        .filter((item) => item.article_id !== Number(route.params.id))
-        .slice(0, 3)
     }
   }
   loading.value = false
@@ -129,7 +93,7 @@ onMounted(async () => {
     overflow: hidden;
     width: 64px;
     height: 64px;
-    border-radius: 32px;
+    border-radius: 50%;
     cursor: pointer;
 
     img {

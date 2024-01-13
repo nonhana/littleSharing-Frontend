@@ -1,106 +1,104 @@
 <template>
-  <el-row type="flex" justify="center">
-    <div class="tasksheader">
-      <el-menu
-        :default-active="activeIndex"
-        mode="horizontal"
-        @select="handleSelect"
+  <div class="filterbar">
+    <el-menu
+      :default-active="activeIndex"
+      mode="horizontal"
+      @select="handleSelect"
+    >
+      <el-menu-item class="title" style="cursor: default"
+        >课程选择：
+        <el-divider direction="vertical"></el-divider>
+      </el-menu-item>
+      <el-tooltip
+        class="item"
+        effect="light"
+        content="重复点击可以刷新文章列表哦~"
+        placement="top"
+        :open-delay="300"
       >
-        <el-menu-item class="title" style="cursor: default"
-          >课程选择：
-          <el-divider direction="vertical"></el-divider>
-        </el-menu-item>
-        <el-tooltip
-          class="item"
-          effect="light"
-          content="重复点击可以刷新文章列表哦~"
-          placement="top"
-          :open-delay="300"
+        <el-menu-item index="1">全部</el-menu-item>
+      </el-tooltip>
+      <el-menu-item index="2">文学</el-menu-item>
+      <el-menu-item index="3">理学</el-menu-item>
+      <el-menu-item index="4">工学</el-menu-item>
+      <el-menu-item index="5">艺术学</el-menu-item>
+      <el-menu-item index="6">农学</el-menu-item>
+      <el-menu-item index="7">其他学科</el-menu-item>
+
+      <el-menu-item v-if="searchchoicenum !== 0">
+        <el-cascader
+          v-if="searchchoicenum === 1"
+          v-model="searchchoice"
+          placeholder="请选择具体类别"
+          :options="options1"
+          :props="{ expandTrigger: 'hover' }"
+          style="width: 200px"
+          :value="value"
+          @change="searchItem(searchchoice)"
+        ></el-cascader>
+
+        <el-cascader
+          v-if="searchchoicenum === 2"
+          v-model="searchchoice"
+          placeholder="请选择具体类别"
+          :options="options2"
+          :props="{ expandTrigger: 'hover' }"
+          style="width: 200px"
+          :value="value"
+          @change="searchItem(searchchoice)"
+        ></el-cascader>
+
+        <el-cascader
+          v-if="searchchoicenum === 3"
+          v-model="searchchoice"
+          placeholder="请选择具体类别"
+          :options="options3"
+          :props="{ expandTrigger: 'hover' }"
+          style="width: 200px"
+          :value="value"
+          @change="searchItem(searchchoice)"
+        ></el-cascader>
+
+        <el-cascader
+          v-if="searchchoicenum === 4"
+          v-model="searchchoice"
+          placeholder="请选择具体类别"
+          :options="options4"
+          :props="{ expandTrigger: 'hover' }"
+          style="width: 200px"
+          :value="value"
+          @change="searchItem(searchchoice)"
+        ></el-cascader>
+
+        <el-cascader
+          v-if="searchchoicenum === 5"
+          v-model="searchchoice"
+          placeholder="请选择具体类别"
+          :options="options5"
+          :props="{ expandTrigger: 'hover' }"
+          style="width: 200px"
+          :value="value"
+          @change="searchItem(searchchoice)"
+        ></el-cascader>
+      </el-menu-item>
+
+      <el-menu-item style="cursor: default; position: absolute; right: 10px">
+        <el-button v-if="searchStatus" @click="handleSelect('1')"
+          >还原
+        </el-button>
+        <el-input
+          placeholder="请输入你想要搜索的内容"
+          v-model="keywords"
+          style="width: 200px"
+          @keyup.enter="search(keywords)"
         >
-          <el-menu-item index="1">全部</el-menu-item>
-        </el-tooltip>
-        <el-menu-item index="2">文学</el-menu-item>
-        <el-menu-item index="3">理学</el-menu-item>
-        <el-menu-item index="4">工学</el-menu-item>
-        <el-menu-item index="5">艺术学</el-menu-item>
-        <el-menu-item index="6">农学</el-menu-item>
-        <el-menu-item index="7">其他学科</el-menu-item>
-
-        <el-menu-item v-if="searchchoicenum !== 0">
-          <el-cascader
-            v-if="searchchoicenum === 1"
-            v-model="searchchoice"
-            placeholder="请选择具体类别"
-            :options="options1"
-            :props="{ expandTrigger: 'hover' }"
-            style="width: 200px"
-            :value="value"
-            @change="searchItem(searchchoice)"
-          ></el-cascader>
-
-          <el-cascader
-            v-if="searchchoicenum === 2"
-            v-model="searchchoice"
-            placeholder="请选择具体类别"
-            :options="options2"
-            :props="{ expandTrigger: 'hover' }"
-            style="width: 200px"
-            :value="value"
-            @change="searchItem(searchchoice)"
-          ></el-cascader>
-
-          <el-cascader
-            v-if="searchchoicenum === 3"
-            v-model="searchchoice"
-            placeholder="请选择具体类别"
-            :options="options3"
-            :props="{ expandTrigger: 'hover' }"
-            style="width: 200px"
-            :value="value"
-            @change="searchItem(searchchoice)"
-          ></el-cascader>
-
-          <el-cascader
-            v-if="searchchoicenum === 4"
-            v-model="searchchoice"
-            placeholder="请选择具体类别"
-            :options="options4"
-            :props="{ expandTrigger: 'hover' }"
-            style="width: 200px"
-            :value="value"
-            @change="searchItem(searchchoice)"
-          ></el-cascader>
-
-          <el-cascader
-            v-if="searchchoicenum === 5"
-            v-model="searchchoice"
-            placeholder="请选择具体类别"
-            :options="options5"
-            :props="{ expandTrigger: 'hover' }"
-            style="width: 200px"
-            :value="value"
-            @change="searchItem(searchchoice)"
-          ></el-cascader>
-        </el-menu-item>
-
-        <el-menu-item style="cursor: default; position: absolute; right: 10px">
-          <el-button v-if="searchStatus" @click="handleSelect('1')"
-            >还原
-          </el-button>
-          <el-input
-            placeholder="请输入你想要搜索的内容"
-            v-model="keywords"
-            style="width: 200px"
-            @keyup.enter="search(keywords)"
-          >
-          </el-input>
-          <el-button v-loading="searching" @click="search(keywords)"
-            >搜索</el-button
-          >
-        </el-menu-item>
-      </el-menu>
-    </div>
-  </el-row>
+        </el-input>
+        <el-button v-loading="searching" @click="search(keywords)"
+          >搜索</el-button
+        >
+      </el-menu-item>
+    </el-menu>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -226,9 +224,9 @@ const search = async (keywords: string) => {
 </script>
 
 <style scoped lang="less">
-.tasksheader {
+.filterbar {
   position: relative;
-  width: 1350px;
+  width: 100%;
 }
 
 :deep(.el-menu) {
@@ -238,7 +236,7 @@ const search = async (keywords: string) => {
   width: 100%;
   background-color: #fff !important;
   border: 0.5px solid #00ead8;
-  border-radius: 10px;
+  border-radius: 20px;
 }
 
 :deep(.el-menu-item):hover {

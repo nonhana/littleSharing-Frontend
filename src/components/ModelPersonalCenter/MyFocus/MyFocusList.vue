@@ -99,7 +99,7 @@ watch(
   padding-bottom: 20px;
   width: 100%;
   background: #fff;
-  border-radius: 10px;
+  border-radius: 20px;
 
   .beclicked {
     color: #ff5900 !important;

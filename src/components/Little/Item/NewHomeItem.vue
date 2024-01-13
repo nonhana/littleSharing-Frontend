@@ -111,7 +111,7 @@ const push = (num: number) => {
     width: 36px;
     height: 36px;
     background-color: #76fff5;
-    border-radius: 18px;
+    border-radius: 50%;
     cursor: pointer;
 
     img {

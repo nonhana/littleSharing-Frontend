@@ -7,15 +7,6 @@
       <span>兴趣使然的学术资源分享小站</span>
     </div>
 
-    <div class="search-box">
-      <img :src="Search" alt="Search" />
-      <el-input
-        v-model="keyvalue"
-        placeholder="输入关键字进行检索~"
-        style="margin-left: 10px; width: 250px"
-      ></el-input>
-    </div>
-
     <div class="part2">
       <div
         class="button"
@@ -122,7 +113,6 @@ import { useStore } from '@/store'
 import { getUnreadMessageCount } from '@/api/message'
 import { ElNotification } from 'element-plus'
 import Logo from '@/assets/svgs/Logo.svg'
-import Search from '@/assets/svgs/Search.svg'
 import Message_1 from '@/assets/svgs/Message_1.svg'
 import Message_2 from '@/assets/svgs/Message_2.svg'
 import PostArticle_1 from '@/assets/svgs/PostArticle_1.svg'
@@ -139,7 +129,6 @@ const PostSvgTop2 = ref(65)
 const MessageSvgTop1 = ref(13)
 const MessageSvgTop2 = ref(70)
 const svgChange = ref('scale(1,1)')
-const keyvalue = ref('')
 const user_head = ref('')
 const user_id = ref<number>(0)
 const unreadCount = ref<number>(0)
@@ -245,8 +234,7 @@ onMounted(async () => {
   justify-content: space-between;
   align-items: center;
   padding: 0 30px;
-  margin: 0 auto;
-  width: 1290px;
+  width: 100%;
   height: 64px;
   background-color: #fff;
   border-radius: 20px;

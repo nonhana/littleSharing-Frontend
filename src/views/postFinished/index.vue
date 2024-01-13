@@ -34,7 +34,7 @@ useHead({
     width: 100%;
     text-align: center;
     background-color: #fff;
-    border-radius: 30px;
+    border-radius: 20px;
 
     img {
       width: 50%;

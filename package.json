@@ -18,6 +18,8 @@
     "axios": "^1.4.0",
     "echarts": "^5.4.2",
     "element-plus": "^2.3.7",
+    "lodash": "^4.17.21",
+    "marked": "^11.1.1",
     "md-editor-v3": "^4.8.1",
     "path": "^0.12.7",
     "pinia": "^2.1.6",
@@ -27,6 +29,7 @@
     "vue-router": "^4.0.13"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.201",
     "@types/node": "^20.3.3",
     "@typescript-eslint/eslint-plugin": "^6.13.1",
     "@typescript-eslint/parser": "^6.13.1",

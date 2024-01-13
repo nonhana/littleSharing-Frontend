@@ -104,7 +104,7 @@ watch(visible, (newV, _) => {
   margin: 100px auto 50px;
   width: 900px;
   background: #fff;
-  border-radius: 10px;
+  border-radius: 20px;
   box-shadow: 0 1px 3px rgb(0 0 0 / 30%);
   box-sizing: border-box;
 }

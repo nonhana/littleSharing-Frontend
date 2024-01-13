@@ -105,7 +105,6 @@ onMounted(() => {
 .homeauthorlist-wrap {
   position: relative;
   padding: 10px;
-  margin-top: 20px;
   width: 300px;
   background: #fff;
   border-radius: 20px;

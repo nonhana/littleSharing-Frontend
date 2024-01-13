@@ -421,7 +421,7 @@ onMounted(async () => {
   padding: 30px 0;
   width: 100%;
   background: #fff;
-  border-radius: 10px;
+  border-radius: 20px;
 
   .userinfo-charts {
     position: relative;

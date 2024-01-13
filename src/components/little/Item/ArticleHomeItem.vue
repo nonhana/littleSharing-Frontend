@@ -391,7 +391,7 @@ onMounted(async () => {
   align-items: center;
   padding: 9px 14px;
   margin-bottom: 30px;
-  width: 975px;
+  width: 970px;
   background: #fff;
   border-radius: 20px;
   transition: all 0.3s;

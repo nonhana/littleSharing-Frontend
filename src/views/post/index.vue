@@ -1,6 +1,6 @@
 <template>
   <div class="index">
-    <el-row type="flex" justify="center">
+    <el-row style="margin: 0 auto; width: 1350px">
       <PostArticle />
     </el-row>
   </div>

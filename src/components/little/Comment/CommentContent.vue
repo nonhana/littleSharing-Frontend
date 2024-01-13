@@ -17,7 +17,7 @@
               >{{ username }}
               <span v-if="userId === authorId">（作者）</span>
             </span>
-            <span v-if="responseList">
+            <span v-if="responseList && response_to">
               => {{ response_to }}
               <span v-if="responseList.response_to.user_id === authorId"
                 >（作者）</span
@@ -26,7 +26,7 @@
           </div>
         </el-row>
 
-        <el-row style="margin-bottom: 10px; width: 640px">
+        <el-row style="margin-bottom: 10px; width: 600px">
           <span class="details">{{ details }}</span>
         </el-row>
 

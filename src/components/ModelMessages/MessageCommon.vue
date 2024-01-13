@@ -101,7 +101,7 @@ onMounted(async () => {
     width: 950px;
     height: 60px;
     background: #fff;
-    border-radius: 10px;
+    border-radius: 20px;
     opacity: 0.7;
     transition: all 0.5s ease;
 
@@ -133,7 +133,7 @@ onMounted(async () => {
     margin-top: 20px;
     width: 950px;
     height: 360px;
-    border-radius: 10px;
+    border-radius: 20px;
   }
 
   .message-list {
@@ -150,7 +150,7 @@ onMounted(async () => {
     width: 950px;
     height: 360px;
     background: #fff;
-    border-radius: 10px;
+    border-radius: 20px;
     opacity: 0.7;
     transition: all 0.5s ease;
     flex-direction: column;

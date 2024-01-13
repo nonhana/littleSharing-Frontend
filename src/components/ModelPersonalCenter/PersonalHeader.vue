@@ -337,7 +337,7 @@ const focusAction = async (num: 0 | 1) => {
   overflow: hidden;
   width: 100%;
   background: #fff;
-  border-radius: 10px;
+  border-radius: 20px;
 
   .beclicked {
     color: #ff5900 !important;
@@ -430,7 +430,7 @@ const focusAction = async (num: 0 | 1) => {
     width: 100%;
     height: 66px;
     background: #fff;
-    border-radius: 0 0 10px 10px;
+    border-radius: 0 0 20px 20px;
     border-top: 1px solid #76fff5;
 
     & > * {

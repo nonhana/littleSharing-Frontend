@@ -285,7 +285,7 @@ onBeforeRouteLeave((_, __, next) => {
   padding: 20px 20px 30px;
   width: 100%;
   background: #fff;
-  border-radius: 10px;
+  border-radius: 20px;
 
   .titleline {
     width: 10px;
@@ -351,7 +351,7 @@ onBeforeRouteLeave((_, __, next) => {
     width: 200px;
     height: 200px;
     border: 1px dashed #d9d9d9;
-    border-radius: 6px;
+    border-radius: 20px;
     transition: all 0.2s;
     cursor: pointer;
   }
@@ -383,7 +383,7 @@ onBeforeRouteLeave((_, __, next) => {
     width: 675px;
     height: 142.5px;
     border: 1px dashed #d9d9d9;
-    border-radius: 6px;
+    border-radius: 20px;
     transition: all 0.2s;
     cursor: pointer;
   }
@@ -412,7 +412,7 @@ onBeforeRouteLeave((_, __, next) => {
     width: 900px;
     height: 600px;
     background: #fff;
-    border-radius: 10px;
+    border-radius: 20px;
     box-shadow: 0 1px 3px rgb(0 0 0 / 30%);
     box-sizing: border-box;
   }

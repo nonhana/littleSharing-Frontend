@@ -79,7 +79,7 @@ const handleCommand = async (command: string) => {
   padding: 10px;
   width: 950px;
   background-color: #fff;
-  border-radius: 10px;
+  border-radius: 20px;
   opacity: 0.7;
   transition: all 0.5s ease;
   box-sizing: border-box;

@@ -185,7 +185,7 @@ const handleKeyCode = (event: KeyboardEvent) => {
     color: #000;
     background: #fff;
     border: 1.5px solid #76fff5;
-    border-radius: 10px;
+    border-radius: 20px;
     outline: none;
     resize: none;
     box-sizing: border-box;

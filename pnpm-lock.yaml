@@ -23,6 +23,12 @@ dependencies:
   element-plus:
     specifier: ^2.3.7
     version: 2.4.3(vue@3.3.9)
+  lodash:
+    specifier: ^4.17.21
+    version: 4.17.21
+  marked:
+    specifier: ^11.1.1
+    version: 11.1.1
   md-editor-v3:
     specifier: ^4.8.1
     version: 4.8.3(@codemirror/state@6.3.2)(@codemirror/view@6.22.1)(@lezer/common@1.1.1)(vue@3.3.9)
@@ -46,6 +52,9 @@ dependencies:
     version: 4.2.5(vue@3.3.9)
 
 devDependencies:
+  '@types/lodash':
+    specifier: ^4.14.201
+    version: 4.14.202
   '@types/node':
     specifier: ^20.3.3
     version: 20.10.0
@@ -1062,7 +1071,6 @@ packages:
 
   /@types/lodash@4.14.202:
     resolution: {integrity: sha512-OvlIYQK9tNneDlS0VN54LLd5uiPCBOp7gS5Z0f1mjoJYBrtStzgmJBxONW3U6OZqdtNzZPmn9BS/7WI7BFFcFQ==}
-    dev: false
 
   /@types/markdown-it@12.2.3:
     resolution: {integrity: sha512-GKMHFfv3458yYy+v/N8gjufHO6MSZKCOXpZc5GXIWWy8uldwfmPn98vp81gZ5f9SVw8YYBctgfJ22a2d7AOMeQ==}
@@ -4300,6 +4308,12 @@ packages:
       linkify-it: 4.0.1
       mdurl: 1.0.1
       uc.micro: 1.0.6
+    dev: false
+
+  /marked@11.1.1:
+    resolution: {integrity: sha512-EgxRjgK9axsQuUa/oKMx5DEY8oXpKJfk61rT5iY3aRlgU6QJtUcxU5OAymdhCvWvhYcd9FKmO5eQoX8m9VGJXg==}
+    engines: {node: '>= 18'}
+    hasBin: true
     dev: false
 
   /mathml-tag-names@2.1.3:

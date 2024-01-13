@@ -30,6 +30,6 @@ defineProps<{
   font-family: SourceHanSansCN-Regular, sans-serif;
   color: #3d3d3d;
   background-color: #eee;
-  border-radius: 10px;
+  border-radius: 20px;
 }
 </style>

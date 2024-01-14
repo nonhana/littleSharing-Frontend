@@ -55,7 +55,30 @@ import { ElMessage } from 'element-plus'
 import { useHead } from '@unhead/vue'
 
 useHead({
-  title: 'littleSharing-兴趣使然的博客小站'
+  title: 'littleSharing-兴趣使然的博客小站',
+  meta: [
+    {
+      name: 'description',
+      content: '一个以Markdown为主要沟通形式的知识分享社区。'
+    },
+    {
+      name: 'keywords',
+      content:
+        'littleSharing,博客,小站,前端,后端,全栈,技术分享,技术博客,个人博客,个人网站,个人主页,前端博客,后端博客,全栈博客,前端技术分享,后端技术分享,全栈技术分享,前端技术博客,后端技术博客,全栈技术博客,前端个人博客,后端个人博客,全栈个人博客,前端个人网站,后端个人网站,全栈个人网站,前端个人主页,后端个人主页,全栈个人主页'
+    },
+    {
+      name: 'author',
+      content: 'nonhana'
+    },
+    {
+      name: 'viewport',
+      content: 'width=device-width, initial-scale=1.0'
+    },
+    {
+      name: 'charset',
+      content: 'utf-8'
+    }
+  ]
 })
 
 const article_list = ref<Article[]>([])

@@ -1,10 +1,10 @@
 <template>
-  <div class="ArticleHomeMdCatalog-wrap">
+  <div v-loading="loading" class="ArticleHomeMdCatalog-wrap">
     <el-row>
       <span class="title">文章目录结构</span>
     </el-row>
-    <div class="menu">
-      <ul v-loading="loading">
+    <div v-if="catalogItems.length !== 0" class="menu">
+      <ul>
         <ArticleHomeMdCatalogItem
           v-for="(item, index) in catalogItems"
           :key="index"
@@ -14,6 +14,9 @@
           @set-active-id="setActiveId"
         />
       </ul>
+    </div>
+    <div v-else>
+      <no-list :width="220" :height="100" content="暂无目录"></no-list>
     </div>
   </div>
 </template>

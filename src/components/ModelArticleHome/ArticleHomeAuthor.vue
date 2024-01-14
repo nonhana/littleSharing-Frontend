@@ -1,5 +1,9 @@
 <template>
-  <div class="articlehomeauthor-wrap">
+  <div
+    v-loading="loading"
+    element-loading-text="少女祈祷中..."
+    class="articlehomeauthor-wrap"
+  >
     <el-row>
       <div style="display: flex; justify-content: center; width: 100%">
         <div class="author-head" @click="enterSpace(author_id)">
@@ -37,7 +41,7 @@ import { getUserInfo } from '@/api/user'
 const route = useRoute()
 const router = useRouter()
 
-const loading = ref<boolean>(true)
+const loading = ref<boolean>(false)
 const author_id = ref<number>(0)
 const author_head = ref<string>('')
 const author_name = ref<string>('')
@@ -52,6 +56,7 @@ const enterSpace = (user_id: number) => {
 }
 
 onMounted(async () => {
+  loading.value = true
   const res = await getArticleMain({
     article_id: Number(route.params.id)
   })
@@ -81,6 +86,7 @@ onMounted(async () => {
 
 <style scoped lang="less">
 .articlehomeauthor-wrap {
+  overflow: hidden;
   padding: 10px;
   width: 250px;
   background: #fff;

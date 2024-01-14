@@ -19,7 +19,21 @@ import LoginWindow from '@/components/ModelLogin/LoginWindow.vue'
 import { useHead } from '@unhead/vue'
 
 useHead({
-  title: '欢迎新老用户~'
+  title: '欢迎来到这里呀~',
+  meta: [
+    {
+      name: 'author',
+      content: 'nonhana'
+    },
+    {
+      name: 'viewport',
+      content: 'width=device-width, initial-scale=1.0'
+    },
+    {
+      name: 'charset',
+      content: 'utf-8'
+    }
+  ]
 })
 
 const window_opacity = ref('0%')

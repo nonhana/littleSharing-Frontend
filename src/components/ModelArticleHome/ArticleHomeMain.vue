@@ -46,7 +46,7 @@
     <el-divider><span style="color: #9e9e9e">正文</span></el-divider>
 
     <el-row>
-      <div v-if="!loading" class="markdown-body">
+      <div v-if="!loading">
         <MdPreview
           style="width: 710px"
           editorId="md-preview"
@@ -59,7 +59,7 @@
         class="loading"
         v-else
         v-loading="loading"
-        element-loading-text="少女折寿中..."
+        element-loading-text="少女祈祷中..."
       />
     </el-row>
   </div>
@@ -97,12 +97,20 @@ onMounted(async () => {
         content: article_main.article_introduce
       },
       {
+        name: 'keywords',
+        content: article_main.article_labels.join(',')
+      },
+      {
         name: 'author',
         content: article_main.author_name
       },
       {
         name: 'viewport',
         content: 'width=device-width, initial-scale=1.0'
+      },
+      {
+        name: 'charset',
+        content: 'utf-8'
       }
     ]
   })
@@ -188,11 +196,6 @@ onMounted(async () => {
     border-radius: 18px;
   }
 
-  .markdown-body :deep(img) {
-    position: relative;
-    margin: 0 auto;
-  }
-
   .link {
     display: flex;
     justify-content: center;
@@ -215,9 +218,12 @@ onMounted(async () => {
 }
 
 :deep(.md-editor-preview) {
+  figure {
+    display: flex;
+    align-items: center;
+  }
+
   img {
-    position: relative;
-    margin: 0 auto;
     max-height: 600px;
   }
 }

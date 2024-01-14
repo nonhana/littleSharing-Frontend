@@ -23,7 +23,11 @@
       />
     </el-row>
 
-    <ul v-loading="loading" class="comments">
+    <ul
+      v-loading="loading"
+      element-loading-text="少女祈祷中..."
+      class="comments"
+    >
       <li
         v-for="(_, index) in comment_list"
         :id="String(comment_list[index].comment_id)"

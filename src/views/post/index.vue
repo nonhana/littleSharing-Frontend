@@ -13,7 +13,21 @@ import { ElMessageBox } from 'element-plus'
 import { useHead } from '@unhead/vue'
 
 useHead({
-  title: '发布文章'
+  title: '发布文章',
+  meta: [
+    {
+      name: 'author',
+      content: 'nonhana'
+    },
+    {
+      name: 'viewport',
+      content: 'width=device-width, initial-scale=1.0'
+    },
+    {
+      name: 'charset',
+      content: 'utf-8'
+    }
+  ]
 })
 
 onBeforeRouteLeave((_, __, next) => {

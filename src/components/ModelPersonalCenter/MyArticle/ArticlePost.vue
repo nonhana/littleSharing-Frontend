@@ -70,7 +70,7 @@ const getArticleListChild = async (val: boolean) => {
     loading.value = true
     article_list_all.value.splice(0)
     const res = await getUserArticlesDetails({
-      user_id: Number(route.params.id)
+      user_id: Number(route.params.user_id)
     })
     res.result.forEach((item) => {
       article_list_all.value.push(item)
@@ -84,7 +84,7 @@ const getArticleListChild = async (val: boolean) => {
 onMounted(async () => {
   loading.value = true
   const res = await getUserArticlesDetails({
-    user_id: Number(route.params.id)
+    user_id: Number(route.params.user_id)
   })
   article_list_all.value = res.result
   article_list_all.value.reverse()

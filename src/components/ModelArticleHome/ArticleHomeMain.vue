@@ -86,7 +86,7 @@ const loading = ref<boolean>(false)
 onMounted(async () => {
   loading.value = true
   const { result: article_main } = await getArticleMain({
-    article_id: Number(route.params.id)
+    article_id: Number(route.params.article_id)
   })
 
   useHead({

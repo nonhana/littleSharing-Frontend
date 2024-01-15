@@ -47,7 +47,7 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 const route = useRoute()
 const { userStore } = useStore()
 
-const currentArticleId: number = Number(route.params.id)
+const currentArticleId: number = Number(route.params.article_id)
 
 const author_id = ref<number>(0)
 const article_id = ref<number>(0)
@@ -177,7 +177,7 @@ const jumpToComment = () => {
 
 onMounted(async () => {
   const articleDataRes = await getArticleMain({
-    article_id: Number(route.params.id)
+    article_id: Number(route.params.article_id)
   })
   const article_main = articleDataRes.result
   author_id.value = article_main.author_id
@@ -189,7 +189,7 @@ onMounted(async () => {
     comment_num: article_main.comment_num
   }
 
-  article_id.value = Number(route.params.id)
+  article_id.value = Number(route.params.article_id)
 
   if (userStore.isLogin) {
     const likeListRes = await getUserLikeList()

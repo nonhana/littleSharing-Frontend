@@ -67,7 +67,7 @@ const getArticleList = async (arr: Article[]) => {
 onMounted(async () => {
   loading.value = true
   const UserCollectListRes = await getUserCollectList({
-    user_id: Number(route.params.id)
+    user_id: Number(route.params.user_id)
   })
   const articlePromises = UserCollectListRes.result.map(async (item) => {
     const res = await getArticleMain({ article_id: item })

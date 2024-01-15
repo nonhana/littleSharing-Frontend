@@ -141,7 +141,7 @@ onMounted(async () => {
 
   loading.value = true
   const { result } = await getArticleMain({
-    article_id: Number(route.params.id)
+    article_id: Number(route.params.article_id)
   })
   article_md.value =
     result.article_md !== ''

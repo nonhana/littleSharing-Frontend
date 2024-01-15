@@ -76,7 +76,7 @@ const push = (num: number) => {
 }
 
 watch(
-  () => route.params.id,
+  () => route.params.user_id,
   async (newV, _) => {
     loading.value = true
     user_id.value = Number(newV)

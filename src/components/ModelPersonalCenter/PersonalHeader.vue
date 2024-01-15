@@ -221,7 +221,7 @@ watch(
 )
 
 watch(
-  () => route.params.id,
+  () => route.params.user_id,
   async (newV, oldV) => {
     if (newV !== oldV) {
       loading.value = true

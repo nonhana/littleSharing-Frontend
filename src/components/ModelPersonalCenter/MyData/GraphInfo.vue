@@ -362,7 +362,7 @@ const getEchartCollectData = () => {
 }
 
 watch(
-  () => route.params.id,
+  () => route.params.user_id,
   (newV, _) => {
     user_id.value = Number(newV)
   },

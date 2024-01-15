@@ -206,7 +206,7 @@ const addlike = async (id: number) => {
           content:
             '<span> 您的评论' +
             `<a href="${import.meta.env.VITE_SITE_URL}/articleHome/${
-              route.params.id
+              route.params.article_id
             }/#${comment_id.value}" target="_blank"> ${details.value} </a>` +
             '被点赞了 </span>'
         })
@@ -249,7 +249,7 @@ watch(
 )
 
 watch(
-  () => route.params.id,
+  () => route.params.article_id,
   async (newV, _) => {
     if (newV) {
       const res = await getArticleMain({ article_id: Number(newV) })

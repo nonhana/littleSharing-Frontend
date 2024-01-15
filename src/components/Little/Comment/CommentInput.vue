@@ -63,7 +63,7 @@ const inputComment = async () => {
     // 发送评论
     let paramsList: ICommentActionParams = {
       action_type: 0,
-      article_id: Number(route.params.id), //要传值
+      article_id: Number(route.params.article_id), //要传值
       comment_content: commentContent.value,
       comment_level: 0
     }

@@ -2,25 +2,22 @@
   <div class="index">
     <div class="content">
       <img
-        src="https://common-1319721118.cos.ap-shanghai.myqcloud.com/picgo/114393320.png"
-        alt="successImg"
+        src="https://common-1319721118.cos.ap-shanghai.myqcloud.com/picgo/115132215.jpg"
+        alt="notFound"
       />
-      <span>发布文章成功~~</span>
-      <span>感谢您为本站做出的小小贡献！期待您的更多作品哦</span>
-      <span> 奖励一只可爱的普拉娜！(> w &lt;) </span>
+      <span>呃，你是不是故意输了别的什么url或者id，现在找不到这个页面哦</span>
       <el-button type="primary" @click="$router.push('home')"
-        >点击返回首页</el-button
+        >返回首页</el-button
       >
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import 'animate.css'
 import { useHead } from '@unhead/vue'
 
 useHead({
-  title: '发布成功~',
+  title: '找不到该页面',
   meta: [
     {
       name: 'author',
@@ -45,6 +42,7 @@ useHead({
 
   .content {
     position: relative;
+    overflow: hidden;
     padding: 20px 0;
     margin: 0 auto;
     width: 1350px;
@@ -53,7 +51,7 @@ useHead({
     border-radius: 20px;
 
     img {
-      max-height: calc(100vh - 366px);
+      max-height: calc(100vh - 266px);
       border-radius: 20px;
     }
 

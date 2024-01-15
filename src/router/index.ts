@@ -16,7 +16,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import('@/views/home/index.vue')
   },
   {
-    path: '/articleHome/:id',
+    path: '/articleHome/:article_id',
     name: 'articleHome',
     component: () => import('@/views/articleHome/index.vue')
   },
@@ -26,7 +26,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import('@/views/post/index.vue')
   },
   {
-    path: '/personalCenter/:id',
+    path: '/personalCenter/:user_id',
     name: 'personalCenter',
     redirect: (to) => {
       return `/MyArticles/${to.params.id}`
@@ -34,13 +34,13 @@ export const routes: RouteRecordRaw[] = [
     component: () => import('@/views/personalCenter/index.vue'),
     children: [
       {
-        path: '/MyArticles/:id',
+        path: '/MyArticles/:user_id',
         name: 'MyArticles',
         component: () =>
           import('@/components/ModelPersonalCenter/MyArticle/ArticlePost.vue')
       },
       {
-        path: '/MyCollection/:id',
+        path: '/MyCollection/:user_id',
         name: 'MyCollection',
         component: () =>
           import(
@@ -48,26 +48,26 @@ export const routes: RouteRecordRaw[] = [
           )
       },
       {
-        path: '/MyInfo/:id',
+        path: '/MyInfo/:user_id',
         name: 'MyInfo',
         component: () =>
           import('@/components/ModelPersonalCenter/MyInfo/InfoMain.vue')
       },
       {
-        path: '/MyFocus/:id',
+        path: '/MyFocus/:user_id',
         name: 'MyFocus',
-        redirect: '/MyFocusList/:id',
+        redirect: '/MyFocusList/:user_id',
         component: () =>
           import('@/components/ModelPersonalCenter/MyFocus/FocusIndex.vue'),
         children: [
           {
-            path: '/MyFocusList/:id',
+            path: '/MyFocusList/:user_id',
             name: 'MyFocusList',
             component: () =>
               import('@/components/ModelPersonalCenter/MyFocus/MyFocusList.vue')
           },
           {
-            path: '/MyFansList/:id',
+            path: '/MyFansList/:user_id',
             name: 'MyFansList',
             component: () =>
               import('@/components/ModelPersonalCenter/MyFocus/MyFansList.vue')
@@ -75,7 +75,7 @@ export const routes: RouteRecordRaw[] = [
         ]
       },
       {
-        path: '/MyData/:id',
+        path: '/MyData/:user_id',
         name: 'MyData',
         component: () =>
           import('@/components/ModelPersonalCenter/MyData/GraphInfo.vue')
@@ -109,5 +109,10 @@ export const routes: RouteRecordRaw[] = [
     path: '/postFinished',
     name: 'postFinished',
     component: () => import('@/views/postFinished/index.vue')
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: '404',
+    component: () => import('@/views/404/index.vue')
   }
 ]

@@ -58,7 +58,7 @@ const enterSpace = (user_id: number) => {
 onMounted(async () => {
   loading.value = true
   const res = await getArticleMain({
-    article_id: Number(route.params.id)
+    article_id: Number(route.params.article_id)
   })
 
   if (res.result_code === 0) {

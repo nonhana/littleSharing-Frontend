@@ -86,7 +86,7 @@ onMounted(async () => {
   // 获取到当前文章的标签列表，并处理成以逗号分隔的字符串
   const { article_labels } = (
     await getArticleMain({
-      article_id: Number(route.params.id)
+      article_id: Number(route.params.article_id)
     })
   ).result
   const articleLabels = article_labels.join(',')
@@ -95,7 +95,7 @@ onMounted(async () => {
   const similarArticleList = (
     await getSimilarArticles({
       labels: articleLabels,
-      article_id: Number(route.params.id)
+      article_id: Number(route.params.article_id)
     })
   ).result
   similar_article_list.value = similarArticleList.slice(0, 3) // 只取前三个

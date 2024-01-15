@@ -106,9 +106,9 @@ const enterSpace = (id: number): void => {
 }
 
 watch(
-  () => route.params,
+  () => route.params.user_id,
   (newV, _) => {
-    if (Number(newV.id) === userStore.userInfo.user_id) {
+    if (Number(newV) === userStore.userInfo.user_id) {
       isMyCenter.value = true
     }
   },

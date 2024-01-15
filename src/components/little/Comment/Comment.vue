@@ -133,7 +133,7 @@ const commentListGetter = async () => {
   total.value = []
 
   const res = await getCommentList({
-    article_id: Number(route.params.id)
+    article_id: Number(route.params.article_id)
   })
   //清空input相关的数组
   showInput.value = []
@@ -212,11 +212,11 @@ onMounted(async () => {
   await commentListGetter()
   // 获取当前评论的文章信息
   const res = await getArticleMain({
-    article_id: Number(route.params.id)
+    article_id: Number(route.params.article_id)
   })
   object_name.value = res.result.article_title
   poster_id.value = res.result.author_id
-  now_object_id.value = Number(route.params.id)
+  now_object_id.value = Number(route.params.article_id)
 
   // 如果路由中带有哈希(#)，那么把所有折叠的评论都展开
   if (route.hash) {

@@ -65,7 +65,7 @@ onMounted(async () => {
   // 加上全局对浏览器窗口宽度的监听
   window.addEventListener('resize', windoWidthChanged)
 
-  const articleId = Number(route.params.id)
+  const articleId = Number(route.params.article_id)
   await increaseArticleViews({
     article_id: articleId
   })

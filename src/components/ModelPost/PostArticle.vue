@@ -389,11 +389,6 @@ const submitArticle = async () => {
       article_md_link: '',
       author_id: userStore.userInfo.user_id
     }
-    /* ElNotification({
-      title: '发布成功！',
-      message: '快快前往首页看看吧！',
-      type: 'success'
-    }) */
     loading.value = false
     router.push('postFinished')
   } else {

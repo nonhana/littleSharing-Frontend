@@ -35,6 +35,7 @@
     "@typescript-eslint/parser": "^6.13.1",
     "@unhead/vue": "^1.8.9",
     "@vitejs/plugin-vue": "^4.1.0",
+    "animate.css": "^4.1.1",
     "babel-runtime": "^6.26.0",
     "core-js": "^3.31.1",
     "eslint": "^8.54.0",

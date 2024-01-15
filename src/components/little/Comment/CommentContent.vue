@@ -249,10 +249,12 @@ watch(
 )
 
 watch(
-  () => route.params,
+  () => route.params.id,
   async (newV, _) => {
-    const res = await getArticleMain({ article_id: Number(newV.id) })
-    authorId.value = res.result.author_id
+    if (newV) {
+      const res = await getArticleMain({ article_id: Number(newV) })
+      authorId.value = res.result.author_id
+    }
   },
   { immediate: true }
 )

@@ -216,15 +216,4 @@ onMounted(async () => {
     }
   }
 }
-
-:deep(.md-editor-preview) {
-  figure {
-    display: flex;
-    align-items: center;
-  }
-
-  img {
-    max-height: 600px;
-  }
-}
 </style>

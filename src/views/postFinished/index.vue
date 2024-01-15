@@ -16,6 +16,7 @@
 </template>
 
 <script setup lang="ts">
+import 'animate.css'
 import { useHead } from '@unhead/vue'
 
 useHead({
@@ -45,7 +46,8 @@ useHead({
   .content {
     position: relative;
     padding: 20px 0;
-    width: 100%;
+    margin: 0 auto;
+    width: 1350px;
     text-align: center;
     background-color: #fff;
     border-radius: 20px;

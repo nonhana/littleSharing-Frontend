@@ -58,6 +58,9 @@ class Request {
               message: data.result_msg || '未知错误',
               type: 'error'
             })
+          } else if (status === 404) {
+            console.log('404')
+            window.location.href = '/404'
           } else if (status === 401) {
             ElNotification({
               title: '请先进行登录哦~',

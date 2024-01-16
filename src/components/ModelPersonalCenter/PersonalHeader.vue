@@ -310,7 +310,7 @@ const focusAction = async (num: 0 | 1) => {
     } else {
       ElMessage({
         type: 'error',
-        message: res.result_msg
+        message: res.result_msg || '关注失败'
       })
     }
   } else {
@@ -328,7 +328,7 @@ const focusAction = async (num: 0 | 1) => {
     } else {
       ElMessage({
         type: 'error',
-        message: res.result_msg
+        message: res.result_msg || '取消关注失败'
       })
     }
   }

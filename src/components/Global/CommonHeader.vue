@@ -151,7 +151,7 @@ const push = (num: number) => {
       }
       break
     case 2:
-      route_path = `/personalCenter/${user_id.value}`
+      route_path = '/personalCenter/' + user_id.value
       break
     case 3:
       route_path = '/login'

@@ -29,7 +29,7 @@ export const routes: RouteRecordRaw[] = [
     path: '/personalCenter/:user_id',
     name: 'personalCenter',
     redirect: (to) => {
-      return `/MyArticles/${to.params.id}`
+      return `/MyArticles/${to.params.user_id}`
     },
     component: () => import('@/views/personalCenter/index.vue'),
     children: [

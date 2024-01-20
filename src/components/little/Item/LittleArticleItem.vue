@@ -2,9 +2,15 @@
   <div class="littlearticleitem-wrap">
     <el-row>
       <div>
-        <div class="title" @click="push(1)" style="margin: 0 0 5px">
+        <a
+          class="title"
+          style="margin: 0 0 5px"
+          :href="articleURL"
+          target="_blank"
+          :title="article_title"
+        >
           <span>{{ article_title }}</span>
-        </div>
+        </a>
       </div>
     </el-row>
     <el-row type="flex" style="flex-wrap: nowrap">
@@ -17,21 +23,14 @@
       </div>
     </el-row>
     <el-row>
-      <div @click="push(1)">
+      <a :href="articleURL" target="_blank" :title="article_introduce">
         <p class="article-introduce">{{ article_introduce }}</p>
-      </div>
+      </a>
     </el-row>
     <el-row type="flex" justify="space-between">
-      <el-tooltip
-        class="item"
-        effect="light"
-        content="点击前往个人主页"
-        placement="right"
-      >
-        <div @click="push(2)">
-          <span class="author-name">{{ author_name }}</span>
-        </div>
-      </el-tooltip>
+      <a :href="userURL">
+        <span class="author-name">{{ author_name }}</span>
+      </a>
       <div>
         <span class="article-uploaddate">{{ article_uploaddate }}</span>
       </div>
@@ -40,8 +39,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
+import { toRefs, computed } from 'vue'
 import type { ArticleSimple } from '@/api/article/types'
 import { formatDate } from '@/utils'
 
@@ -49,32 +47,24 @@ const props = defineProps<{
   similarItem: ArticleSimple
 }>()
 
-const router = useRouter()
-
-const id = ref<number>(props.similarItem.article_id)
-const article_title = ref<string>(props.similarItem.article_title)
-const article_labels = ref<string[]>(props.similarItem.article_labels)
-const article_introduce = ref<string>(props.similarItem.article_introduce)
-const author_id = ref<number>(props.similarItem.author_id)
-const author_name = ref<string>(props.similarItem.author_name)
+const {
+  article_id,
+  article_title,
+  article_labels,
+  article_introduce,
+  author_id,
+  author_name
+} = toRefs(props.similarItem)
 
 const article_uploaddate = computed(() => {
   return formatDate(props.similarItem.article_uploaddate)
 })
-
-const push = (num: number) => {
-  if (num === 1) {
-    const routeUrl = router.resolve({
-      path: '/articleHome/' + id.value
-    })
-    window.open(routeUrl.href, '_blank')
-  }
-  if (num === 2) {
-    router.push({
-      path: '/personalCenter/' + author_id.value
-    })
-  }
-}
+const articleURL = computed(() => {
+  return window.location.origin + '/articleHome/' + article_id.value
+})
+const userURL = computed(() => {
+  return window.location.origin + '/personalCenter/' + author_id.value
+})
 </script>
 
 <style scoped lang="less">

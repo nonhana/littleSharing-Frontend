@@ -1,32 +1,30 @@
 <template>
   <div class="newhomeitem-wrap">
     <el-row type="flex" justify="space-between">
-      <div>
-        <el-tooltip
-          class="item"
-          effect="light"
-          content="点击前往个人主页"
-          placement="left"
-        >
-          <div class="author-head" @click="push(2)">
-            <img :src="author_head" alt="author_head" />
-          </div>
-        </el-tooltip>
-      </div>
+      <a class="author-head" :href="userURL">
+        <img :src="author_head" alt="author_head" />
+      </a>
+
       <div style="width: 235px">
         <el-row>
-          <div class="article-title" @click="push(1)" style="margin: -3px 0 0">
+          <a
+            class="article-title"
+            :href="articleURL"
+            target="_blank"
+            :title="article_title"
+          >
             <span>{{ article_title }}</span>
-          </div>
+          </a>
         </el-row>
         <el-row>
-          <div
+          <a
             class="article-introduce"
-            @click="push(1)"
-            style="margin: 3px 0 0"
+            :href="articleURL"
+            target="_blank"
+            :title="article_introduce"
           >
             <span>{{ article_introduce }}</span>
-          </div>
+          </a>
         </el-row>
       </div>
     </el-row>
@@ -55,17 +53,15 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
+import { computed } from 'vue'
 import type { Article } from '@/api/article/types'
-
-const router = useRouter()
 
 const props = defineProps<{
   newsItem: Article
 }>()
 
 const {
-  article_id: id,
+  article_id,
   author_id,
   author_name,
   author_headphoto: author_head,
@@ -75,23 +71,12 @@ const {
   article_introduce
 } = props.newsItem
 
-const push = (num: number) => {
-  switch (num) {
-    case 1: {
-      const routeUrl = router.resolve({
-        path: `/articleHome/${id}`
-      })
-      window.open(routeUrl.href, '_blank')
-      break
-    }
-    case 2: {
-      router.push({
-        path: '/personalCenter/' + author_id
-      })
-      break
-    }
-  }
-}
+const articleURL = computed(() => {
+  return window.location.origin + '/articleHome/' + article_id
+})
+const userURL = computed(() => {
+  return window.location.origin + '/personalCenter/' + author_id
+})
 </script>
 
 <style scoped lang="less">

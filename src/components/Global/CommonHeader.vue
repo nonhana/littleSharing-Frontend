@@ -1,16 +1,19 @@
 <template>
   <div class="commonheader-wrap">
     <div class="part1">
-      <div class="logo" @click="push(0)">
+      <a class="logo" :href="routePaths[0]">
         <img :src="Logo" alt="Logo" />
-      </div>
+      </a>
       <span>兴趣使然的学术资源分享小站</span>
     </div>
 
     <div class="part2">
-      <div
+      <a
+        :style="{
+          visibility: userStore.isLogin ? 'visible' : 'hidden'
+        }"
         class="button"
-        @click="push(4)"
+        :href="routePaths[3]"
         @mouseenter="moveMessageSvg(1)"
         @mouseleave="moveMessageSvg(2)"
       >
@@ -35,16 +38,19 @@
         </div>
 
         <span>消息中心</span>
-      </div>
+      </a>
       <el-badge
         class="badge"
         v-if="unreadCount !== 0"
         :value="unreadCount"
         :max="99"
       />
-      <div
+      <a
+        :style="{
+          visibility: userStore.isLogin ? 'visible' : 'hidden'
+        }"
         class="button"
-        @click="push(1)"
+        :href="routePaths[1]"
         @mouseenter="movePostSvg(1)"
         @mouseleave="movePostSvg(2)"
       >
@@ -69,7 +75,7 @@
         </div>
 
         <span>上传文章</span>
-      </div>
+      </a>
 
       <el-dropdown
         v-if="userStore.isLogin"
@@ -98,9 +104,9 @@
       </el-dropdown>
 
       <el-tooltip v-else content="点击前往登录页" placement="right">
-        <div class="login" @click="push(3)">
+        <a class="login" :href="routePaths[2]">
           <span>登录</span>
-        </div>
+        </a>
       </el-tooltip>
     </div>
   </div>
@@ -111,7 +117,6 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from '@/store'
 import { getUnreadMessageCount } from '@/api/message'
-import { ElNotification } from 'element-plus'
 import Logo from '@/assets/svgs/Logo.svg'
 import Message_1 from '@/assets/svgs/Message_1.svg'
 import Message_2 from '@/assets/svgs/Message_2.svg'
@@ -133,49 +138,19 @@ const user_head = ref('')
 const user_id = ref<number>(0)
 const unreadCount = ref<number>(0)
 
-const push = (num: number) => {
-  let route_path = ''
-  switch (num) {
-    case 0:
-      route_path = '/home'
-      break
-    case 1:
-      if (userStore.isLogin) {
-        route_path = '/postArticle'
-      } else {
-        ElNotification({
-          title: '提示',
-          message: '进入该页面需要登录！',
-          type: 'warning'
-        })
-      }
-      break
-    case 2:
-      route_path = '/personalCenter/' + user_id.value
-      break
-    case 3:
-      route_path = '/login'
-      break
-    case 4:
-      if (userStore.isLogin) {
-        route_path = '/message'
-      } else {
-        ElNotification({
-          title: '提示',
-          message: '进入该页面需要登录！',
-          type: 'warning'
-        })
-      }
-      break
-  }
-  router.push({
-    path: route_path
-  })
-}
+const routePaths: string[] = [
+  window.location.origin + '/home',
+  window.location.origin + '/postArticle',
+  window.location.origin + '/login',
+  window.location.origin + '/message'
+]
+
 const loginchoices = (num: string) => {
   switch (num) {
     case '1':
-      push(2)
+      router.push({
+        path: '/personalCenter/' + user_id.value
+      })
       break
     case '2':
       localStorage.clear()

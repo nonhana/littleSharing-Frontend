@@ -7,9 +7,14 @@
     >
       <el-row type="flex" justify="space-between">
         <div style="display: flex">
-          <div class="title" @click="push(1)">
+          <a
+            class="title"
+            :href="articleURL"
+            target="_blank"
+            :title="article_title"
+          >
             <span>{{ article_title }}</span>
-          </div>
+          </a>
           <div
             v-if="article_status === 1"
             class="copied"
@@ -57,25 +62,21 @@
       </el-row>
 
       <el-row>
-        <div class="article-introduce" @click="push(1)">
+        <a
+          class="article-introduce"
+          :href="articleURL"
+          target="_blank"
+          :title="article_introduce"
+        >
           <span>{{ article_introduce }}</span>
-        </div>
+        </a>
       </el-row>
 
       <el-row type="flex" justify="space-between" style="width: 100%">
         <div style="display: flex">
-          <div>
-            <el-tooltip
-              class="item"
-              effect="light"
-              content="点击前往个人主页"
-              placement="left"
-            >
-              <div class="author-head" @click="push(2)">
-                <img :src="author_head" alt="author_head" />
-              </div>
-            </el-tooltip>
-          </div>
+          <a class="author-head" :href="userURL">
+            <img :src="author_head" alt="author_head" />
+          </a>
           <div style="margin-left: 20px">
             <el-row type="flex">
               <span class="author-name">{{ author_name }}</span>
@@ -152,7 +153,6 @@
 
 <script setup lang="ts">
 import { watch, onMounted, computed, ref } from 'vue'
-import { useRouter } from 'vue-router'
 import { useStore } from '@/store'
 import type { Article } from '@/api/article/types'
 import {
@@ -174,8 +174,6 @@ import Report from '@/assets/svgs/Report.svg'
 const props = defineProps<{
   articleList: Article
 }>()
-
-const router = useRouter()
 
 const { userStore } = useStore()
 
@@ -243,20 +241,13 @@ const cover_status = computed(() => {
 const major = computed(() => {
   return article_major.join('-')
 })
+const articleURL = computed(() => {
+  return window.location.origin + '/articleHome/' + article_id
+})
+const userURL = computed(() => {
+  return window.location.origin + '/personalCenter/' + author_id
+})
 
-const push = (num: number) => {
-  if (num === 1) {
-    const routeUrl = router.resolve({
-      path: '/articleHome/' + article_id
-    })
-    window.open(routeUrl.href, '_blank')
-  }
-  if (num === 2) {
-    router.push({
-      path: '/personalCenter/' + author_id
-    })
-  }
-}
 const addlike = async () => {
   if (userStore.isLogin) {
     if (likemark.value !== 1) {

@@ -6,9 +6,9 @@
   >
     <el-row>
       <div style="display: flex; justify-content: center; width: 100%">
-        <div class="author-head" @click="enterSpace(author_id)">
+        <a class="author-head" :href="userURL">
           <img :src="author_head" alt="author_head" />
-        </div>
+        </a>
       </div>
     </el-row>
 
@@ -33,13 +33,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { ref, computed, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 import { getArticleMain } from '@/api/article'
 import { getUserInfo } from '@/api/user'
 
 const route = useRoute()
-const router = useRouter()
 
 const loading = ref<boolean>(false)
 const author_id = ref<number>(0)
@@ -49,11 +48,9 @@ const author_major = ref<string>('')
 const author_university = ref<string>('')
 const author_signature = ref<string>('')
 
-const enterSpace = (user_id: number) => {
-  router.push({
-    path: '/personalCenter/' + user_id
-  })
-}
+const userURL = computed(() => {
+  return window.location.origin + '/personalCenter/' + author_id.value
+})
 
 onMounted(async () => {
   loading.value = true
@@ -127,4 +124,3 @@ onMounted(async () => {
   }
 }
 </style>
-@/api/article @/api/article/article @/api/user/user

@@ -2,9 +2,14 @@
   <div class="articlepersonalcenteritem-wrap">
     <el-row type="flex" justify="space-between">
       <div style="display: flex">
-        <div class="title" @click="push(1)">
+        <a
+          class="title"
+          :href="articleURL"
+          target="_blank"
+          :title="article_title"
+        >
           <span>{{ article_title }}</span>
-        </div>
+        </a>
         <div
           v-if="article_status === 1"
           class="copied"
@@ -64,9 +69,9 @@
       </div>
     </el-row>
     <el-row>
-      <div @click="push(1)">
+      <a :href="articleURL" target="_blank" :title="article_introduce">
         <span class="article-introduce">{{ article_introduce }}</span>
-      </div>
+      </a>
     </el-row>
     <el-row type="flex" justify="start">
       <div>
@@ -145,7 +150,6 @@ const article_uploaddate = ref<string>(
 const article_updatedate = ref<string>(
   formatDate(props.articleList.article_updatedate)
 )
-const author_id = ref<number>(props.articleList.author_id)
 const author_head = ref<string>(props.articleList.author_headphoto)
 const author_name = ref<string>(props.articleList.author_name)
 const author_signature = ref<string>(props.articleList.author_signature)
@@ -157,20 +161,10 @@ const share_num = ref<number>(props.articleList.share_num)
 const comment_num = ref<number>(props.articleList.comment_num)
 
 const major = computed(() => article_major.value.join('-'))
+const articleURL = computed(() => {
+  return window.location.origin + '/articleHome/' + id.value
+})
 
-const push = (num: number) => {
-  if (num === 1) {
-    const routeUrl = router.resolve({
-      path: '/articleHome/' + id.value
-    })
-    window.open(routeUrl.href, '_blank')
-  }
-  if (num === 2) {
-    router.push({
-      path: '/personalCenter/' + author_id.value
-    })
-  }
-}
 const articlechoices = (num: string) => {
   if (num === '1') {
     router.push({

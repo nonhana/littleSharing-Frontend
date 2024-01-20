@@ -76,10 +76,10 @@ const push = (num: number) => {
 }
 
 watch(
-  route,
+  () => route.params.user_id,
   async (newV, _) => {
     loading.value = true
-    user_id.value = Number(newV.params.id)
+    user_id.value = Number(newV)
     if (user_id.value === userStore.userInfo.user_id) {
       isMyCenter.value = true
     }

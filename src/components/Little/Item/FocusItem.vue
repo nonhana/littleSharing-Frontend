@@ -3,9 +3,9 @@
     <el-row type="flex" justify="space-between" style="align-items: center">
       <div style="display: flex; align-items: center">
         <div>
-          <div @click="enterSpace(user_id)">
+          <a :href="userURL">
             <img :src="headphoto" />
-          </div>
+          </a>
         </div>
         <div style="margin: 20px 0 0 20px">
           <el-row style="margin: 0 0 10px">
@@ -37,8 +37,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { ref, toRefs, watch, computed, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 import { useStore } from '@/store'
 import { getUserInfo, focusUserActions, getUserFocusList } from '@/api/user'
 import { ElMessage } from 'element-plus'
@@ -47,8 +47,9 @@ const props = defineProps<{
   user_id: number
 }>()
 
+const { user_id } = toRefs(props)
+
 const route = useRoute()
-const router = useRouter()
 
 const { userStore } = useStore()
 
@@ -59,6 +60,10 @@ const details = ref<string>('')
 const headphoto = ref<string>('')
 const isMyFocus = ref<boolean>(false)
 const isMyCenter = ref<boolean>(false)
+
+const userURL = computed(() => {
+  return window.location.origin + '/personalCenter/' + user_id.value
+})
 
 const follow = async (num: number) => {
   switch (num) {
@@ -97,12 +102,6 @@ const follow = async (num: number) => {
       break
     }
   }
-}
-// 点击进入他人主页
-const enterSpace = (id: number): void => {
-  router.push({
-    path: '/MyArticles/' + id
-  })
 }
 
 watch(

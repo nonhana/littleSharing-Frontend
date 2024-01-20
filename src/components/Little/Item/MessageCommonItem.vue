@@ -2,14 +2,14 @@
   <div class="messagecommonitem-wrap">
     <el-row type="flex" justify="space-between">
       <div class="part1">
-        <div class="headphoto" @click="enterspace">
+        <a class="headphoto" :href="userURL">
           <img :src="message.user_info!.user_headphoto" />
-        </div>
+        </a>
         <div class="details">
           <el-row type="flex">
-            <span class="details-content">
+            <a class="details-content" :href="userURL">
               <span class="clickable">{{ message.user_info!.user_name }}</span>
-            </span>
+            </a>
           </el-row>
           <el-row type="flex">
             <span class="details-inner" v-html="message.content" />
@@ -41,26 +41,32 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import { useRouter } from 'vue-router'
+import { toRefs, computed } from 'vue'
 import { formatDate } from '@/utils'
 import { deleteMessage } from '@/api/message'
 import type { Message } from '@/api/message/types'
 import MessageActions from '@/assets/svgs/MessageActions.svg'
 import { ElMessageBox, ElMessage } from 'element-plus'
 
-const router = useRouter()
-
 const props = defineProps<{
   message: Message
 }>()
+
+const { message } = toRefs(props)
 
 const emits = defineEmits<{
   (e: 'deleteMessage', message_id: number): void
 }>()
 
 const date = computed(() => {
-  return formatDate(props.message.createdAt)
+  return formatDate(message.value.createdAt)
+})
+const userURL = computed(() => {
+  return (
+    window.location.origin +
+    '/personalCenter/' +
+    message.value.user_info?.user_id
+  )
 })
 
 const handleCommand = async (command: string) => {
@@ -71,24 +77,16 @@ const handleCommand = async (command: string) => {
       type: 'warning'
     }).then(async () => {
       const res = await deleteMessage({
-        message_id: props.message.message_id
+        message_id: message.value.message_id
       })
       if (res.result_code === 0) {
         ElMessage.success('删除成功!')
-        emits('deleteMessage', props.message.message_id)
+        emits('deleteMessage', message.value.message_id)
       } else {
         ElMessage.error('删除失败!')
       }
     })
   }
-}
-const enterspace = () => {
-  router.push({
-    name: 'personalCenter',
-    params: {
-      id: props.message.user_info!.user_id
-    }
-  })
 }
 </script>
 

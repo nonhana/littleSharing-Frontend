@@ -1,9 +1,5 @@
 /* src/utils/index.ts */
 // 通用工具函数
-import { useRouter } from 'vue-router'
-
-const router = useRouter()
-
 interface DateFormatOptions {
   year?: string
   month?: string
@@ -38,13 +34,6 @@ export const formatDate = (
   formattedDate = formattedDate.replace(/ss/g, formatOptions.second ?? '')
 
   return formattedDate
-}
-
-// 点击进入他人的主页
-export const enterSpace = (id: number): void => {
-  router.push({
-    path: '/MyArticles/' + id
-  })
 }
 
 // 防抖函数

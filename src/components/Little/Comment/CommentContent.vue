@@ -1,14 +1,9 @@
 <template>
   <div class="commentcontent-wrap">
     <el-row>
-      <div>
-        <img
-          class="headphoto"
-          @click="enterSpace(userId)"
-          :src="pictureurl"
-          alt="headphoto"
-        />
-      </div>
+      <a :href="userURL">
+        <img class="headphoto" :src="pictureurl" alt="headphoto" />
+      </a>
 
       <div style="margin-left: 15px; max-width: 600px">
         <el-row>
@@ -68,7 +63,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { useStore } from '@/store'
 import {
   commentAction,
@@ -102,7 +97,6 @@ const emits = defineEmits<{
 }>()
 
 const route = useRoute()
-const router = useRouter()
 
 const { userStore } = useStore()
 
@@ -166,12 +160,10 @@ const comment_id = computed(() => {
     return props.responseList!.comment_id
   }
 })
+const userURL = computed(() => {
+  return window.location.origin + '/personalCenter/' + userId.value
+})
 
-const enterSpace = (user_id: number) => {
-  router.push({
-    path: '/personalCenter/' + user_id
-  })
-}
 const openComment = () => {
   if (userStore.isLogin) {
     if (!props.isShow) {

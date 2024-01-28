@@ -158,7 +158,7 @@ onMounted(async () => {
   .username {
     height: 17px;
     font-size: 14px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #3d3d3d;
     line-height: 17px;
   }
@@ -166,7 +166,7 @@ onMounted(async () => {
   .details {
     width: 473px;
     font-size: 12px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #9e9e9e;
     word-break: break-all;
     line-height: 17px;
@@ -179,7 +179,7 @@ onMounted(async () => {
     width: 70px;
     height: 31px;
     font-size: 12px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #ff8200;
     border: 1.5px solid #ffc180;
     border-radius: 10px;

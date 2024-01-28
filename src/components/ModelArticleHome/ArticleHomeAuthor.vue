@@ -106,20 +106,19 @@ onMounted(async () => {
 
   .author-data > * span {
     font-size: 8px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #3d3d3d;
   }
 
   .author-name {
     font-size: 14px;
-    font-family: SourceHanSansCN-Bold, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-65-Medium', sans-serif;
     color: #3d3d3d;
-    font-weight: bold;
   }
 
   .author-info {
     font-size: 12px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #3d3d3d;
   }
 }

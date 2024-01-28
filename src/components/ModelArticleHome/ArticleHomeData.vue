@@ -215,15 +215,14 @@ onMounted(async () => {
   .title {
     height: 35px;
     font-size: 24px;
-    font-family: SourceHanSansCN-Bold, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-65-Medium', sans-serif;
     color: #3d3d3d;
-    font-weight: bold;
   }
 
   .datafont {
     margin: 0 10px;
     font-size: 16px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #3d3d3d;
   }
 }

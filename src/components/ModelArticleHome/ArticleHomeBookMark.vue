@@ -157,14 +157,13 @@ onMounted(async () => {
   .title {
     height: 35px;
     font-size: 24px;
-    font-family: SourceHanSansCN-Bold, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-65-Medium', sans-serif;
     color: #3d3d3d;
-    font-weight: bold;
   }
 
   .bookmarknote {
     font-size: 14px;
-    font-family: SourceHanSansCN-Bold, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-65-Medium', sans-serif;
     color: #9e9e9e;
   }
 
@@ -178,7 +177,7 @@ onMounted(async () => {
 
     span {
       font-size: 14px;
-      font-family: SourceHanSansCN-Bold, sans-serif;
+      font-family: 'AlibabaPuHuiTi-3-65-Medium', sans-serif;
       color: #3d3d3d;
     }
   }

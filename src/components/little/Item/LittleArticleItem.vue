@@ -79,7 +79,7 @@ const userURL = computed(() => {
     display: -webkit-box;
     overflow: hidden;
     font-size: 16px;
-    font-family: SourceHanSansCN-Medium, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     text-overflow: ellipsis;
     color: #3d3d3d;
     cursor: pointer;
@@ -91,7 +91,7 @@ const userURL = computed(() => {
     display: -webkit-box;
     overflow: hidden;
     font-size: 12px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     text-overflow: ellipsis;
     color: #3d3d3d;
     transition: all 0.2s;
@@ -114,7 +114,7 @@ const userURL = computed(() => {
     width: max-content;
     height: 20px;
     font-size: 12px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #3d3d3d;
     background: #d9fe32;
     border-radius: 10px;
@@ -123,10 +123,9 @@ const userURL = computed(() => {
 
   .author-name {
     font-size: 12px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-65-Medium', sans-serif;
     color: #3d3d3d;
     transition: all 0.2s;
-    font-weight: bold;
     cursor: pointer;
 
     &:hover {
@@ -136,7 +135,7 @@ const userURL = computed(() => {
 
   .article-uploaddate {
     font-size: 12px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #aeaeae;
   }
 }

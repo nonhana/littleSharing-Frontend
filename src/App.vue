@@ -68,6 +68,8 @@ onMounted(() => {
 </script>
 
 <style scoped>
+@import url('./assets/fonts/f.css');
+
 .app {
   position: relative;
   width: 100%;

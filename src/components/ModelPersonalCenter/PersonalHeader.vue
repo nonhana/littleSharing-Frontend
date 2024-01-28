@@ -387,16 +387,15 @@ const focusAction = async (num: 0 | 1) => {
   .username {
     margin-right: 5px;
     font-size: 14px;
-    font-family: SourceHanSansCN-Bold, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-65-Medium', sans-serif;
     color: #9e9e9e;
-    font-weight: bold;
     line-height: 17px;
   }
 
   .selfintroduce {
     height: 17px;
     font-size: 17px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #3d3d3d;
     line-height: 17px;
   }
@@ -416,7 +415,7 @@ const focusAction = async (num: 0 | 1) => {
 
   .title {
     font-size: 12px;
-    font-family: SourceHanSansCN-Medium, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #ff5900;
     line-height: 17px;
   }
@@ -424,7 +423,7 @@ const focusAction = async (num: 0 | 1) => {
   .num {
     height: 17px;
     font-size: 16px;
-    font-family: SourceHanSansCN-Medium, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #3d3d3d;
     line-height: 17px;
   }
@@ -444,7 +443,7 @@ const focusAction = async (num: 0 | 1) => {
       height: 20px;
       cursor: pointer;
       font-size: 14px;
-      font-family: SourceHanSansCN-Medium, sans-serif;
+      font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
       color: #3d3d3d;
       line-height: 17px;
 
@@ -466,7 +465,7 @@ const focusAction = async (num: 0 | 1) => {
   .button {
     padding: 8px 16px;
     font-size: 16px;
-    font-family: SourceHanSansCN-Medium, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #3d3d3d;
     background-color: #76fff5;
     border-radius: 8px;

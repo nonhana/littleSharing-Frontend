@@ -62,6 +62,7 @@ li {
     font-size: 14px;
     line-height: 24px;
     font-weight: normal;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     text-decoration: none;
     display: -webkit-box;
     -webkit-box-orient: vertical;

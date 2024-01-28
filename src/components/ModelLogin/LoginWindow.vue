@@ -251,7 +251,7 @@ const turnToLogin = () => {
     justify-content: center;
     width: 100%;
     font-size: 24px;
-    font-family: SourceHanSansCN-Medium, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #3d3d3d;
   }
 
@@ -260,7 +260,7 @@ const turnToLogin = () => {
     justify-content: center;
     width: 100%;
     font-size: 18px;
-    font-family: SourceHanSansCN-Medium, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #3d3d3d;
     line-height: 17px;
 
@@ -287,7 +287,7 @@ const turnToLogin = () => {
       width: 70px;
       height: 40px;
       font-size: 15px;
-      font-family: SourceHanSansCN-Medium, sans-serif;
+      font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
       color: #fff;
       background-color: #ff820088;
       border-radius: 20px;
@@ -315,7 +315,7 @@ const turnToLogin = () => {
 
     span {
       font-size: 12px;
-      font-family: SourceHanSansCN-Medium, sans-serif;
+      font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
       color: #3d3d3d;
       transition: all 0.2s;
       line-height: 17px;

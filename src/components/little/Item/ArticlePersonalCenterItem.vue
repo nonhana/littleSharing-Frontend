@@ -276,10 +276,9 @@ watch(
     width: 400px;
     height: 26px;
     font-size: 18px;
-    font-family: SourceHanSansCN-Bold, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-65-Medium', sans-serif;
     text-overflow: ellipsis;
     color: #3d3d3d;
-    font-weight: bold;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     cursor: pointer;
@@ -292,7 +291,7 @@ watch(
     padding: 0 10px;
     height: 26px;
     font-size: 14px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #fff;
     background: #ff6c6c;
     border-radius: 13px;
@@ -306,7 +305,7 @@ watch(
     width: max-content;
     height: 26px;
     font-size: 14px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #fff;
     background: #ff8200;
     border-radius: 13px;
@@ -317,7 +316,7 @@ watch(
     overflow: hidden;
     width: 100%;
     font-size: 12px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     text-overflow: ellipsis;
     color: #9e9e9e;
     line-height: 36px;
@@ -349,14 +348,14 @@ watch(
   .author-name {
     height: 20px;
     font-size: 14px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #3d3d3d;
   }
 
   .author-signature {
     height: 20px;
     font-size: 14px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #3d3d3d;
   }
 
@@ -368,7 +367,7 @@ watch(
     width: max-content;
     height: 20px;
     font-size: 12px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #fff;
     background: #76fff5;
     border-radius: 10px;
@@ -388,7 +387,7 @@ watch(
     > * span {
       height: 14px;
       font-size: 12px;
-      font-family: SourceHanSansCN-Regular, sans-serif;
+      font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
       color: #3d3d3d;
     }
 
@@ -406,7 +405,7 @@ watch(
     width: max-content;
     height: 20px;
     font-size: 12px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #3d3d3d;
     background: #4aff98;
     border-radius: 10px;
@@ -421,7 +420,7 @@ watch(
     width: max-content;
     height: 20px;
     font-size: 12px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #3d3d3d;
     background: #d9fe32;
     border-radius: 10px;
@@ -440,7 +439,7 @@ watch(
     width: max-content;
     height: 20px;
     font-size: 12px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #fff;
     background: #bb76ff;
     border-radius: 10px;
@@ -448,7 +447,7 @@ watch(
 
   .article-date {
     font-size: 12px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #9e9e9e;
   }
 }

@@ -255,7 +255,7 @@ onMounted(async () => {
 
     span {
       font-size: 18px;
-      font-family: SourceHanSansCN-Medium, sans-serif;
+      font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
       color: #000;
     }
   }
@@ -279,7 +279,7 @@ onMounted(async () => {
     position: relative;
     left: 10px;
     font-size: 14px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #939393;
     line-height: 17px;
   }
@@ -288,7 +288,7 @@ onMounted(async () => {
     position: relative;
     left: 10px;
     font-size: 14px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #939393;
     line-height: 17px;
     cursor: pointer;
@@ -302,7 +302,7 @@ onMounted(async () => {
     position: relative;
     left: 10px;
     font-size: 14px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #939393;
     line-height: 17px;
     cursor: pointer;

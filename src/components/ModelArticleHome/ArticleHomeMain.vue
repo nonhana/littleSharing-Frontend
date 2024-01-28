@@ -148,10 +148,9 @@ onMounted(async () => {
 
   .title {
     font-size: 30px;
-    font-family: SourceHanSansCN-Bold, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-65-Medium', sans-serif;
     color: #3d3d3d;
     word-break: break-all;
-    font-weight: bold;
   }
 
   .copied {
@@ -162,7 +161,7 @@ onMounted(async () => {
     width: 80px;
     height: 36px;
     font-size: 16px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #fff;
     background: #ff6c6c;
     border-radius: 18px;
@@ -176,7 +175,7 @@ onMounted(async () => {
     width: 80px;
     height: 36px;
     font-size: 16px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #fff;
     background: #ff8200;
     border-radius: 18px;
@@ -190,7 +189,7 @@ onMounted(async () => {
     width: max-content;
     height: 36px;
     font-size: 16px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #3d3d3d;
     background: #4aff98;
     border-radius: 18px;
@@ -208,12 +207,16 @@ onMounted(async () => {
 
     a {
       font-size: 14px;
-      font-family: SourceHanSansCN-Regular, sans-serif;
+      font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
       color: #0098b3;
       word-break: break-all;
       line-height: 20px;
       letter-spacing: 0;
     }
   }
+}
+
+:deep(.md-editor) {
+  font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
 }
 </style>

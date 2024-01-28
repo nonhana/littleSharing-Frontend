@@ -277,16 +277,15 @@ onMounted(async () => {
     span {
       margin-right: 10px;
       font-size: 14px;
-      font-family: SourceHanSansCN-Medium, sans-serif;
+      font-family: 'AlibabaPuHuiTi-3-65-Medium', sans-serif;
       color: #00d5cc;
     }
 
     font span {
       margin-right: 10px;
       font-size: 12px;
-      font-family: SourceHanSansCN-Medium, sans-serif;
+      font-family: 'AlibabaPuHuiTi-3-65-Medium', sans-serif;
       color: #00d5cc;
-      font-weight: bold;
     }
   }
 
@@ -305,7 +304,7 @@ onMounted(async () => {
     margin-bottom: 10px;
     width: 100%;
     font-size: 14px;
-    font-family: SourceHanSansCN-Normal, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #3d3d3d;
     word-break: break-all;
     font-weight: 350;
@@ -323,7 +322,7 @@ onMounted(async () => {
 
     span {
       font-size: 14px;
-      font-family: SourceHanSansCN-Regular, sans-serif;
+      font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
       color: #808080;
       cursor: pointer;
     }
@@ -356,7 +355,7 @@ onMounted(async () => {
     span {
       margin: 0 0 0 5px;
       font-size: 14px;
-      font-family: SourceHanSansCN-Regular, sans-serif;
+      font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
       color: #808080;
       cursor: pointer;
     }
@@ -364,7 +363,7 @@ onMounted(async () => {
 
   .delete {
     font-size: 14px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #808080;
     cursor: pointer;
 
@@ -382,7 +381,7 @@ onMounted(async () => {
 
   .date {
     font-size: 14px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #808080;
   }
 }

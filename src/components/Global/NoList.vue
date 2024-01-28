@@ -27,7 +27,7 @@ defineProps<{
   padding: 9px 14px;
   margin-top: 20px;
   font-size: 16px;
-  font-family: SourceHanSansCN-Regular, sans-serif;
+  font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
   color: #3d3d3d;
   background-color: #eee;
   border-radius: 20px;

@@ -103,7 +103,7 @@ onMounted(async () => {
 
   .title {
     font-size: 24px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #3d3d3d;
   }
 }

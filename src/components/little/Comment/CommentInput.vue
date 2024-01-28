@@ -181,7 +181,7 @@ const handleKeyCode = (event: KeyboardEvent) => {
     width: 100%;
     height: 97px;
     font-size: 16px;
-    font-family: SourceHanSansCN-Medium, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #000;
     background: #fff;
     border: 1.5px solid #76fff5;
@@ -210,9 +210,8 @@ const handleKeyCode = (event: KeyboardEvent) => {
 
   .submit font {
     font-size: 16px;
-    font-family: SourceHanSansCN-Bold, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-65-Medium', sans-serif;
     color: #fff;
-    font-weight: bold;
   }
 }
 </style>

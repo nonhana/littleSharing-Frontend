@@ -142,7 +142,7 @@
           <el-image
             :src="cover_image"
             :alt="cover_image"
-            style="max-width: 200px; max-height: 150px"
+            style="max-width: 200px; max-height: 150px; border-radius: 20px"
           ></el-image>
         </template>
         <el-image :src="cover_image"></el-image>
@@ -390,9 +390,8 @@ onMounted(async () => {
   .title {
     height: 26px;
     font-size: 18px;
-    font-family: SourceHanSansCN-Bold, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-65-Medium', sans-serif;
     color: #3d3d3d;
-    font-weight: bold;
     cursor: pointer;
   }
 
@@ -404,7 +403,7 @@ onMounted(async () => {
     width: max-content;
     height: 26px;
     font-size: 14px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #fff;
     background: #ff6c6c;
     border-radius: 13px;
@@ -418,7 +417,7 @@ onMounted(async () => {
     width: max-content;
     height: 26px;
     font-size: 14px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #fff;
     background: #ff8200;
     border-radius: 13px;
@@ -428,7 +427,7 @@ onMounted(async () => {
     display: -webkit-box;
     overflow: hidden;
     font-size: 12px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     text-overflow: ellipsis;
     color: #9e9e9e;
     line-height: 36px;
@@ -462,14 +461,14 @@ onMounted(async () => {
   .author-name {
     height: 20px;
     font-size: 14px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #3d3d3d;
   }
 
   .author-signature {
     height: 20px;
     font-size: 14px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #3d3d3d;
   }
 
@@ -481,7 +480,7 @@ onMounted(async () => {
     width: max-content;
     height: 20px;
     font-size: 12px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #fff;
     background: #76fff5;
     border-radius: 10px;
@@ -491,7 +490,7 @@ onMounted(async () => {
     display: flex;
     height: 16px;
     font-size: 16px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #3d3d3d;
 
     & > div {
@@ -524,7 +523,7 @@ onMounted(async () => {
     width: max-content;
     height: 20px;
     font-size: 12px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #3d3d3d;
     background: #4aff98;
     border-radius: 10px;
@@ -539,7 +538,7 @@ onMounted(async () => {
     width: max-content;
     height: 20px;
     font-size: 12px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #3d3d3d;
     background: #d9fe32;
     border-radius: 10px;
@@ -558,7 +557,7 @@ onMounted(async () => {
     width: max-content;
     height: 20px;
     font-size: 12px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #fff;
     background: #bb76ff;
     border-radius: 10px;
@@ -566,7 +565,7 @@ onMounted(async () => {
 
   .article-uploaddate {
     font-size: 12px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #9e9e9e;
   }
 }

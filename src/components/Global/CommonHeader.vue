@@ -4,7 +4,7 @@
       <a class="logo" :href="routePaths[0]">
         <img :src="Logo" alt="Logo" />
       </a>
-      <span>兴趣使然的学术资源分享小站</span>
+      <span>littleSharing~☆</span>
     </div>
 
     <div class="part2">
@@ -234,7 +234,7 @@ onMounted(async () => {
       margin-left: 20px;
       height: 20px;
       font-size: 14px;
-      font-family: SourceHanSansCN-Regular, sans-serif;
+      font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
       color: #3d3d3d;
     }
   }
@@ -291,7 +291,7 @@ onMounted(async () => {
       width: 40px;
       height: 40px;
       font-size: 12px;
-      font-family: SourceHanSansCN-Medium, sans-serif;
+      font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
       color: #3d3d3d;
       background: #eee;
       border-radius: 50%;

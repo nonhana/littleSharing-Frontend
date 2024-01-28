@@ -108,7 +108,7 @@ const userURL = computed(() => {
     display: -webkit-box;
     overflow: hidden;
     font-size: 16px;
-    font-family: SourceHanSansCN-Medium, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     text-overflow: ellipsis;
     color: #3d3d3d;
     cursor: pointer;
@@ -124,7 +124,7 @@ const userURL = computed(() => {
     display: -webkit-box;
     overflow: hidden;
     font-size: 12px;
-    font-family: SourceHanSansCN-Medium, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     text-overflow: ellipsis;
     color: #9e9e9e;
     -webkit-line-clamp: 1;
@@ -135,7 +135,7 @@ const userURL = computed(() => {
   .author-name {
     height: 17px;
     font-size: 12px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #3d3d3d;
   }
 
@@ -148,7 +148,7 @@ const userURL = computed(() => {
     width: max-content;
     height: 20px;
     font-size: 12px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #3d3d3d;
     background: #d9fe32;
     border-radius: 10px;
@@ -162,7 +162,7 @@ const userURL = computed(() => {
     width: max-content;
     height: 20px;
     font-size: 12px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #fff;
     background: #bb76ff;
     border-radius: 10px;
@@ -170,7 +170,7 @@ const userURL = computed(() => {
 
   .label-font {
     font-size: 12px;
-    font-family: SourceHanSansCN-Regular, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-55-Regular', sans-serif;
     color: #3d3d3d;
   }
 }

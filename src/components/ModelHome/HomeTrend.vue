@@ -113,9 +113,8 @@ onMounted(() => {
   .title {
     height: 35px;
     font-size: 24px;
-    font-family: SourceHanSansCN-Bold, sans-serif;
+    font-family: 'AlibabaPuHuiTi-3-65-Medium', sans-serif;
     color: #3d3d3d;
-    font-weight: bold;
   }
 }
 </style>

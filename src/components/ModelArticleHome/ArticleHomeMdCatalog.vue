@@ -54,12 +54,6 @@ const buildTree = (nodes: any[], currentLevel = null) => {
   while (nodes.length > 0) {
     const node = nodes[0]
 
-    if (node.depth === 1) {
-      // 直接跳过H1 标题
-      nodes.shift()
-      continue
-    }
-
     if (currentLevel === null) {
       // 初始化当前级别为第一个标题的级别
       currentLevel = node.depth

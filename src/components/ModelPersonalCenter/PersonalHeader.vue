@@ -139,7 +139,8 @@ import {
   getUserLikeNum,
   getUserCollectionNum,
   focusUserActions,
-  getUserFocusList
+  getUserFocusList,
+  getUserFansList
 } from '@/api/user'
 import { ElMessage } from 'element-plus'
 import MyArticles from '@/assets/svgs/MyArticles.svg'
@@ -231,16 +232,27 @@ watch(
       } else {
         isMyCenter.value = false
       }
+      // 获取用户关注列表
       const focusListRes = await getUserFocusList({
         user_id: user_id.value
       })
       if (focusListRes.result_code === 0) {
         if (focusListRes.result.length > 0) {
-          focusListRes.result.forEach((item: any) => {
+          user.value.follow_count = focusListRes.result.length
+          focusListRes.result.forEach((item) => {
             if (item.second_user_id === user_id.value) {
               isMyFocus.value = true
             }
           })
+        }
+      }
+      // 获取用户粉丝列表
+      const fansListRes = await getUserFansList({
+        user_id: user_id.value
+      })
+      if (fansListRes.result_code === 0) {
+        if (fansListRes.result.length > 0) {
+          user.value.follower_count = fansListRes.result.length
         }
       }
       const { result: userInfoRes } = await getUserInfo({

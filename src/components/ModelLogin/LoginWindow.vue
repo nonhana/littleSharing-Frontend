@@ -107,18 +107,12 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from '@/store'
-import {
-  login,
-  register,
-  getUserInfo,
-  getUserKeywords,
-  getArticleLabels
-} from '@/api/user'
+import { login, register, getUserInfo, getUserKeywords } from '@/api/user'
 import { ElNotification } from 'element-plus'
 
 const router = useRouter()
 
-const { userStore, keywordStore, articleLabelStore } = useStore()
+const { userStore, keywordStore } = useStore()
 
 const loginForm = ref<{
   account: string
@@ -171,12 +165,6 @@ const useLogin = async () => {
       })
       if (userKeywordsRes.result_code === 0) {
         keywordStore.setKeywordList(userKeywordsRes.result)
-      }
-
-      // 获取文章标签
-      const articleLabelsRes = await getArticleLabels()
-      if (articleLabelsRes.result_code === 0) {
-        articleLabelStore.setArticleLabels(articleLabelsRes.result)
       }
       ElNotification({
         title: '登录成功！',

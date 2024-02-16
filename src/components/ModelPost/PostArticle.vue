@@ -208,7 +208,7 @@
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from '@/store'
-import { getUserFansList } from '@/api/user'
+import { getArticleLabels, getUserFansList } from '@/api/user'
 import {
   postArticle,
   addArticleLabel,
@@ -232,7 +232,7 @@ const labelSelect = ref<InstanceType<typeof ElSelect> | null>(null)
 const route = useRoute()
 const router = useRouter()
 
-const { userStore, articleLabelStore } = useStore()
+const { userStore } = useStore()
 
 const present_step = ref<number>(0)
 const part1_top = ref<string>('0px')
@@ -401,10 +401,9 @@ const submitArticle = async () => {
 }
 
 onMounted(async () => {
-  if (articleLabelStore.articleLabelInfo) {
-    for (var i = 0; i < articleLabelStore.articleLabelInfo.length; i++) {
-      optionsSubject.value.push(articleLabelStore.articleLabelInfo[i])
-    }
+  const { result } = await getArticleLabels()
+  for (let i = 0; i < result.length; i++) {
+    optionsSubject.value.push(result[i])
   }
   if (route.query.article_id) {
     editStatus.value = true

@@ -59,7 +59,6 @@ class Request {
               type: 'error'
             })
           } else if (status === 404) {
-            console.log('404')
             window.location.href = '/404'
           } else if (status === 401) {
             ElNotification({

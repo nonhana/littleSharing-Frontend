@@ -77,7 +77,6 @@ const buildTree = (nodes: any[], currentLevel = null) => {
         )
       } else {
         // 如果没有上一个项，则忽略这个子标题
-        console.error('孤立的标题', node.text)
         nodes.shift() // 跳过这个孤立的子标题
       }
     } else {

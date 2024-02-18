@@ -413,10 +413,9 @@ onMounted(async () => {
     if (res.result_code === 0) {
       const sourceArticle = res.result
 
-      ruleForm.value.article_md =
-        sourceArticle.article_md_link !== ''
-          ? await fetch(sourceArticle.article_md_link).then((res) => res.text())
-          : sourceArticle.article_md
+      ruleForm.value.article_md = await fetch(
+        sourceArticle.article_md_link
+      ).then((res) => res.text())
       ruleForm.value.article_md_link = sourceArticle.article_md_link
       ruleForm.value.article_introduce = sourceArticle.article_introduce
       ruleForm.value.article_labels = sourceArticle.article_labels

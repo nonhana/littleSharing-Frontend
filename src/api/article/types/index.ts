@@ -199,10 +199,6 @@ export interface Article {
    */
   article_major: string[]
   /**
-   * 文章md原文文档
-   */
-  article_md: string
-  /**
    * 文章状态码，1-转载文章，2-原创文章
    */
   article_status: 1 | 2

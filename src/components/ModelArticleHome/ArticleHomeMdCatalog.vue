@@ -136,10 +136,9 @@ onMounted(async () => {
   const { result } = await getArticleMain({
     article_id: Number(route.params.article_id)
   })
-  article_md.value =
-    result.article_md !== ''
-      ? result.article_md
-      : await fetch(result.article_md_link).then((res) => res.text())
+  article_md.value = await fetch(result.article_md_link).then((res) =>
+    res.text()
+  )
   loading.value = false
 })
 

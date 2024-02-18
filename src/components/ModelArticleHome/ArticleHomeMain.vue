@@ -120,10 +120,9 @@ onMounted(async () => {
   article_labels.value.push(...article_main.article_labels)
   article_title.value = article_main.article_title
   // 使用fetch来获取article_md_link的内容
-  article_md.value =
-    article_main.article_md_link !== ''
-      ? await fetch(article_main.article_md_link).then((res) => res.text())
-      : article_main.article_md
+  article_md.value = await fetch(article_main.article_md_link).then((res) =>
+    res.text()
+  )
 
   await nextTick()
 

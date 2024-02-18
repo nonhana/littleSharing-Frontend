@@ -28,6 +28,7 @@
 <script setup lang="ts">
 import { ref, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import CommonHeader from './components/Global/CommonHeader.vue'
 
 const route = useRoute()
 

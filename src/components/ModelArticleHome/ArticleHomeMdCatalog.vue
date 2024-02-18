@@ -29,6 +29,7 @@ import { marked } from 'marked'
 import { getArticleMain } from '@/api/article'
 import type { MdCatalogTree } from '@/utils/types'
 import ArticleHomeMdCatalogItem from '@/components/Little/Item/ArticleHomeMdCatalogItem.vue'
+import NoList from '../Global/NoList.vue'
 
 const route = useRoute()
 

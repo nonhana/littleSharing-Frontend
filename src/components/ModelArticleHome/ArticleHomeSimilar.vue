@@ -52,6 +52,7 @@ import { getSimilarArticles, getArticleMain } from '@/api/article'
 import type { ArticleSimple } from '@/api/article/types'
 import LittleArticleItem from '@/components/Little/Item/LittleArticleItem.vue'
 import FoldList from '@/assets/svgs/FoldList.svg'
+import NoList from '../Global/NoList.vue'
 
 const route = useRoute()
 

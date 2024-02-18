@@ -242,7 +242,7 @@ const closeDialog = (type: number) => {
 
 // 提交修改个人信息
 const submit = async () => {
-  localStorage.setItem('user_info', JSON.stringify(ruleForm.value))
+  userStore.setUserInfo(ruleForm.value)
   const res = await editUserInfo(ruleForm.value)
   if (res.result_code === 0) {
     ElNotification({
@@ -425,4 +425,3 @@ onBeforeRouteLeave((_, __, next) => {
   }
 }
 </style>
-@/api/user/user @/store/modules/user

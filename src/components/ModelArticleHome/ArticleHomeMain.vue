@@ -43,6 +43,10 @@
       </div>
     </el-row>
 
+    <el-row v-if="article_cover">
+      <img class="cover" :src="article_cover" alt="文章封面" />
+    </el-row>
+
     <el-divider><span style="color: #9e9e9e">正文</span></el-divider>
 
     <el-row>
@@ -81,6 +85,7 @@ const article_link = ref<string>('')
 const article_labels = ref<string[]>([])
 const article_title = ref<string>('')
 const article_md = ref<string>('')
+const article_cover = ref<string | null>('')
 const loading = ref<boolean>(false)
 
 onMounted(async () => {
@@ -119,6 +124,7 @@ onMounted(async () => {
   article_link.value = article_main.article_link || ''
   article_labels.value.push(...article_main.article_labels)
   article_title.value = article_main.article_title
+  article_cover.value = article_main.article_cover
   // 使用fetch来获取article_md_link的内容
   article_md.value = await fetch(article_main.article_md_link).then((res) =>
     res.text()
@@ -212,6 +218,14 @@ onMounted(async () => {
       line-height: 20px;
       letter-spacing: 0;
     }
+  }
+
+  .cover {
+    margin: 20px auto;
+    width: 400px;
+    height: 400px;
+    border: 1px solid #eee;
+    border-radius: 20px;
   }
 }
 

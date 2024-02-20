@@ -142,10 +142,15 @@
           <el-image
             :src="cover_image"
             :alt="cover_image"
-            style="max-width: 200px; max-height: 150px; border-radius: 20px"
+            style="
+              width: 150px;
+              height: 150px;
+              border: 1px solid #eee;
+              border-radius: 20px;
+            "
           ></el-image>
         </template>
-        <el-image :src="cover_image"></el-image>
+        <el-image :src="cover_image" />
       </el-popover>
     </div>
   </div>
@@ -183,7 +188,7 @@ const like_num = ref<number>(props.articleList.like_num)
 const collection_num = ref<number>(props.articleList.collection_num)
 const share_num = ref<number>(props.articleList.share_num)
 
-let cover_image = props.articleList.cover_image
+let cover_image = props.articleList.article_cover
 let article_id = props.articleList.article_id
 let article_status = props.articleList.article_status
 let article_title = props.articleList.article_title

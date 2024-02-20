@@ -19,11 +19,21 @@ export interface IGetArticleListParams {
 /**
  * 上传文章图片请求体
  */
-export interface IIploadArticleImgParams {
+export interface IUploadArticleImgParams {
   /**
    * 文章图片文件，类型为jpg/jpeg/png
    */
   articleImg: File
+}
+
+/**
+ * 上传文章封面图片请求体
+ */
+export interface IUploadArticleCoverParams {
+  /**
+   * 文章图片文件，类型为jpg/jpeg/png
+   */
+  articleCover: File
 }
 
 /**
@@ -54,6 +64,10 @@ export interface IPostArticleParams {
    * 文章MD文件链接
    */
   article_md_link: string
+  /**
+   * 文章封面图片url，可传可不传
+   */
+  article_cover?: string
   /**
    * 文章状态，1-原创文章，2-转载文章
    */
@@ -239,10 +253,6 @@ export interface Article {
    */
   view_num: number
   /**
-   * 文章封面图片
-   */
-  cover_image?: string
-  /**
    * 作者所发表的文章数量
    */
   author_article_num: number
@@ -271,9 +281,9 @@ export interface Article {
    */
   article_md_link: string
   /**
-   * 文章封面图片url
+   * 文章封面图片url，如果没有则为null
    */
-  article_cover: string
+  article_cover: string | null
 }
 /**
  * 文章信息（简略）

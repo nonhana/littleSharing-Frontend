@@ -6,20 +6,33 @@ import type {
   ArticleTrend,
   ArticleSimple,
   IGetArticleListParams,
-  IIploadArticleImgParams,
+  IUploadArticleImgParams,
   IPostArticleParams,
   IAddArticleLabelParams,
   IAddBookMarkParams,
   IEditArticleParams,
   IPostArticleTrendParams,
   ISearchArticleParams,
-  IGetSimilarArticlesParams
+  IGetSimilarArticlesParams,
+  IUploadArticleCoverParams
 } from './types'
 
 // 上传文章图片
-export const uploadArticleImg = (data: IIploadArticleImgParams) => {
-  return request<IIploadArticleImgParams, string>({
+export const uploadArticleImg = (data: IUploadArticleImgParams) => {
+  return request<IUploadArticleImgParams, string>({
     url: '/article/upload-article-img',
+    method: 'POST',
+    data,
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+}
+
+// 上传文章封面图片
+export const uploadArticleCover = (data: IUploadArticleCoverParams) => {
+  return request<IUploadArticleCoverParams, string>({
+    url: '/article/upload-article-cover',
     method: 'POST',
     data,
     headers: {

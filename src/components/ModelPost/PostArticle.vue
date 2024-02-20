@@ -182,6 +182,35 @@
               ></el-input>
             </el-form-item>
           </el-row>
+
+          <el-row
+            type="flex"
+            justify="space-between"
+            style="align-items: center; margin: 0 0 30px; width: 404px"
+          >
+            <span>文章封面上传：</span>
+            <el-upload
+              class="cover-uploader"
+              :show-file-list="false"
+              :on-change="handleCover"
+            >
+              <img
+                v-if="ruleForm.article_cover"
+                :src="ruleForm.article_cover"
+                class="cover"
+              />
+              <el-icon v-else class="cover-uploader-icon"><Plus /></el-icon>
+            </el-upload>
+
+            <ImgCropper
+              :type="2"
+              :sourceFile="coverSourceFile"
+              :croppedFileType="coverCroppedFileType"
+              :dialogVisible="cropperVisible"
+              @upload-image="uploadImage"
+              @close-dialog="closeDialog"
+            />
+          </el-row>
         </div>
         <div
           style="position: absolute; left: 0; transition: all, 0.5s"
@@ -220,11 +249,11 @@ import { postMessage } from '@/api/message'
 import type { IPostMessageParams } from '@/api/message/types'
 import { optionChoices } from '@/utils/constants'
 import type { IPostArticleParams } from '@/api/article/types'
-import { ElMessageBox, ElMessage, ElNotification } from 'element-plus'
 import { MdEditor } from 'md-editor-v3' // 引入md编辑器
 import 'md-editor-v3/lib/style.css' // 编辑器的样式
-import { ElSelect } from 'element-plus'
-import type { FormRules, CascaderValue } from 'element-plus'
+import { ElMessageBox, ElMessage, ElNotification, ElSelect } from 'element-plus'
+import type { FormRules, CascaderValue, UploadFile } from 'element-plus'
+import { Plus } from '@element-plus/icons-vue'
 
 // 通过ref拿到dom
 const labelSelect = ref<InstanceType<typeof ElSelect> | null>(null)
@@ -399,6 +428,24 @@ const submitArticle = async () => {
     })
   }
 }
+/* ----------上传封面图片相关---------- */
+// 背景图片相关
+const cropperVisible = ref<boolean>(false)
+let coverSourceFile: File | null | undefined = null
+let coverCroppedFileType: string = '' // 裁剪后的文件类型
+const handleCover = (file: UploadFile) => {
+  coverSourceFile = file.raw
+  coverCroppedFileType = coverSourceFile?.type ?? ''
+  cropperVisible.value = true
+}
+
+// ImgCropper子传父事件
+const uploadImage = (value: { type: number; imgURL: string }) => {
+  ruleForm.value.article_cover = value.imgURL
+}
+const closeDialog = () => {
+  cropperVisible.value = false
+}
 
 onMounted(async () => {
   const { result } = await getArticleLabels()
@@ -518,6 +565,38 @@ onMounted(async () => {
   :deep(.el-select .el-input__wrapper) {
     padding: 0 11px;
     height: 50px;
+  }
+
+  .cover-uploader {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    width: 202px;
+    height: 202px;
+    border: 1px dashed #d9d9d9;
+    border-radius: 20px;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+
+  .cover-uploader:hover {
+    border-color: #409eff;
+  }
+
+  .cover-uploader-icon {
+    width: 200px;
+    height: 200px;
+    font-size: 28px;
+    text-align: center;
+    color: #8c939d;
+    line-height: 200px;
+  }
+
+  .cover {
+    display: block;
+    height: 200px;
   }
 }
 </style>

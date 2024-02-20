@@ -32,10 +32,11 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { uploadAvatar, uploadBackground } from '@/api/user'
+import { uploadArticleCover } from '@/api/article'
 import VuePictureCropper, { cropper } from 'vue-picture-cropper'
 
 const props = defineProps<{
-  type: number // 0-head, 1-background
+  type: number // 0-head, 1-background, 2-article_cover
   dialogVisible: boolean
   sourceFile: File | null | undefined
   croppedFileType: string
@@ -64,18 +65,23 @@ const confirmCropper = async () => {
   })
 
   if (croppedFile) {
-    const res =
-      props.type === 0
-        ? await uploadAvatar({ avatar: uploadFile })
-        : await uploadBackground({ background: uploadFile })
-
-    if (res.result_code === 0) {
-      emits('uploadImage', {
-        type: props.type,
-        imgURL: res.result
-      })
-      visible.value = false
+    let imgURL: string = ''
+    switch (props.type) {
+      case 0:
+        imgURL = (await uploadAvatar({ avatar: uploadFile })).result
+        break
+      case 1:
+        imgURL = (await uploadBackground({ background: uploadFile })).result
+        break
+      case 2:
+        imgURL = (await uploadArticleCover({ articleCover: uploadFile })).result
+        break
     }
+    emits('uploadImage', {
+      type: props.type,
+      imgURL
+    })
+    visible.value = false
   }
 }
 
@@ -85,7 +91,19 @@ watch(
     if (props.sourceFile) {
       sourceFileURL = URL.createObjectURL(props.sourceFile)
     }
-    aspectRatio.value = newV.type === 0 ? 1 / 1 : 4.7368 / 1
+    // 设置裁剪框的宽高比
+    // 0: 1:1, 1: 4.7368:1, 2: 1:1
+    switch (newV.type) {
+      case 0:
+        aspectRatio.value = 1 / 1
+        break
+      case 1:
+        aspectRatio.value = 4.7368 / 1
+        break
+      case 2:
+        aspectRatio.value = 1 / 1
+        break
+    }
     visible.value = newV.dialogVisible
   },
   { immediate: true }

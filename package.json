@@ -64,5 +64,6 @@
     "vite-plugin-imagemin": "^0.6.1",
     "vite-ssg": "^0.23.5",
     "vue-tsc": "^1.4.2"
-  }
+  },
+  "packageManager": "pnpm@10.11.0"
 }
